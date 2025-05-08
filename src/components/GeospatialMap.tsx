@@ -1,9 +1,8 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from '@/components/ui/button';
-import { MapPin, Satellite, Layers, Map, TrafficCone, Car, Pedestrian } from 'lucide-react';
+import { MapPin, Satellite, Layers, Map, TrafficCone, Car } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { Slider } from '@/components/ui/slider';
 
@@ -220,10 +219,10 @@ const GeospatialMap = () => {
               
               footPoint.appendChild(footMarker);
               
-              // Add pedestrian icon
+              // Add pedestrian icon - replacing with User icon since Pedestrian is not available
               const pedestrianIcon = document.createElement('div');
               pedestrianIcon.className = 'absolute -right-2 -bottom-2 bg-purple-500 rounded-full p-1 shadow-md';
-              pedestrianIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><circle cx="13" cy="4" r="2"/><path d="m10 16 2 2 3-3"/><path d="m15 16 2 2 3-3"/><path d="M13.338 11.597 15.5 6.5l1.5.5-2 4"/><path d="m18 10 1-5 1.5.5-2 7-3.5-2-2.379-1.393"/><path d="M13.5 6.5 11 10l1.5.5 1-3"/><path d="M11 10a40.946 40.946 0 0 0-2 4l1 2"/><path d="M8 15c-1.67 1-2.5 4.2-2.5 4.2l1.5.5c1.5-4 4.5-4.2 4.5-4.2"/></svg>`;
+              pedestrianIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>`;
               
               footPoint.appendChild(pedestrianIcon);
               
@@ -422,85 +421,4 @@ const GeospatialMap = () => {
               <SelectContent>
                 <SelectItem value="all">All Ad Types</SelectItem>
                 <SelectItem value="walls">Walls</SelectItem>
-                <SelectItem value="billboards">Billboards</SelectItem>
-                <SelectItem value="digital">Digital Screens</SelectItem>
-                <SelectItem value="transit">Transit</SelectItem>
-                <SelectItem value="ar">AR Experiences</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-        </div>
-
-        <div className="relative flex-1 overflow-hidden rounded-md">
-          <div ref={mapRef} className="absolute inset-0 bg-adtech-dark-blue rounded-lg">
-            {/* Map will be rendered here */}
-          </div>
-          <div className="absolute top-4 left-4 flex flex-col gap-2">
-            <Badge variant="outline" className="bg-background/80 hover:bg-background">Advertising Intensity</Badge>
-            <Badge variant="outline" className="bg-background/80 hover:bg-background">OOH Coverage</Badge>
-          </div>
-        </div>
-        
-        <div className="flex flex-col space-y-4 mt-4">
-          <div className="grid grid-cols-2 gap-2">
-            <Button 
-              variant="outline" 
-              size="sm"
-              onClick={() => toggleTrafficLayer('vehicle')}
-              className={showVehicleTraffic ? "bg-orange-500/20 border-orange-500/50 hover:bg-orange-500/30 text-orange-600" : ""}
-            >
-              <Car className="h-4 w-4 mr-1" />
-              {showVehicleTraffic ? "Hide Vehicle Traffic" : "Show Vehicle Traffic"}
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => toggleTrafficLayer('foot')}
-              className={showFootTraffic ? "bg-purple-500/20 border-purple-500/50 hover:bg-purple-500/30 text-purple-600" : ""}
-            >
-              <Pedestrian className="h-4 w-4 mr-1" />
-              {showFootTraffic ? "Hide Foot Traffic" : "Show Foot Traffic"}
-            </Button>
-          </div>
-          
-          <div className="flex items-center space-x-2 px-1">
-            <span className="text-xs text-muted-foreground">Zoom</span>
-            <Slider
-              value={zoomLevel}
-              onValueChange={setZoomLevel}
-              className="flex-1"
-              max={100}
-              min={10}
-              step={5}
-              defaultValue={[50]}
-            />
-            <span className="text-xs font-medium w-8">{zoomLevel[0]}%</span>
-          </div>
-          
-          <div className="flex justify-between gap-2">
-            <Button 
-              variant={viewMode === '2D' ? "default" : "outline"} 
-              size="sm"
-              onClick={toggleViewMode}
-              className={viewMode === '2D' ? "bg-adtech-blue hover:bg-adtech-blue/90" : ""}
-            >
-              <Satellite className="h-4 w-4 mr-1" />
-              Satellite View
-            </Button>
-            <Button 
-              variant={viewMode === '3D' ? "default" : "outline"} 
-              size="sm" 
-              onClick={toggleViewMode}
-              className={viewMode === '3D' ? "bg-adtech-blue hover:bg-adtech-blue/90" : ""}
-            >
-              <Layers className="h-4 w-4 mr-1" />
-              3D View
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default GeospatialMap;
+                <SelectItem
