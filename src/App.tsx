@@ -9,6 +9,7 @@ import MapAnalytics from "./pages/MapAnalytics";
 import Performance from "./pages/Performance";
 import Revenue from "./pages/Revenue";
 import Forecasts from "./pages/Forecasts";
+import BudgetCampaign from "./pages/BudgetCampaign";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -25,6 +26,7 @@ const App = () => (
           <Route path="/performance" element={<Performance />} />
           <Route path="/revenue" element={<Revenue />} />
           <Route path="/forecasts" element={<Forecasts />} />
+          <Route path="/budget-campaign" element={<BudgetCampaign />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

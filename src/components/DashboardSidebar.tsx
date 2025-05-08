@@ -11,7 +11,8 @@ import {
   MapPin,
   ChartBar,
   ChartLine,
-  ChartPie
+  ChartPie,
+  DollarSign
 } from 'lucide-react';
 
 interface DashboardSidebarProps {
@@ -49,6 +50,11 @@ const DashboardSidebar = ({ isOpen, toggleSidebar }: DashboardSidebarProps) => {
       name: 'Forecasts', 
       icon: ChartPie,
       path: '/forecasts'
+    },
+    { 
+      name: 'Budget Campaign', 
+      icon: DollarSign,
+      path: '/budget-campaign'
     }
   ];
 
