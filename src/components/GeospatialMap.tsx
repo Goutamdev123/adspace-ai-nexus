@@ -1,9 +1,8 @@
-
 import React, { useEffect, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Button } from '@/components/ui/button';
-import { MapPin, Satellite, Layers, Map, TrafficCone, Car } from 'lucide-react';
+import { MapPin, Satellite, Layers, Map, TrafficCone, Car, ZoomIn, ZoomOut } from 'lucide-react';
 import { toast } from '@/components/ui/use-toast';
 import { Slider } from '@/components/ui/slider';
 
@@ -15,6 +14,7 @@ const GeospatialMap = () => {
   const [showVehicleTraffic, setShowVehicleTraffic] = useState(false);
   const [showFootTraffic, setShowFootTraffic] = useState(false);
   const [zoomLevel, setZoomLevel] = useState([50]);
+  const [mapScale, setMapScale] = useState(1);
   
   // Indian states data
   const indianStates = [
@@ -84,6 +84,11 @@ const GeospatialMap = () => {
       const mapBase = document.createElement('div');
       mapBase.className = `absolute inset-0 ${viewMode === '3D' ? 'bg-adtech-dark-blue/90' : 'bg-gray-800'} rounded-lg overflow-hidden transition-all duration-300`;
       
+      // Apply zoom scaling effect
+      const scale = mapScale;
+      mapBase.style.transform = `scale(${scale})`;
+      mapBase.style.transformOrigin = 'center center';
+      
       // Add satellite imagery in 2D mode
       if (viewMode === '2D') {
         // Use higher quality satellite image of India
@@ -103,6 +108,8 @@ const GeospatialMap = () => {
       // Render India state boundaries - simplified for demo
       const boundaryContainer = document.createElement('div');
       boundaryContainer.className = 'absolute inset-0';
+      boundaryContainer.style.transform = `scale(${scale})`;
+      boundaryContainer.style.transformOrigin = 'center center';
       mapElement.appendChild(boundaryContainer);
       
       // Add Indian state data points
@@ -223,7 +230,7 @@ const GeospatialMap = () => {
               // Add pedestrian icon - replacing with User icon since Pedestrian is not available
               const pedestrianIcon = document.createElement('div');
               pedestrianIcon.className = 'absolute -right-2 -bottom-2 bg-purple-500 rounded-full p-1 shadow-md';
-              pedestrianIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>`;
+              pedestrianIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>`;
               
               footPoint.appendChild(pedestrianIcon);
               
@@ -282,15 +289,33 @@ const GeospatialMap = () => {
       zoomControls.className = 'bg-background/80 p-2 rounded flex flex-col gap-1 items-center';
       
       const zoomIn = document.createElement('button');
-      zoomIn.className = 'bg-background/90 hover:bg-background w-6 h-6 flex items-center justify-center rounded';
-      zoomIn.innerHTML = '+';
-      zoomIn.onclick = () => setZoomLevel([Math.min(100, zoomLevel[0] + 10)]);
+      zoomIn.className = 'bg-background/90 hover:bg-background w-7 h-7 flex items-center justify-center rounded text-adtech-blue hover:text-adtech-blue/80 transition-colors';
+      zoomIn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>';
+      zoomIn.onclick = () => {
+        const newZoomLevel = Math.min(100, zoomLevel[0] + 10);
+        setZoomLevel([newZoomLevel]);
+        setMapScale(1 + (newZoomLevel - 50) / 50);
+        toast({
+          title: "Zoomed In",
+          description: `Zoom level: ${newZoomLevel}%`,
+          duration: 1000,
+        });
+      };
       zoomControls.appendChild(zoomIn);
       
       const zoomOut = document.createElement('button');
-      zoomOut.className = 'bg-background/90 hover:bg-background w-6 h-6 flex items-center justify-center rounded';
-      zoomOut.innerHTML = '-';
-      zoomOut.onclick = () => setZoomLevel([Math.max(10, zoomLevel[0] - 10)]);
+      zoomOut.className = 'bg-background/90 hover:bg-background w-7 h-7 flex items-center justify-center rounded text-adtech-blue hover:text-adtech-blue/80 transition-colors';
+      zoomOut.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>';
+      zoomOut.onclick = () => {
+        const newZoomLevel = Math.max(10, zoomLevel[0] - 10);
+        setZoomLevel([newZoomLevel]);
+        setMapScale(1 + (newZoomLevel - 50) / 50);
+        toast({
+          title: "Zoomed Out",
+          description: `Zoom level: ${newZoomLevel}%`,
+          duration: 1000,
+        });
+      };
       zoomControls.appendChild(zoomOut);
       
       uiControls.appendChild(zoomControls);
@@ -344,6 +369,11 @@ const GeospatialMap = () => {
   useEffect(() => {
     renderIndianMap();
   }, [viewMode, region, adType, showVehicleTraffic, showFootTraffic, zoomLevel]);
+  
+  useEffect(() => {
+    // Update scale whenever zoomLevel changes
+    setMapScale(1 + (zoomLevel[0] - 50) / 50);
+  }, [zoomLevel]);
 
   const toggleViewMode = () => {
     setViewMode(viewMode === '3D' ? '2D' : '3D');
@@ -476,12 +506,49 @@ const GeospatialMap = () => {
         
         <div className="relative flex-1 rounded-lg bg-muted/30 overflow-hidden mb-2">
           <div ref={mapRef} className="absolute inset-0"></div>
+          <div className="absolute bottom-24 right-4 flex gap-2">
+            <Button 
+              variant="outline" 
+              size="icon" 
+              className="bg-background/80 shadow-md h-8 w-8"
+              onClick={() => {
+                const newZoomLevel = Math.min(100, zoomLevel[0] + 10);
+                setZoomLevel([newZoomLevel]);
+              }}
+            >
+              <ZoomIn className="h-4 w-4" />
+            </Button>
+            <Button 
+              variant="outline" 
+              size="icon" 
+              className="bg-background/80 shadow-md h-8 w-8"
+              onClick={() => {
+                const newZoomLevel = Math.max(10, zoomLevel[0] - 10);
+                setZoomLevel([newZoomLevel]);
+              }}
+            >
+              <ZoomOut className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
         
         <div className="mt-2">
           <div className="flex items-center justify-between mb-1">
             <div className="text-xs font-medium">Zoom Level: {zoomLevel[0]}%</div>
-            <Button variant="link" size="sm" className="h-6 p-0" onClick={() => setZoomLevel([50])}>
+            <Button 
+              variant="link" 
+              size="sm" 
+              className="h-6 p-0" 
+              onClick={() => {
+                setZoomLevel([50]);
+                setMapScale(1);
+                toast({
+                  title: "Zoom Reset",
+                  description: "Map zoom level reset to default",
+                  duration: 1500,
+                });
+              }}
+            >
               Reset
             </Button>
           </div>
@@ -490,7 +557,10 @@ const GeospatialMap = () => {
             min={10}
             max={100}
             step={1}
-            onValueChange={setZoomLevel}
+            onValueChange={(newValue) => {
+              setZoomLevel(newValue);
+              setMapScale(1 + (newValue[0] - 50) / 50);
+            }}
             className="w-full"
           />
         </div>
