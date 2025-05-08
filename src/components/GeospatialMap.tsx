@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -414,6 +415,7 @@ const GeospatialMap = () => {
                 <SelectItem value="metro">Metro Cities Only</SelectItem>
               </SelectContent>
             </Select>
+            
             <Select defaultValue="all" onValueChange={handleAdTypeChange}>
               <SelectTrigger className="w-[140px] h-8 text-xs">
                 <SelectValue placeholder="Filter Ad Types" />
@@ -421,4 +423,80 @@ const GeospatialMap = () => {
               <SelectContent>
                 <SelectItem value="all">All Ad Types</SelectItem>
                 <SelectItem value="walls">Walls</SelectItem>
-                <SelectItem
+                <SelectItem value="billboards">Billboards</SelectItem>
+                <SelectItem value="transit">Transit</SelectItem>
+                <SelectItem value="digital">Digital</SelectItem>
+              </SelectContent>
+            </Select>
+
+            <div className="flex items-center gap-2">
+              <Button
+                variant={viewMode === '3D' ? "default" : "outline"}
+                size="sm"
+                className="h-8 gap-1"
+                onClick={toggleViewMode}
+              >
+                {viewMode === '3D' ? (
+                  <><Map className="h-3.5 w-3.5" /> 3D</>
+                ) : (
+                  <><Satellite className="h-3.5 w-3.5" /> 2D</>
+                )}
+              </Button>
+                            
+              <Button
+                variant={showVehicleTraffic ? "default" : "outline"}
+                size="sm"
+                className="h-8 gap-1"
+                onClick={() => toggleTrafficLayer('vehicle')}
+              >
+                <Car className="h-3.5 w-3.5" />
+                {showVehicleTraffic ? (
+                  <Badge variant="destructive" className="h-4 text-[10px] px-1">ON</Badge>
+                ) : (
+                  <span className="text-xs">Vehicle</span>
+                )}
+              </Button>
+              
+              <Button
+                variant={showFootTraffic ? "default" : "outline"}
+                size="sm"
+                className="h-8 gap-1"
+                onClick={() => toggleTrafficLayer('foot')}
+              >
+                <MapPin className="h-3.5 w-3.5" />
+                {showFootTraffic ? (
+                  <Badge variant="destructive" className="h-4 text-[10px] px-1">ON</Badge>
+                ) : (
+                  <span className="text-xs">Foot</span>
+                )}
+              </Button>
+            </div>
+          </div>
+        </div>
+        
+        <div className="relative flex-1 rounded-lg bg-muted/30 overflow-hidden mb-2">
+          <div ref={mapRef} className="absolute inset-0"></div>
+        </div>
+        
+        <div className="mt-2">
+          <div className="flex items-center justify-between mb-1">
+            <div className="text-xs font-medium">Zoom Level: {zoomLevel[0]}%</div>
+            <Button variant="link" size="sm" className="h-6 p-0" onClick={() => setZoomLevel([50])}>
+              Reset
+            </Button>
+          </div>
+          <Slider
+            value={zoomLevel}
+            min={10}
+            max={100}
+            step={1}
+            onValueChange={setZoomLevel}
+            className="w-full"
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default GeospatialMap;
