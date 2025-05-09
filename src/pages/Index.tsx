@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import DashboardHeader from "@/components/DashboardHeader";
 import DashboardSidebar from "@/components/DashboardSidebar";
@@ -11,6 +12,7 @@ import WallAnalyzer from "@/components/WallAnalyzer";
 import TrackingTechnologies from "@/components/TrackingTechnologies";
 import UserProfileCard from "@/components/UserProfileCard";
 import ARExperienceDemo from "@/components/ARExperienceDemo";
+import ARWorkingDemo from "@/components/ARWorkingDemo";
 import BusinessBenefits from "@/components/BusinessBenefits";
 
 import { ChartBar, MapPin, ChartPie, Layers3 } from "lucide-react";
@@ -110,6 +112,9 @@ const Index = () => {
               <div>
                 <UserProfileCard />
               </div>
+            </div>
+            <div className="grid grid-cols-1 gap-6 mb-6">
+              <ARWorkingDemo />
             </div>
           </div>
         );
@@ -226,6 +231,10 @@ const Index = () => {
                   { name: 'Jul', value: 100 },
                 ]}
               />
+            </div>
+            
+            <div className="grid grid-cols-1 gap-6 mb-6">
+              <ARWorkingDemo />
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 mb-6">
