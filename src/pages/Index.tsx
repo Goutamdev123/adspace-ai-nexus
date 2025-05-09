@@ -11,6 +11,7 @@ import WallAnalyzer from "@/components/WallAnalyzer";
 import TrackingTechnologies from "@/components/TrackingTechnologies";
 import UserProfileCard from "@/components/UserProfileCard";
 import ARExperienceDemo from "@/components/ARExperienceDemo";
+import BusinessBenefits from "@/components/BusinessBenefits";
 
 import { ChartBar, MapPin, ChartPie, Layers3 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -225,6 +226,10 @@ const Index = () => {
                   { name: 'Jul', value: 100 },
                 ]}
               />
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 mb-6">
+              <BusinessBenefits />
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
