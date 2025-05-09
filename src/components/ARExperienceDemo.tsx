@@ -553,7 +553,7 @@ const ARExperienceDemo = () => {
         </CardContent>
       </Tabs>
       
-      {/* Fixed the style tag by removing jsx and global properties */}
+      {/* CSS for 3D effects */}
       <style>{`
         .perspective-800 {
           perspective: 800px;
