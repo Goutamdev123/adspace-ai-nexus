@@ -12,7 +12,7 @@ import TrackingTechnologies from "@/components/TrackingTechnologies";
 import UserProfileCard from "@/components/UserProfileCard";
 import ARExperienceDemo from "@/components/ARExperienceDemo";
 
-import { ChartBar, MapPin, ChartPie } from "lucide-react";
+import { ChartBar, MapPin, ChartPie, Layers3 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const Index = () => {

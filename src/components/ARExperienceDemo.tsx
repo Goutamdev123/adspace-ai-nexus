@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -8,7 +7,7 @@ import { toast } from "@/components/ui/use-toast";
 import { 
   Smartphone, 
   CameraIcon, 
-  Layers3D, 
+  Layers3, 
   RotateCcw, 
   ZoomIn, 
   ChevronRightCircle, 
@@ -78,7 +77,7 @@ const ARExperienceDemo = () => {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
           <div>
             <div className="flex items-center gap-2">
-              <Layers3D className="h-5 w-5 text-primary" />
+              <Layers3 className="h-5 w-5 text-primary" />
               <CardTitle className="text-xl">AR Outdoor Advertising Experience</CardTitle>
               <Badge variant="outline" className="bg-primary/10 text-primary text-xs">NEW</Badge>
             </div>
@@ -285,7 +284,7 @@ const ARExperienceDemo = () => {
                     <div className="w-[280px] aspect-[16/9] mb-3 bg-gradient-to-r from-blue-500/80 to-purple-500/80 rounded-md backdrop-blur-sm border border-white/30 flex items-center justify-center">
                       <div className="text-white text-center">
                         <div className="mb-2">
-                          <Layers3D className="h-8 w-8 mx-auto" />
+                          <Layers3 className="h-8 w-8 mx-auto" />
                         </div>
                         <div className="text-sm font-semibold">3D Product Demo</div>
                       </div>
@@ -554,8 +553,8 @@ const ARExperienceDemo = () => {
         </CardContent>
       </Tabs>
       
-      {/* Add custom CSS for 3D effects */}
-      <style jsx global>{`
+      {/* Fixed the style tag by removing jsx and global properties */}
+      <style>{`
         .perspective-800 {
           perspective: 800px;
         }
