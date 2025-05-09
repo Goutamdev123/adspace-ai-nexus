@@ -134,4 +134,58 @@
       grid-column: span 1;
     }
   }
+  
+  /* 3D Transform Utilities */
+  .perspective-800 {
+    perspective: 800px;
+  }
+  
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
+  
+  .translate-z-2 {
+    transform: translateZ(2px);
+  }
+  
+  .-translate-z-2 {
+    transform: translateZ(-2px);
+  }
+  
+  .skew-x-45 {
+    transform: skewX(45deg);
+  }
+  
+  .skew-y-45 {
+    transform: skewY(45deg);
+  }
+  
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0) translateX(0);
+    }
+    50% {
+      transform: translateY(-20px) translateX(10px);
+    }
+  }
+  
+  .animate-float {
+    animation: float 10s ease-in-out infinite;
+  }
+  
+  .bg-gradient-radial {
+    background-image: radial-gradient(var(--tw-gradient-stops));
+  }
 }

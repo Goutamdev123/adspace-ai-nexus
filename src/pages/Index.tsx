@@ -10,7 +10,7 @@ import TimelineViewer from "@/components/TimelineViewer";
 import WallAnalyzer from "@/components/WallAnalyzer";
 import TrackingTechnologies from "@/components/TrackingTechnologies";
 import UserProfileCard from "@/components/UserProfileCard";
-import BangaloreTraffic from "@/components/BangaloreTraffic";
+import ARExperienceDemo from "@/components/ARExperienceDemo";
 
 import { ChartBar, MapPin, ChartPie } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -247,11 +247,8 @@ const Index = () => {
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-              <div className="lg:col-span-2">
-                <BangaloreTraffic />
-              </div>
-              <div>
-                <AIRecommendations />
+              <div className="lg:col-span-3">
+                <ARExperienceDemo />
               </div>
             </div>
             
