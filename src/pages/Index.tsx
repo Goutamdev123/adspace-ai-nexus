@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import AIRecommendations from "@/components/AIRecommendations";
 import BangaloreTraffic from "@/components/BangaloreTraffic";
@@ -119,17 +118,7 @@ const Index = () => {
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2">
-              <BangaloreTraffic
-                data={[
-                  { name: "Jan", value: 40 },
-                  { name: "Feb", value: 30 },
-                  { name: "Mar", value: 20 },
-                  { name: "Apr", value: 27 },
-                  { name: "May", value: 18 },
-                  { name: "Jun", value: 23 },
-                  { name: "Jul", value: 34 },
-                ]}
-              />
+              <BangaloreTraffic />
             </div>
             <div>
               <UserProfileCard />
