@@ -1,6 +1,8 @@
 
 import React from 'react';
 import ARWorkingDemo from '@/components/ARWorkingDemo';
+import ARExperienceDemo from '@/components/ARExperienceDemo';
+import BillboardUploader from '@/components/BillboardUploader';
 import DashboardHeader from "@/components/DashboardHeader";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -59,7 +61,9 @@ const ARWorkingDemoPage = () => {
         <main className="flex-1 p-4 md:p-6 overflow-auto">
           <h1 className="text-2xl font-bold mb-6">AR Working Demo</h1>
           <div className="grid grid-cols-1 gap-6">
+            <BillboardUploader />
             <ARWorkingDemo />
+            <ARExperienceDemo />
           </div>
         </main>
       </div>
