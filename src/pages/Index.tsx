@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import DashboardHeader from "@/components/DashboardHeader";
 import DashboardSidebar from "@/components/DashboardSidebar";
@@ -13,7 +12,6 @@ import TrackingTechnologies from "@/components/TrackingTechnologies";
 import UserProfileCard from "@/components/UserProfileCard";
 import ARExperienceDemo from "@/components/ARExperienceDemo";
 import ARWorkingDemo from "@/components/ARWorkingDemo";
-import BusinessBenefits from "@/components/BusinessBenefits";
 
 import { ChartBar, MapPin, ChartPie, Layers3 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -235,10 +233,6 @@ const Index = () => {
             
             <div className="grid grid-cols-1 gap-6 mb-6">
               <ARWorkingDemo />
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-1 gap-6 mb-6">
-              <BusinessBenefits />
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
