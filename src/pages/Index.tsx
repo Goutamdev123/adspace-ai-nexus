@@ -11,6 +11,7 @@ import UserProfileCard from "@/components/UserProfileCard";
 import TrafficHeatmap from "@/components/TrafficHeatmap";
 import ARPerformance from "@/components/ARPerformance";
 import WallAnalyzer from "@/components/WallAnalyzer";
+import OutdoorAdvertisements from "@/components/OutdoorAdvertisements";
 
 import { ChartBar, MapPin, ChartPie, Layers3 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -79,6 +80,10 @@ const Index = () => {
                 icon={metric.icon}
               />
             ))}
+          </div>
+
+          <div className="mb-6">
+            <OutdoorAdvertisements />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
