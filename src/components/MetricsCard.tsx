@@ -17,6 +17,7 @@ interface MetricsCardProps {
   chartData?: Array<{ name: string; value: number }>;
   color?: string;
   icon?: React.ReactNode;
+  changeType?: string;
 }
 
 const MetricsCard: React.FC<MetricsCardProps> = ({
@@ -27,7 +28,8 @@ const MetricsCard: React.FC<MetricsCardProps> = ({
   className,
   chartData,
   color = 'rgba(51, 195, 240, 1)',
-  icon
+  icon,
+  changeType
 }) => {
   const trendColor = change.trend === 'up' 
     ? 'text-adtech-green' 

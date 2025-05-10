@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import AIRecommendations from "@/components/AIRecommendations";
 import BangaloreTraffic from "@/components/BangaloreTraffic";
@@ -226,12 +227,6 @@ const Index = () => {
           </div>
           <div>
             <ARPerformance />
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          <div className="lg:col-span-3">
-            <ARExperienceDemo />
           </div>
         </div>
         
