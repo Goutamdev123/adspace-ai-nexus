@@ -13,7 +13,8 @@ import {
   ChartLine,
   ChartPie,
   DollarSign,
-  Rocket
+  Rocket,
+  Smartphone
 } from 'lucide-react';
 
 interface DashboardSidebarProps {
@@ -56,6 +57,11 @@ const DashboardSidebar = ({ isOpen, toggleSidebar }: DashboardSidebarProps) => {
       name: 'Budget Campaign', 
       icon: DollarSign,
       path: '/budget-campaign'
+    },
+    { 
+      name: 'AR Working Demo', 
+      icon: Smartphone,
+      path: '/ar-working-demo'
     },
     { 
       name: 'Business Solutions', 

@@ -11,6 +11,7 @@ import Revenue from "./pages/Revenue";
 import Forecasts from "./pages/Forecasts";
 import BudgetCampaign from "./pages/BudgetCampaign";
 import BusinessSolutions from "./pages/BusinessSolutions";
+import ARWorkingDemoPage from "./pages/ARWorkingDemoPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +29,7 @@ const App = () => (
           <Route path="/revenue" element={<Revenue />} />
           <Route path="/forecasts" element={<Forecasts />} />
           <Route path="/budget-campaign" element={<BudgetCampaign />} />
+          <Route path="/ar-working-demo" element={<ARWorkingDemoPage />} />
           <Route path="/business-solutions" element={<BusinessSolutions />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
