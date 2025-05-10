@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,7 +8,7 @@ import {
   Smartphone, 
   CameraIcon, 
   Layers3, 
-  Cube, 
+  Cuboid, 
   CircleArrowLeft, 
   CircleArrowRight 
 } from "lucide-react";
@@ -34,7 +33,7 @@ const ARWorkingDemo = () => {
     {
       title: "Interact",
       description: "Interact with 3D models, videos, and exclusive content",
-      icon: <Cube className="h-5 w-5" />
+      icon: <Cuboid className="h-5 w-5" />
     },
     {
       title: "Engage & Convert",
@@ -79,7 +78,7 @@ const ARWorkingDemo = () => {
         <div className="flex items-center justify-between">
           <div>
             <div className="flex items-center gap-2">
-              <Cube className="h-5 w-5 text-primary" />
+              <Cuboid className="h-5 w-5 text-primary" />
               <CardTitle className="text-xl">AR Working Demo</CardTitle>
               <Badge variant="outline" className="bg-primary/10 text-primary text-xs">INTERACTIVE</Badge>
             </div>
@@ -158,7 +157,7 @@ const ARWorkingDemo = () => {
                   <div className="mt-4 flex items-center justify-center">
                     <div className="relative h-16 w-16">
                       <div className="absolute inset-0 rounded-md bg-gradient-to-r from-primary to-blue-500 animate-spin opacity-20" style={{ animationDuration: '8s' }}></div>
-                      <Cube className="h-12 w-12 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
+                      <Cuboid className="h-12 w-12 text-primary absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2" />
                     </div>
                   </div>
                 )}
@@ -427,7 +426,7 @@ const ARWorkingDemo = () => {
       </Tabs>
       
       {/* CSS for 3D effects */}
-      <style jsx global>{`
+      <style jsx="true" global="true">{`
         .preserve-3d {
           transform-style: preserve-3d;
         }
