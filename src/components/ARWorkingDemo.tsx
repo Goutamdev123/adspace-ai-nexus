@@ -426,7 +426,7 @@ const ARWorkingDemo = () => {
       </Tabs>
       
       {/* CSS for 3D effects */}
-      <style jsx="true" global="true">{`
+      <style>{`
         .preserve-3d {
           transform-style: preserve-3d;
         }
