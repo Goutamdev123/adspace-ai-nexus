@@ -11,8 +11,10 @@ import {
   Globe, 
   Layers, 
   Camera,
-  Search
+  Search,
+  ArrowRight
 } from "lucide-react";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 const adTypes = [
   {
@@ -20,6 +22,7 @@ const adTypes = [
     title: "Billboards",
     description: "Large format advertising space on major highways and urban locations",
     image: "https://images.unsplash.com/photo-1506768205634-62e73d4f4458",
+    aiGeneratedImage: "https://im.runware.ai/image/ws/0.5/ii/219a5961-3e2c-45a0-91a9-52c9e2c3fac1.webp",
     aiInsight: "AI predicts 32% higher engagement rates in areas with 15+ second viewing time",
     measurable: "Track impressions and engagement in real-time across 1200+ locations",
     arSupported: true
@@ -29,6 +32,7 @@ const adTypes = [
     title: "Wall Media",
     description: "Painted and digital advertisements on building walls in high-traffic urban areas",
     image: "https://images.unsplash.com/photo-1516542076529-1ea3854896f2",
+    aiGeneratedImage: "https://im.runware.ai/image/ws/0.5/ii/9922cbbc-b70d-4244-9dc3-a5b0caa04e78.webp",
     aiInsight: "Our AI suggests wall ads in residential areas generate 28% more local business visits",
     measurable: "Heat mapping shows exact eyeball traffic with demographic breakdowns",
     arSupported: true
@@ -38,6 +42,7 @@ const adTypes = [
     title: "Transit Ads",
     description: "Mobile advertising on buses, taxis, trains and metro stations with wide coverage",
     image: "https://images.unsplash.com/photo-1494522358652-f30e61a60313",
+    aiGeneratedImage: "https://im.runware.ai/image/ws/0.5/ii/8aa34f20-bd1d-46aa-bd36-56281da8fe61.webp",
     aiInsight: "Transit ads on route 42 show 3.4x ROI compared to static locations per AI analysis",
     measurable: "GPS tracking monitors impression counts through dynamic route mapping",
     arSupported: true
@@ -47,6 +52,7 @@ const adTypes = [
     title: "Drone Advertising",
     description: "Innovative aerial advertising using programmed drone fleets at events and gatherings",
     image: "https://images.unsplash.com/photo-1527977966376-1c8408f9f108",
+    aiGeneratedImage: "https://im.runware.ai/image/ws/0.5/ii/7c8403b5-b842-4e3a-ac81-d80f491706bf.webp",
     aiInsight: "Drone formations at sunset hours show 47% higher recall rates based on AI tracking",
     measurable: "Altitude and formation analytics measure optimal viewing patterns",
     arSupported: false
@@ -56,9 +62,31 @@ const adTypes = [
     title: "Digital Billboards",
     description: "Dynamic LED displays allowing real-time content updates and scheduling",
     image: "https://images.unsplash.com/photo-1523296888195-03d9092335d6",
+    aiGeneratedImage: "https://im.runware.ai/image/ws/0.5/ii/3dc38624-fc6b-4d99-a316-006bc6f152dd.webp",
     aiInsight: "AI-optimized content rotation increases engagement by 38% versus static scheduling",
     measurable: "Real-time analytics show exact impression counts and engagement metrics",
     arSupported: true
+  }
+];
+
+const caseStudies = [
+  {
+    brand: "Urban Cafe",
+    type: "Wall Media",
+    result: "143% increase in foot traffic",
+    image: "https://im.runware.ai/image/ws/0.5/ii/c8d78d55-f42e-4cdf-9af9-093a20dce4c7.webp"
+  },
+  {
+    brand: "Fashion Outlet",
+    type: "Digital Billboard",
+    result: "87% boost in brand recognition",
+    image: "https://im.runware.ai/image/ws/0.5/ii/e5474035-227c-4282-a665-2b33f5dced0d.webp"
+  },
+  {
+    brand: "Tech Startup",
+    type: "Drone Show",
+    result: "218% increase in app downloads",
+    image: "https://im.runware.ai/image/ws/0.5/ii/483bee5a-5a52-49b6-b831-354cbb3aeab8.webp"
   }
 ];
 
@@ -67,7 +95,7 @@ const OutdoorAdvertisements = () => {
   const [viewMode, setViewMode] = useState("overview");
 
   return (
-    <Card className="border-0 shadow-md bg-gradient-to-br from-background/95 to-background">
+    <Card className="border-0 shadow-md bg-gradient-to-br from-background/95 to-background overflow-hidden">
       <CardHeader>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
@@ -95,13 +123,13 @@ const OutdoorAdvertisements = () => {
       <CardContent>
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2">
-            <div className="bg-muted/30 rounded-lg overflow-hidden relative min-h-[280px] md:min-h-[320px]">
+            <div className="bg-muted/30 rounded-lg overflow-hidden relative min-h-[280px] md:min-h-[400px]">
               <img 
-                src={selectedAd.image} 
+                src={selectedAd.aiGeneratedImage || selectedAd.image} 
                 alt={selectedAd.title} 
                 className="w-full h-full object-cover absolute inset-0"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/30 to-transparent">
+              <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent">
                 {viewMode === "ar" && selectedAd.arSupported && (
                   <div className="absolute top-4 right-4 bg-background/80 text-primary text-xs font-medium px-3 py-1.5 rounded-full backdrop-blur-sm border border-primary/20 animate-pulse">
                     <Camera className="h-3 w-3 inline-block mr-1" />
@@ -111,7 +139,7 @@ const OutdoorAdvertisements = () => {
               </div>
               
               <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
-                <div className="bg-background/70 backdrop-blur-sm p-4 rounded-lg border border-border">
+                <div className="bg-background/80 backdrop-blur-md p-4 rounded-lg border border-border">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
                     <div>
                       <h3 className="text-lg font-bold">{selectedAd.title}</h3>
@@ -185,6 +213,30 @@ const OutdoorAdvertisements = () => {
                 </div>
               </div>
             </div>
+            
+            <div className="mt-6">
+              <h3 className="text-sm font-medium mb-3">Success Stories with AI-Enhanced Outdoor Ads</h3>
+              <Carousel className="w-full">
+                <CarouselContent>
+                  {caseStudies.map((study, index) => (
+                    <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+                      <div className="bg-muted/30 rounded-lg overflow-hidden border border-border">
+                        <div className="h-32 overflow-hidden">
+                          <img src={study.image} alt={study.brand} className="w-full h-full object-cover" />
+                        </div>
+                        <div className="p-3">
+                          <h4 className="font-medium text-sm">{study.brand}</h4>
+                          <p className="text-xs text-muted-foreground">{study.type}</p>
+                          <p className="text-xs font-medium text-primary mt-2">{study.result}</p>
+                        </div>
+                      </div>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                <CarouselPrevious className="-left-4 lg:-left-6 bg-background/80 backdrop-blur-sm" />
+                <CarouselNext className="-right-4 lg:-right-6 bg-background/80 backdrop-blur-sm" />
+              </Carousel>
+            </div>
           </div>
           
           <div className="space-y-4">
@@ -254,6 +306,15 @@ const OutdoorAdvertisements = () => {
             </div>
             
             <Button className="w-full">Explore All Ad Formats</Button>
+            
+            <div className="bg-gradient-to-r from-primary/20 to-adtech-purple/20 rounded-lg p-4 border border-primary/30">
+              <h3 className="font-medium text-sm">Ready to scale your advertising?</h3>
+              <p className="text-xs text-muted-foreground mt-1 mb-3">Our AI-enhanced platform delivers results for any business size</p>
+              <Button size="sm" className="w-full">
+                Start Now 
+                <ArrowRight className="h-3 w-3 ml-2" />
+              </Button>
+            </div>
           </div>
         </div>
         
