@@ -8,6 +8,9 @@ import MetricsCard from "@/components/MetricsCard";
 import TimelineViewer from "@/components/TimelineViewer";
 import TrackingTechnologies from "@/components/TrackingTechnologies";
 import UserProfileCard from "@/components/UserProfileCard";
+import TrafficHeatmap from "@/components/TrafficHeatmap";
+import ARPerformance from "@/components/ARPerformance";
+import WallAnalyzer from "@/components/WallAnalyzer";
 
 import { ChartBar, MapPin, ChartPie, Layers3 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -48,17 +51,17 @@ const Index = () => {
   }, [isMobile]);
 
   const metricsData = [
-    { title: "Total Ad Impressions", value: "4.2M", change: { value: 12.5, trend: "up" }, changeType: "percentage", icon: <ChartBar className="h-4 w-4" /> },
-    { title: "Avg. Engagement Rate", value: "8.7%", change: { value: 2.3, trend: "up" }, changeType: "percentage", icon: <MapPin className="h-4 w-4" /> },
-    { title: "CTR & Conversions", value: "3.2%", change: { value: 0.5, trend: "down" }, changeType: "percentage", icon: <ChartPie className="h-4 w-4" /> },
-    { title: "Overall Revenue", value: "₹14.8M", change: { value: 8.7, trend: "up" }, unit: "monthly", color: "rgba(249, 115, 22, 1)" },
+    { title: "Total Ad Impressions", value: "4.2M", change: { value: 12.5, trend: "up" as const }, changeType: "percentage", icon: <ChartBar className="h-4 w-4" /> },
+    { title: "Avg. Engagement Rate", value: "8.7%", change: { value: 2.3, trend: "up" as const }, changeType: "percentage", icon: <MapPin className="h-4 w-4" /> },
+    { title: "CTR & Conversions", value: "3.2%", change: { value: 0.5, trend: "down" as const }, changeType: "percentage", icon: <ChartPie className="h-4 w-4" /> },
+    { title: "Overall Revenue", value: "₹14.8M", change: { value: 8.7, trend: "up" as const }, unit: "monthly", color: "rgba(249, 115, 22, 1)" },
   ];
 
   const mapMetricsData = [
-    { title: "Total Ad Impressions", value: "4.2M", change: { value: 12.5, trend: "up" }, changeType: "percentage", icon: <ChartBar className="h-4 w-4" /> },
-    { title: "Avg. Engagement Rate", value: "8.7%", change: { value: 2.3, trend: "up" }, changeType: "percentage", icon: <MapPin className="h-4 w-4" /> },
-    { title: "CTR & Conversions", value: "3.2%", change: { value: 0.5, trend: "down" }, changeType: "percentage", icon: <ChartPie className="h-4 w-4" /> },
-    { title: "Overall Revenue", value: "₹14.8M", change: { value: 8.7, trend: "up" }, unit: "monthly", color: "rgba(249, 115, 22, 1)" },
+    { title: "Total Ad Impressions", value: "4.2M", change: { value: 12.5, trend: "up" as const }, changeType: "percentage", icon: <ChartBar className="h-4 w-4" /> },
+    { title: "Avg. Engagement Rate", value: "8.7%", change: { value: 2.3, trend: "up" as const }, changeType: "percentage", icon: <MapPin className="h-4 w-4" /> },
+    { title: "CTR & Conversions", value: "3.2%", change: { value: 0.5, trend: "down" as const }, changeType: "percentage", icon: <ChartPie className="h-4 w-4" /> },
+    { title: "Overall Revenue", value: "₹14.8M", change: { value: 8.7, trend: "up" as const }, unit: "monthly", color: "rgba(249, 115, 22, 1)" },
   ];
 
   const renderTabContent = () => {
@@ -141,7 +144,7 @@ const Index = () => {
           <MetricsCard
             title="Total Ad Impressions"
             value="4.2M"
-            change={{ value: 12.5, trend: "up" }}
+            change={{ value: 12.5, trend: "up" as const }}
             color="rgba(51, 195, 240, 1)"
             icon={<ChartBar className="h-4 w-4" />}
             chartData={[
@@ -158,7 +161,7 @@ const Index = () => {
           <MetricsCard
             title="Avg. Engagement Rate"
             value="8.7%"
-            change={{ value: 2.3, trend: "up" }}
+            change={{ value: 2.3, trend: "up" as const }}
             color="rgba(139, 92, 246, 1)"
             icon={<MapPin className="h-4 w-4" />}
             chartData={[
@@ -175,7 +178,7 @@ const Index = () => {
           <MetricsCard
             title="CTR & Conversions"
             value="3.2%"
-            change={{ value: 0.5, trend: "down" }}
+            change={{ value: 0.5, trend: "down" as const }}
             color="rgba(74, 222, 128, 1)"
             icon={<ChartPie className="h-4 w-4" />}
             chartData={[
@@ -192,7 +195,7 @@ const Index = () => {
           <MetricsCard
             title="Overall Revenue"
             value="₹14.8M"
-            change={{ value: 8.7, trend: "up" }}
+            change={{ value: 8.7, trend: "up" as const }}
             unit="monthly"
             color="rgba(249, 115, 22, 1)"
             chartData={[
