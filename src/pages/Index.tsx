@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
@@ -57,6 +56,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext
 import { toast } from "sonner";
 import TrafficHeatmap from "@/components/TrafficHeatmap";
 import TrackingTechnologies from "@/components/TrackingTechnologies";
+import IndiaTrafficMap from "@/components/IndiaTrafficMap";
 
 const features = [
   {
@@ -392,6 +392,16 @@ const Index = () => {
                   {/* Live Heatmap */}
                   <TrafficHeatmap />
                 </div>
+              </div>
+              
+              {/* India Map with live traffic data visualization */}
+              <div className="mb-16">
+                <h3 className="text-2xl font-bold mb-6 text-center">Live Traffic Data Across India</h3>
+                <IndiaTrafficMap />
+                <p className="text-sm text-muted-foreground text-center mt-4">
+                  Real-time monitoring of 5,000+ locations across India with 97.3% data accuracy.
+                  <br />Hover over cities to see detailed metrics.
+                </p>
               </div>
               
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
