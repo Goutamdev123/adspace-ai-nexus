@@ -7,6 +7,38 @@ import DashboardHeader from "@/components/DashboardHeader";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import HeroBackground from "@/components/HeroBackground";
+import { toast } from "@/hooks/use-toast";
+import { 
+  Microscope, 
+  MapPin, 
+  BarChart3, 
+  Camera, 
+  TrendingUp,
+  Globe,
+  Users,
+  Target,
+  Eye,
+  Wifi,
+  Smartphone as SmartphoneIcon,
+  Satellite,
+  PieChart,
+  Activity,
+  LineChart,
+  Cpu,
+  Zap,
+  Database,
+  Glasses,
+  Rocket,
+  Lightbulb,
+  Infinity as InfinityIcon,
+  Sparkles,
+  Check,
+  Building,
+  Ban as BadgeIcon
+} from "lucide-react";
+import TrafficHeatmap from "@/components/TrafficHeatmap";
+import IndiaTrafficMap from "@/components/IndiaTrafficMap";
+import TrackingTechnologies from "@/components/TrackingTechnologies";
 
 const features = [
   {
@@ -125,7 +157,7 @@ const techHighlights = [
   {
     title: "Neural Networks",
     description: "Deep learning systems optimize ad placement based on evolving traffic patterns",
-    icon: <Infinity className="h-6 w-6 text-accent" />
+    icon: <InfinityIcon className="h-6 w-6 text-accent" />
   },
   {
     title: "Augmented Reality",
