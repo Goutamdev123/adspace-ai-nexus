@@ -6,7 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import DashboardHeader from "@/components/DashboardHeader";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
-import HeroBackground from "@/components/HeroBackground";
 import { toast } from "@/hooks/use-toast";
 import { 
   Microscope, 
@@ -237,7 +236,16 @@ const Index = () => {
         <main className="flex-1 overflow-auto">
           {/* AI & AR Technology Hero Section */}
           <section className="relative min-h-[90vh] flex items-center bg-gradient-to-br from-background/90 via-primary/5 to-background/90 overflow-hidden">
-            <HeroBackground />
+            {/* 3D Picture Background */}
+            <div className="absolute inset-0 z-0">
+              <img 
+                src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5" 
+                alt="3D Digital Background" 
+                className="w-full h-full object-cover opacity-30"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/40 to-background/90"></div>
+            </div>
+            
             <div className="container mx-auto px-6 py-16 relative z-10">
               <div className="max-w-4xl mx-auto text-center mb-8">
                 <Badge variant="outline" className="mb-4 bg-primary/20 text-primary px-3 py-1 text-sm font-medium">
