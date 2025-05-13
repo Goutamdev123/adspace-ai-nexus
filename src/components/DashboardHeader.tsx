@@ -8,7 +8,7 @@ import {
   Bell, ChevronDown, Search, Menu, MapPin, 
   ChevronRight, Sun, Moon
 } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
 
 interface DashboardHeaderProps {
@@ -24,19 +24,41 @@ const DashboardHeader = ({
 }: DashboardHeaderProps) => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<string>("overview");
+  const location = useLocation();
+  const currentPath = location.pathname;
+
+  const getActiveTab = () => {
+    if (currentPath === '/') return 'overview';
+    if (currentPath === '/campaigns') return 'campaigns';
+    if (currentPath === '/deep-analytics') return 'analytics';
+    if (currentPath === '/reports') return 'reports';
+    return 'overview';
+  };
 
   const handleTabChange = (value: string) => {
-    setActiveTab(value);
-    
     // Show toast notification for tab change
     toast.success(`${value.charAt(0).toUpperCase() + value.slice(1)} view activated`, {
       description: "Loading data for this view...",
       duration: 2000,
     });
 
-    // In a real application, you would navigate to different routes
-    // navigate(`/dashboard/${value}`);
+    // Navigate to the corresponding route
+    switch (value) {
+      case 'overview':
+        navigate('/');
+        break;
+      case 'campaigns':
+        navigate('/campaigns');
+        break;
+      case 'analytics':
+        navigate('/deep-analytics');
+        break;
+      case 'reports':
+        navigate('/reports');
+        break;
+      default:
+        navigate('/');
+    }
   };
 
   return (
@@ -57,8 +79,8 @@ const DashboardHeader = ({
           <h1 className="text-lg font-semibold mr-6">Analytics Dashboard</h1>
           
           <Tabs 
-            defaultValue="overview" 
-            value={activeTab}
+            defaultValue={getActiveTab()}
+            value={getActiveTab()}
             onValueChange={handleTabChange}
             className="hidden lg:block"
           >
