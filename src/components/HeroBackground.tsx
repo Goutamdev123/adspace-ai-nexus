@@ -171,7 +171,10 @@ const HeroBackground: React.FC = () => {
         ctx.moveTo(v1.x, v1.y);
         ctx.lineTo(v2.x, v2.y);
         ctx.lineWidth = 2 * Math.max(v1.perspective, v2.perspective);
-        ctx.strokeStyle = cube.color.replace(')', `, ${opacity})`);
+        
+        // Fix the rgba color format - only use one opacity value
+        const baseColor = cube.color.substring(0, cube.color.lastIndexOf(','));
+        ctx.strokeStyle = `${baseColor}, ${opacity})`;
         ctx.stroke();
       });
 
@@ -202,8 +205,9 @@ const HeroBackground: React.FC = () => {
         ctx.lineTo(v4.x, v4.y);
         ctx.closePath();
         
-        // Fill face with semi-transparent color
-        ctx.fillStyle = cube.color.replace(')', `, ${opacity})`);
+        // Fix the rgba color format - only use one opacity value
+        const baseColor = cube.color.substring(0, cube.color.lastIndexOf(','));
+        ctx.fillStyle = `${baseColor}, ${opacity})`;
         ctx.fill();
       });
     };
@@ -227,9 +231,12 @@ const HeroBackground: React.FC = () => {
         perspectiveX, perspectiveY, 0,
         perspectiveX, perspectiveY, radius * 2
       );
-      gradient.addColorStop(0, orb.color.replace(')', `, ${opacity})`));
-      gradient.addColorStop(0.5, orb.color.replace(')', `, ${opacity * 0.5})`));
-      gradient.addColorStop(1, orb.color.replace(')', `, 0)`));
+      
+      // Fix the rgba color format - only use one opacity value
+      const baseColor = orb.color.substring(0, orb.color.lastIndexOf(','));
+      gradient.addColorStop(0, `${baseColor}, ${opacity})`);
+      gradient.addColorStop(0.5, `${baseColor}, ${opacity * 0.5})`);
+      gradient.addColorStop(1, `${baseColor}, 0)`);
       
       ctx.beginPath();
       ctx.arc(perspectiveX, perspectiveY, radius * 2, 0, Math.PI * 2);
@@ -239,7 +246,7 @@ const HeroBackground: React.FC = () => {
       // Draw core
       ctx.beginPath();
       ctx.arc(perspectiveX, perspectiveY, radius * 0.5, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255, 255, 255, ' + opacity * 0.8 + ')';
+      ctx.fillStyle = `rgba(255, 255, 255, ${opacity * 0.8})`;
       ctx.fill();
     };
 
