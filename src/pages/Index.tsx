@@ -57,6 +57,7 @@ import { toast } from "sonner";
 import TrafficHeatmap from "@/components/TrafficHeatmap";
 import TrackingTechnologies from "@/components/TrackingTechnologies";
 import IndiaTrafficMap from "@/components/IndiaTrafficMap";
+import HeroBackground from "@/components/HeroBackground";
 
 const features = [
   {
@@ -253,54 +254,8 @@ const Index = () => {
 
         <main className="flex-1 overflow-auto">
           {/* AI & AR Technology Hero Section */}
-          <section className="relative min-h-[90vh] flex items-center bg-gradient-to-br from-background via-primary/5 to-background overflow-hidden">
-            <div className="absolute inset-0 overflow-hidden">
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-secondary/5 to-background"></div>
-              
-              {/* 3D Floating Tech Elements */}
-              <div className="perspective-1000 absolute inset-0">
-                {/* Neural Network Node Animation */}
-                <div className="absolute top-[20%] left-[15%] animate-float" style={{ animationDuration: "20s" }}>
-                  <div className="relative">
-                    <div className="w-32 h-32 rounded-full bg-primary/10 backdrop-blur-md"></div>
-                    <div className="absolute top-1/2 left-full w-[150px] h-0.5 bg-gradient-to-r from-primary/50 to-transparent"></div>
-                    <div className="absolute top-full left-1/2 w-0.5 h-[120px] bg-gradient-to-b from-primary/50 to-transparent"></div>
-                    <div className="absolute top-1/2 right-full w-[100px] h-0.5 bg-gradient-to-l from-primary/50 to-transparent"></div>
-                  </div>
-                </div>
-                
-                {/* Data Visualization Cube */}
-                <div className="absolute bottom-[30%] right-[20%] animate-float perspective-800" style={{ animationDuration: "15s", animationDelay: "2s" }}>
-                  <div className="relative preserve-3d transform-gpu rotate-y-45 rotate-x-45">
-                    <div className="absolute w-40 h-40 bg-secondary/10 backdrop-blur-md border border-secondary/20 transform-gpu translate-z-20"></div>
-                    <div className="absolute w-40 h-40 bg-primary/10 backdrop-blur-md border border-primary/20 transform-gpu translate-z-[-20px]"></div>
-                    <div className="absolute w-40 h-40 bg-secondary/10 backdrop-blur-md border border-secondary/20 transform-gpu translate-y-[-20px] rotate-x-90"></div>
-                    <div className="absolute w-40 h-40 bg-primary/10 backdrop-blur-md border border-primary/20 transform-gpu translate-y-20 rotate-x-90"></div>
-                    <div className="absolute w-40 h-40 bg-secondary/10 backdrop-blur-md border border-secondary/20 transform-gpu translate-x-20 rotate-y-90"></div>
-                    <div className="absolute w-40 h-40 bg-primary/10 backdrop-blur-md border border-primary/20 transform-gpu translate-x-[-20px] rotate-y-90"></div>
-                  </div>
-                </div>
-                
-                {/* AR Visualization */}
-                <div className="absolute top-[40%] right-[35%] animate-float" style={{ animationDuration: "18s", animationDelay: "1s" }}>
-                  <div className="relative">
-                    <div className="w-24 h-24 rounded-lg bg-accent/20 backdrop-blur-md border border-accent/30 flex items-center justify-center">
-                      <div className="w-16 h-16 rounded-lg border-2 border-accent/50 rotate-45"></div>
-                    </div>
-                    <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0.5 h-16 bg-gradient-to-b from-accent/50 to-transparent"></div>
-                  </div>
-                </div>
-                
-                {/* Data Flow Lines */}
-                <div className="absolute inset-0">
-                  <div className="absolute top-1/3 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary/20 to-transparent animate-pulse" style={{ animationDuration: "5s" }}></div>
-                  <div className="absolute top-2/3 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-secondary/20 to-transparent animate-pulse" style={{ animationDuration: "7s" }}></div>
-                  <div className="absolute top-0 left-1/4 w-0.5 h-full bg-gradient-to-b from-transparent via-accent/20 to-transparent animate-pulse" style={{ animationDuration: "6s" }}></div>
-                  <div className="absolute top-0 left-3/4 w-0.5 h-full bg-gradient-to-b from-transparent via-primary/20 to-transparent animate-pulse" style={{ animationDuration: "8s" }}></div>
-                </div>
-              </div>
-            </div>
-            
+          <section className="relative min-h-[90vh] flex items-center bg-gradient-to-br from-background/90 via-primary/5 to-background/90 overflow-hidden">
+            <HeroBackground />
             <div className="container mx-auto px-6 py-16 relative z-10">
               <div className="max-w-4xl mx-auto text-center mb-8">
                 <Badge variant="outline" className="mb-4 bg-primary/20 text-primary px-3 py-1 text-sm font-medium">
