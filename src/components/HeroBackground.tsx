@@ -20,7 +20,7 @@ const HeroBackground: React.FC = () => {
     window.addEventListener('resize', resize);
     resize();
 
-    // Create a more vibrant color palette
+    // Create a more vibrant color palette - Fix: ensure these are proper RGBA colors with single opacity
     const colors = [
       'rgba(125, 90, 255, 0.8)',  // Vibrant Purple
       'rgba(255, 105, 180, 0.7)', // Hot Pink
@@ -226,10 +226,11 @@ const HeroBackground: React.FC = () => {
       // Calculate opacity based on z distance
       const opacity = orb.opacity * Math.max(0.2, Math.min(1, (2000 - orb.z) / 2000));
       
-      // Draw glow effect
+      // Draw glow effect - Fix: Ensure radius values are positive
+      const radiusValue = Math.max(0.1, radius * 2);
       const gradient = ctx.createRadialGradient(
         perspectiveX, perspectiveY, 0,
-        perspectiveX, perspectiveY, radius * 2
+        perspectiveX, perspectiveY, radiusValue
       );
       
       // Fix the rgba color format - only use one opacity value
@@ -239,13 +240,14 @@ const HeroBackground: React.FC = () => {
       gradient.addColorStop(1, `${baseColor}, 0)`);
       
       ctx.beginPath();
-      ctx.arc(perspectiveX, perspectiveY, radius * 2, 0, Math.PI * 2);
+      ctx.arc(perspectiveX, perspectiveY, radiusValue, 0, Math.PI * 2);
       ctx.fillStyle = gradient;
       ctx.fill();
       
-      // Draw core
+      // Draw core - ensure radius is positive
+      const coreRadius = Math.max(0.1, radius * 0.5);
       ctx.beginPath();
-      ctx.arc(perspectiveX, perspectiveY, radius * 0.5, 0, Math.PI * 2);
+      ctx.arc(perspectiveX, perspectiveY, coreRadius, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(255, 255, 255, ${opacity * 0.8})`;
       ctx.fill();
     };
