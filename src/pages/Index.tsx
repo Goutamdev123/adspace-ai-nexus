@@ -6,57 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import DashboardHeader from "@/components/DashboardHeader";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { 
-  ChartBar, 
-  MapPin, 
-  ChartPie, 
-  Layers3,
-  Camera,
-  Globe,
-  TrendingUp,
-  Target,
-  BarChart3,
-  Boxes,
-  Microscope,
-  ArrowRight,
-  Map,
-  Building,
-  Bus,
-  Smartphone,
-  Rocket,
-  Sparkles,
-  Lightbulb,
-  Infinity,
-  Badge as BadgeIcon,
-  Handshake,
-  Users,
-  Earth,
-  Award,
-  Star,
-  Link as LinkIcon,
-  Activity,
-  Zap,
-  Database,
-  Eye,
-  Cpu,
-  Glasses,
-  LineChart,
-  BarChart4,
-  PieChart,
-  Radio,
-  Wifi,
-  Smartphone as SmartphoneIcon,
-  Satellite,
-  BookOpen,
-  Shield,
-  Check
-} from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
-import { toast } from "sonner";
-import TrafficHeatmap from "@/components/TrafficHeatmap";
-import TrackingTechnologies from "@/components/TrackingTechnologies";
-import IndiaTrafficMap from "@/components/IndiaTrafficMap";
 import HeroBackground from "@/components/HeroBackground";
 
 const features = [
