@@ -38,6 +38,7 @@ import {
 import TrafficHeatmap from "@/components/TrafficHeatmap";
 import IndiaTrafficMap from "@/components/IndiaTrafficMap";
 import TrackingTechnologies from "@/components/TrackingTechnologies";
+import HeroParticles from "@/components/HeroParticles";
 
 const features = [
   {
@@ -236,12 +237,14 @@ const Index = () => {
         <main className="flex-1 overflow-auto">
           {/* AI & AR Technology Hero Section */}
           <section className="relative min-h-[90vh] flex items-center bg-gradient-to-br from-background/90 via-primary/5 to-background/90 overflow-hidden">
-            {/* 3D Picture Background */}
+            {/* 3D Particles Background */}
+            <HeroParticles />
+            
             <div className="absolute inset-0 z-0">
               <img 
                 src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5" 
                 alt="3D Digital Background" 
-                className="w-full h-full object-cover opacity-30"
+                className="w-full h-full object-cover opacity-20"
               />
               <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/40 to-background/90"></div>
             </div>
