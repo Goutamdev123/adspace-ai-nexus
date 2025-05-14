@@ -16,8 +16,6 @@ import BusinessSolutions from "./pages/BusinessSolutions";
 import ARWorkingDemoPage from "./pages/ARWorkingDemoPage";
 import NotFound from "./pages/NotFound";
 
-// ❌ Removed Home since we are using Index as the homepage
-
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -27,7 +25,6 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          {/* ✅ Set Index as the homepage */}
           <Route path="/" element={<Index />} />
           <Route path="/campaigns" element={<Campaigns />} />
           <Route path="/deep-analytics" element={<DeepAnalytics />} />
@@ -39,6 +36,7 @@ const App = () => (
           <Route path="/budget-campaign" element={<BudgetCampaign />} />
           <Route path="/ar-working-demo" element={<ARWorkingDemoPage />} />
           <Route path="/business-solutions" element={<BusinessSolutions />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
