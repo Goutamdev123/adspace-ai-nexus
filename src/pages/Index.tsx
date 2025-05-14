@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import HeroParticles from "@/components/HeroParticles";
 import DashboardHeader from "@/components/DashboardHeader";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -236,9 +237,9 @@ const Index = () => {
 
         <main className="flex-1 overflow-auto">
           {/* AI & AR Technology Hero Section */}
-          <section className="relative min-h-[90vh] flex items-center bg-gradient-to-br from-background/90 via-primary/5 to-background/90 overflow-hidden">
-            {/* 3D Particles Background */}
-            <HeroParticles />
+          <div className="relative w-full min-h-screen overflow-x-hidden bg-transparent">
+      {/* 🎇 Your custom 3D Particle Background */}
+      <HeroParticles />
             
             <div className="absolute inset-0 z-0">
               <img 
