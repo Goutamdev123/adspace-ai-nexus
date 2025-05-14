@@ -16,8 +16,7 @@ import BusinessSolutions from "./pages/BusinessSolutions";
 import ARWorkingDemoPage from "./pages/ARWorkingDemoPage";
 import NotFound from "./pages/NotFound";
 
-// ✅ NEW: Import the Home page
-import Home from "./pages/Home";
+// ❌ Removed Home since we are using Index as the homepage
 
 const queryClient = new QueryClient();
 
@@ -28,8 +27,8 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          {/* ✅ Replace Index with Home */}
-          <Route path="/" element={<Home />} />
+          {/* ✅ Set Index as the homepage */}
+          <Route path="/" element={<Index />} />
           <Route path="/campaigns" element={<Campaigns />} />
           <Route path="/deep-analytics" element={<DeepAnalytics />} />
           <Route path="/reports" element={<Reports />} />
