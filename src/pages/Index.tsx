@@ -2,7 +2,6 @@ import { useCallback } from "react";
 import { Particles } from 'node_modules/@tsparticles/react';
 import type { Engine } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
-import { SparklesCore } from "@/components/ui/sparkles";
 import DashboardHeader from "@/components/DashboardHeader";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import MetricsCard from "@/components/MetricsCard";
