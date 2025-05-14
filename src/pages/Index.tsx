@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import Particles from "@tsparticles/react";
+import { Particles } from 'node_modules/@tsparticles/react';
 import type { Engine } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
 import { SparklesCore } from "@/components/ui/sparkles";
