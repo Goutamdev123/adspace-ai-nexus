@@ -2,9 +2,17 @@ import { useCallback } from "react";
 import Particles from "@tsparticles/react";
 import type { Engine } from "@tsparticles/engine";
 import { loadSlim } from "@tsparticles/slim";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { SparklesCore } from "@/components/ui/sparkles";
+import DashboardHeader from "@/components/DashboardHeader";
+import DashboardSidebar from "@/components/DashboardSidebar";
+import MetricsCard from "@/components/MetricsCard";
+import IndiaTrafficMap from "@/components/IndiaTrafficMap";
+import BangaloreTraffic from "@/components/BangaloreTraffic";
+import BusinessBenefits from "@/components/BusinessBenefits";
+import OutdoorAdvertisements from "@/components/OutdoorAdvertisements";
+import TrackingTechnologies from "@/components/TrackingTechnologies";
+import TrafficHeatmap from "@/components/TrafficHeatmap";
+import AIRecommendations from "@/components/AIRecommendations";
 
 const particleOptions = {
   fullScreen: { enable: true, zIndex: -1 },
@@ -41,32 +49,32 @@ export default function Index() {
   }, []);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <div className="relative w-full min-h-screen overflow-x-hidden bg-transparent">
+      {/* 3D Particle Background */}
       <Particles id="tsparticles" init={particlesInit} options={particleOptions} />
+      <SparklesCore
+        background="transparent"
+        minSize={0.4}
+        maxSize={1}
+        particleDensity={1200}
+        className="absolute bottom-0 w-full h-40 z-0"
+        particleColor="#ffffff"
+      />
 
-      <div className="absolute top-0 left-0 w-full h-full z-10 flex flex-col items-center justify-center text-center px-4">
-        <Card className="bg-white/10 backdrop-blur-md border-white/20 p-6 max-w-2xl">
-          <CardContent>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Welcome to My Website
-            </h1>
-            <p className="text-white/80 text-lg mb-6">
-              This is a sleek landing page with an interactive 3D background using tsParticles.
-            </p>
-            <Button variant="secondary">Get Started</Button>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="absolute bottom-0 w-full z-0">
-        <SparklesCore
-          background="transparent"
-          minSize={0.4}
-          maxSize={1}
-          particleDensity={1200}
-          className="w-full h-40"
-          particleColor="#ffffff"
-        />
+      {/* Your original content */}
+      <div className="relative z-10 flex">
+        <DashboardSidebar />
+        <main className="flex-1 p-4 md:p-6 space-y-6">
+          <DashboardHeader />
+          <MetricsCard />
+          <IndiaTrafficMap />
+          <BangaloreTraffic />
+          <BusinessBenefits />
+          <OutdoorAdvertisements />
+          <TrackingTechnologies />
+          <TrafficHeatmap />
+          <AIRecommendations />
+        </main>
       </div>
     </div>
   );
