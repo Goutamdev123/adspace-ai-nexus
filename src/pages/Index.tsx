@@ -242,7 +242,7 @@ const Index = () => {
             
             <div className="absolute inset-0 z-0">
               <img 
-                src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5" 
+                src="https:" 
                 alt="3D Digital Background" 
                 className="w-full h-full object-cover opacity-20"
               />
