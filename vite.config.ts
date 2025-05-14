@@ -21,7 +21,10 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     rollupOptions: {
-      external: ['@tsparticles/react'],
+      external: ['@tsparticles/react'], // Externalize @tsparticles/react
     },
+  },
+  optimizeDeps: {
+    include: ['@tsparticles/react'], // Pre-bundle @tsparticles/react
   },
 }));
