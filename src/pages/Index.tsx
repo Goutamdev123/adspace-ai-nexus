@@ -8,14 +8,6 @@ import { Rocket, Camera } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import useIsMobile from "@/hooks/useIsMobile";
 import HeroBackground from "@/components/HeroBackground";
-<div className="relative w-full min-h-screen overflow-hidden">
-  <HeroBackground />
-
-  <div className="relative z-10 text-white text-center pt-32">
-    <h1 className="text-4xl font-bold">Welcome to My Site</h1>
-    <p className="mt-4 text-lg">This is content over a background video</p>
-  </div>
-</div>
 
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -78,17 +70,8 @@ const Index = () => {
         <main className="flex-1 overflow-auto">
           {/* 🎥 Hero section with background video */}
           <div className="relative w-full min-h-screen overflow-hidden">
-            {/* Video background */}
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute top-0 left-0 w-full h-full object-cover -z-10"
-            >
-              <source src="/background.mp4" type="video/mp4" />
-              Your browser does not support the video tag.
-            </video>
+            {/* Video background component */}
+            <HeroBackground />
 
             {/* Foreground content */}
             <div className="container mx-auto px-6 py-16 relative z-10">
