@@ -7,6 +7,17 @@ import DashboardHeader from "@/components/DashboardHeader";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "@/hooks/use-toast";
+import HeroBackground from "@/components/HeroBackground";
+
+<div className="relative w-full min-h-screen overflow-hidden">
+  <HeroBackground />
+
+  <div className="relative z-10 text-white text-center pt-32">
+    <h1 className="text-4xl font-bold">Welcome to My Site</h1>
+    <p className="mt-4 text-lg">This is content over a background video</p>
+  </div>
+</div>
+
 import { 
   Microscope, 
   MapPin, 
