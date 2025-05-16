@@ -216,12 +216,25 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background flex w-full">
-      <DashboardSidebar
+    <div className="relative min-h-screen w-full overflow-hidden bg-background">
+      {/* Background video fixed behind everything */}
+      <video
+        className="fixed top-0 left-0 w-full h-full object-cover z-0"
+        autoPlay
+        loop
+        muted
+        playsInline
+      >
+        <source src="/background.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
+      {/* Optional overlay for better contrast */}
+      <div className="fixed top-0 left-0 w-full h-full bg-black/50 z-10" />
+        <DashboardSidebar
         isOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}
       />
-
       <div
         className="flex-1 flex flex-col transition-all duration-300"
         style={{
@@ -240,15 +253,7 @@ const Index = () => {
             {/* 3D Particles Background */}
             <HeroParticles />
             
-            <div className="absolute inset-0 z-0">
-              <img 
-                src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5" 
-                alt="3D Digital Background" 
-                className="w-full h-full object-cover opacity-20"
-              />
-              <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/40 to-background/90"></div>
-            </div>
-            
+                       
             <div className="container mx-auto px-6 py-16 relative z-10">
               <div className="max-w-4xl mx-auto text-center mb-8">
                 <Badge variant="outline" className="mb-4 bg-primary/20 text-primary px-3 py-1 text-sm font-medium">
