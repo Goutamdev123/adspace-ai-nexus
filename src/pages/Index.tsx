@@ -217,8 +217,7 @@ const Index = () => {
   }, []);
 
   return (
-   return (
-  <div className="min-h-screen bg-background flex flex-col w-full overflow-hidden">
+    <div className="min-h-screen bg-background flex flex-col w-full overflow-hidden">
     {/* Hero Section with Video Background */}
     <div className="relative w-full h-[80vh] overflow-hidden">
       <video
