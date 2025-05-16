@@ -1,12 +1,10 @@
-
-import React, { useState } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { 
-  Bell, ChevronDown, Search, Menu, MapPin, 
-  ChevronRight, Sun, Moon
+  Bell, ChevronDown, Search, Menu, Sun, Moon 
 } from 'lucide-react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -36,13 +34,11 @@ const DashboardHeader = ({
   };
 
   const handleTabChange = (value: string) => {
-    // Show toast notification for tab change
     toast.success(`${value.charAt(0).toUpperCase() + value.slice(1)} view activated`, {
       description: "Loading data for this view...",
       duration: 2000,
     });
 
-    // Navigate to the corresponding route
     switch (value) {
       case 'overview':
         navigate('/');
@@ -62,7 +58,7 @@ const DashboardHeader = ({
   };
 
   return (
-    <header className="w-full py-3 px-4 flex items-center justify-between border-b border-border animate-fade-in">
+    <header className="fixed top-0 left-0 w-full py-3 px-4 flex items-center justify-between bg-black/50 backdrop-blur-md border-b border-border z-30 animate-fade-in">
       {isMobile && (
         <Button 
           variant="ghost" 
@@ -70,13 +66,13 @@ const DashboardHeader = ({
           onClick={toggleSidebar}
           className="mr-2"
         >
-          <Menu className="h-5 w-5" />
+          <Menu className="h-5 w-5 text-white" />
         </Button>
       )}
       
       <div className="flex items-center gap-4">
         <div className="hidden md:flex items-center">
-          <h1 className="text-lg font-semibold mr-6">Analytics Dashboard</h1>
+          <h1 className="text-lg font-semibold text-white mr-6">Analytics Dashboard</h1>
           
           <Tabs 
             defaultValue={getActiveTab()}
@@ -94,7 +90,7 @@ const DashboardHeader = ({
         </div>
         
         {isMobile && (
-          <h1 className="text-lg font-semibold">Dashboard</h1>
+          <h1 className="text-lg font-semibold text-white">Dashboard</h1>
         )}
       </div>
       
@@ -121,7 +117,7 @@ const DashboardHeader = ({
         <Button 
           variant="ghost" 
           size="icon" 
-          className="relative"
+          className="relative text-white"
           onClick={() => {
             toast.info("Notifications", {
               description: "You have 3 unread notifications",
@@ -132,7 +128,7 @@ const DashboardHeader = ({
           <span className="absolute top-1 right-1 h-2 w-2 bg-adtech-orange rounded-full"></span>
         </Button>
         
-        <div className="hidden md:flex items-center gap-2">
+        <div className="hidden md:flex items-center gap-2 text-white">
           <div className="h-8 w-8 rounded-full bg-adtech-purple/20 flex items-center justify-center">
             <span className="text-xs font-medium text-adtech-purple">AD</span>
           </div>
