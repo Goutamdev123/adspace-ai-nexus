@@ -233,7 +233,6 @@ const Index = () => {
 
       {/* Optional overlay for better contrast */}
       <div className="fixed top-0 left-0 w-full h-full bg-black/50 z-10" />
-      </div>
         <DashboardSidebar
         isOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}
