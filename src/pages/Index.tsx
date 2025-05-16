@@ -218,32 +218,26 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background flex flex-col w-full overflow-hidden">
-      {/* Hero Section with Video Background */}
-      <div className="relative w-full h-[80vh] overflow-hidden">
-        <video
-          className="absolute top-0 left-0 w-full h-full object-cover z-0"
-          autoPlay
-          loop
-          muted
-          playsInline
-        >
-          <source src="/background.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-        <div className="absolute top-0 left-0 w-full h-full bg-black/50 z-10" />
-        <div className="relative z-20 flex flex-col items-center justify-center h-full text-white text-center px-4">
-          <h1 className="text-5xl font-bold">Revolutionizing Outdoor Advertising</h1>
-          <p className="mt-4 text-lg max-w-xl">
-            AI + AR Powered Campaigns Across India
-          </p>
-        </div>
+    <div className="relative min-h-screen w-full overflow-hidden bg-background">
+      {/* Background video fixed behind everything */}
+      <video
+        className="fixed top-0 left-0 w-full h-full object-cover z-0"
+        autoPlay
+        loop
+        muted
+        playsInline
+      >
+        <source src="/background.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
+      {/* Optional overlay for better contrast */}
+      <div className="fixed top-0 left-0 w-full h-full bg-black/50 z-10" />
       </div>
         <DashboardSidebar
         isOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}
       />
-
       <div
         className="flex-1 flex flex-col transition-all duration-300"
         style={{
