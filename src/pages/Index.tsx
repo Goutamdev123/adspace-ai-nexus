@@ -38,7 +38,7 @@ import {
 import TrafficHeatmap from "@/components/TrafficHeatmap";
 import IndiaTrafficMap from "@/components/IndiaTrafficMap";
 import TrackingTechnologies from "@/components/TrackingTechnologies";
-import HeroParticles from "@/components/HeroParticles";
+
 
 const features = [
   {
@@ -179,7 +179,7 @@ const Index = () => {
   const isMobile = useIsMobile();
   const [activeTab, setActiveTab] = useState("technology");
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
-  const [showSecondVideo, setShowSecondVideo] = useState(false);
+ 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
@@ -216,31 +216,17 @@ const Index = () => {
   }, []);
 
   
-  return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-background">
-  {/* Background video fixed behind everything */}
-  {!showSecondVideo ? (
+ return (
+  <div className="relative min-h-screen w-full overflow-hidden bg-background">
+    {/* Background video fixed behind everything */}
     <video
-      key="first-video"
-      className="fixed top-0 left-0 w-full h-full object-cover z-0"
-      autoPlay
-      muted
-      playsInline
-      onEnded={() => setShowSecondVideo(true)}
-    >
-      <source src="/074a3d5b-2179-4749-b1d5-564c72b95ef1.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-  ) : (
-    <video
-      key="second-video"
       className="fixed top-0 left-0 w-full h-full object-cover z-0"
       autoPlay
       muted
       loop
       playsInline
     >
-      <source src="/second.mp4" type="video/mp4" />
+      <source src="/074a3d5b-2179-4749-b1d5-564c72b95ef1.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
   )}
