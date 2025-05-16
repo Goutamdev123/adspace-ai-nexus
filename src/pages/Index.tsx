@@ -7,7 +7,6 @@ import DashboardHeader from "@/components/DashboardHeader";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "@/hooks/use-toast";
-
 import { 
   Microscope, 
   MapPin, 
@@ -188,55 +187,41 @@ const Index = () => {
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     if (isDarkMode) {
-      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.remove('dark');
     } else {
-      document.documentElement.classList.add("dark");
+      document.documentElement.classList.add('dark');
     }
   };
 
   useEffect(() => {
     if (isDarkMode) {
-      document.documentElement.classList.add("dark");
+      document.documentElement.classList.add('dark');
     } else {
-      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.remove('dark');
     }
-  }, [isDarkMode]);
+  }, []);
 
   useEffect(() => {
     if (isMobile) {
       setIsSidebarOpen(false);
     }
   }, [isMobile]);
-
+  
   useEffect(() => {
     // Show a welcome toast when the page loads
     toast({
       title: "Welcome to India's First AI-Powered Outdoor Ad Platform",
-      description:
-        "Revolutionizing outdoor advertising with advanced AI and AR technology",
+      description: "Revolutionizing outdoor advertising with advanced AI and AR technology",
     });
   }, []);
 
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-background">
-      {/* Background video fixed behind everything */}
-      <video
-        className="fixed top-0 left-0 w-full h-full object-cover z-0"
-        autoPlay
-        loop
-        muted
-        playsInline
-      >
-        <source src="/background.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-
-      {/* Optional overlay for better contrast */}
-      <div className="fixed top-0 left-0 w-full h-full bg-black/50 z-10" />
-        <DashboardSidebar
+    <div className="min-h-screen bg-background flex w-full">
+      <DashboardSidebar
         isOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}
       />
+
       <div
         className="flex-1 flex flex-col transition-all duration-300"
         style={{
@@ -255,7 +240,14 @@ const Index = () => {
             {/* 3D Particles Background */}
             <HeroParticles />
             
-          
+            <div className="absolute inset-0 z-0">
+              <img 
+                src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5" 
+                alt="3D Digital Background" 
+                className="w-full h-full object-cover opacity-20"
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/40 to-background/90"></div>
+            </div>
             
             <div className="container mx-auto px-6 py-16 relative z-10">
               <div className="max-w-4xl mx-auto text-center mb-8">
