@@ -250,9 +250,7 @@ const Index = () => {
         <main className="flex-1 overflow-auto">
           {/* AI & AR Technology Hero Section */}
           <section className="relative min-h-[90vh] flex items-center bg-gradient-to-br from-background/90 via-primary/5 to-background/90 overflow-hidden">
-            {/* 3D Particles Background */}
-            <HeroParticles />
-            
+                     
                        
             <div className="container mx-auto px-6 py-16 relative z-10">
               <div className="max-w-4xl mx-auto text-center mb-8">
