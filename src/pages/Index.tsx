@@ -7,16 +7,6 @@ import DashboardHeader from "@/components/DashboardHeader";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "@/hooks/use-toast";
-import HeroBackground from "@/components/HeroBackground";
-
-<div className="relative w-full min-h-screen overflow-hidden">
-  <HeroBackground />
-
-  <div className="relative z-10 text-white text-center pt-32">
-    <h1 className="text-4xl font-bold">Welcome to My Site</h1>
-    <p className="mt-4 text-lg">This is content over a background video</p>
-  </div>
-</div>
 
 import { 
   Microscope, 
@@ -227,7 +217,27 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background flex w-full">
+   return (
+  <div className="min-h-screen bg-background flex flex-col w-full overflow-hidden">
+    {/* Hero Section with Video Background */}
+    <div className="relative w-full h-[80vh] overflow-hidden">
+      <video
+        className="absolute top-0 left-0 w-full h-full object-cover z-0"
+        autoPlay
+        loop
+        muted
+        playsInline
+      >
+        <source src="/background.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+      <div className="absolute top-0 left-0 w-full h-full bg-black/50 z-10" />
+      <div className="relative z-20 flex flex-col items-center justify-center h-full text-white text-center px-4">
+        <h1 className="text-5xl font-bold">Revolutionizing Outdoor Advertising</h1>
+        <p className="mt-4 text-lg max-w-xl">AI + AR Powered Campaigns Across India</p>
+      </div>
+    </div>
+
       <DashboardSidebar
         isOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}
