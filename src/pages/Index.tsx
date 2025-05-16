@@ -240,6 +240,7 @@ const Index = () => {
         </div>
       </div>
 
+      
       <DashboardSidebar
         isOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}
