@@ -229,7 +229,6 @@ const Index = () => {
       <source src="/074a3d5b-2179-4749-b1d5-564c72b95ef1.mp4" type="video/mp4" />
       Your browser does not support the video tag.
     </video>
-  
   {/* Optional overlay for better contrast */}
   <div className="fixed top-0 left-0 w-full h-full bg-black/50 z-10" />
       <DashboardSidebar
