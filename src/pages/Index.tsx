@@ -239,9 +239,7 @@ const Index = () => {
           </p>
         </div>
       </div>
-
-      
-      <DashboardSidebar
+        <DashboardSidebar
         isOpen={isSidebarOpen}
         toggleSidebar={toggleSidebar}
       />
