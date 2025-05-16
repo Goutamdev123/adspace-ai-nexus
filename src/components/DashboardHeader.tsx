@@ -58,7 +58,7 @@ const DashboardHeader = ({
   };
 
   return (
-    <header className="fixed top-0 left-0 w-full py-3 px-4 flex items-center justify-between bg-black/50 backdrop-blur-md border-b border-border z-30 animate-fade-in">
+    <header className="fixed top-0 left-0 w-full py-3 px-4 flex items-center justify-between bg-black/70 backdrop-blur-md border-b border-border z-[40] animate-fade-in">
       {isMobile && (
         <Button 
           variant="ghost" 
