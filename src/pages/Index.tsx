@@ -188,56 +188,57 @@ const Index = () => {
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     if (isDarkMode) {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove("dark");
     } else {
-      document.documentElement.classList.add('dark');
+      document.documentElement.classList.add("dark");
     }
   };
 
   useEffect(() => {
     if (isDarkMode) {
-      document.documentElement.classList.add('dark');
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove("dark");
     }
-  }, []);
+  }, [isDarkMode]);
 
   useEffect(() => {
     if (isMobile) {
       setIsSidebarOpen(false);
     }
   }, [isMobile]);
-  
+
   useEffect(() => {
     // Show a welcome toast when the page loads
     toast({
       title: "Welcome to India's First AI-Powered Outdoor Ad Platform",
-      description: "Revolutionizing outdoor advertising with advanced AI and AR technology",
+      description:
+        "Revolutionizing outdoor advertising with advanced AI and AR technology",
     });
   }, []);
 
- 
   return (
-   
     <div className="min-h-screen bg-background flex flex-col w-full overflow-hidden">
-    {/* Hero Section with Video Background */}
-    <div className="relative w-full h-[80vh] overflow-hidden">
-      <video
-        className="absolute top-0 left-0 w-full h-full object-cover z-0"
-        autoPlay
-        loop
-        muted
-        playsInline
-      >
-        <source src="/background.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-      <div className="absolute top-0 left-0 w-full h-full bg-black/50 z-10" />
-      <div className="relative z-20 flex flex-col items-center justify-center h-full text-white text-center px-4">
-        <h1 className="text-5xl font-bold">Revolutionizing Outdoor Advertising</h1>
-        <p className="mt-4 text-lg max-w-xl">AI + AR Powered Campaigns Across India</p>
+      {/* Hero Section with Video Background */}
+      <div className="relative w-full h-[80vh] overflow-hidden">
+        <video
+          className="absolute top-0 left-0 w-full h-full object-cover z-0"
+          autoPlay
+          loop
+          muted
+          playsInline
+        >
+          <source src="/background.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+        <div className="absolute top-0 left-0 w-full h-full bg-black/50 z-10" />
+        <div className="relative z-20 flex flex-col items-center justify-center h-full text-white text-center px-4">
+          <h1 className="text-5xl font-bold">Revolutionizing Outdoor Advertising</h1>
+          <p className="mt-4 text-lg max-w-xl">
+            AI + AR Powered Campaigns Across India
+          </p>
+        </div>
       </div>
-    </div>
 
       <DashboardSidebar
         isOpen={isSidebarOpen}
