@@ -417,14 +417,14 @@ const Index = () => {
             </div>
           </section>
           
-          {/* Technology Stack Section */}
-          <section className="py-20 px-6 bg-gradient-to-br from-background via-primary/5 to-background relative overflow-hidden">
-            <div className="absolute inset-0">
-              <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-grid-pattern opacity-5 transform rotate-180"></div>
-              <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-grid-pattern opacity-5"></div>
-            </div>
-            
-           <div className="container mx-auto relative z-10">
+         {/* Technology Stack Section */}
+<section className="py-20 px-6 bg-gradient-to-br from-background via-primary/5 to-background relative overflow-hidden">
+  <div className="absolute inset-0">
+    <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-grid-pattern opacity-5 transform rotate-180"></div>
+    <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-grid-pattern opacity-5"></div>
+  </div>
+
+  <div className="container mx-auto relative z-10">
     <div className="text-center mb-12">
       <Badge className="mb-2 bg-primary/20 text-primary">Advanced Technology Stack</Badge>
       <h2 className="text-3xl font-bold mb-4">The Science Behind Our Platform</h2>
@@ -433,140 +433,129 @@ const Index = () => {
       </p>
     </div>
 
-      {/* 3D Robot Section */}
-      <div className="flex items-center justify-center">
-        <div className="w-full max-w-md h-[400px]">
-          <Robot3D />
-        </div>
+    {/* 3D Robot Section */}
+    <div className="flex items-center justify-center">
+      <div className="w-full max-w-md h-[400px]">
+        <Robot3D />
       </div>
     </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-                {advancedTechnologies.map((tech, index) => (
-                  <div key={index} className="bg-card border border-border rounded-xl p-6 h-full">
-                    <div className="flex items-center justify-center mb-6">
-                      <div className="h-16 w-16 rounded-full bg-muted/30 flex items-center justify-center">
-                        {tech.icon}
-                      </div>
-                    </div>
-                    <h3 className="text-xl font-bold text-center mb-2">{tech.name}</h3>
-                    <p className="text-sm text-muted-foreground text-center">{tech.description}</p>
-                  </div>
-                ))}
+
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+      {advancedTechnologies.map((tech, index) => (
+        <div key={index} className="bg-card border border-border rounded-xl p-6 h-full">
+          <div className="flex items-center justify-center mb-6">
+            <div className="h-16 w-16 rounded-full bg-muted/30 flex items-center justify-center">
+              {tech.icon}
+            </div>
+          </div>
+          <h3 className="text-xl font-bold text-center mb-2">{tech.name}</h3>
+          <p className="text-sm text-muted-foreground text-center">{tech.description}</p>
+        </div>
+      ))}
+    </div>
+
+    <div className="bg-card border border-border rounded-xl overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-2">
+        <div className="p-8">
+          <h3 className="text-2xl font-bold mb-4">Advanced Data Processing</h3>
+          <p className="text-muted-foreground mb-6">
+            Our proprietary data processing pipeline combines multiple data sources to create comprehensive insights about your advertising performance.
+          </p>
+
+          <div className="space-y-4">
+            {[
+              {
+                title: "Real-time Processing",
+                description: "Data is processed in real-time with less than 200ms latency",
+              },
+              {
+                title: "Multi-source Integration",
+                description: "Camera feeds, IoT sensors, mobile data, and third-party data sources",
+              },
+              {
+                title: "Privacy-first Approach",
+                description: "All data is anonymized and aggregated with strict privacy controls",
+              },
+              {
+                title: "Machine Learning Models",
+                description: "Continuously improving algorithms for greater accuracy",
+              },
+            ].map(({ title, description }, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <div className="mt-1 h-5 w-5 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
+                  <Check className="h-3 w-3 text-accent" />
+                </div>
+                <div>
+                  <h4 className="font-medium">{title}</h4>
+                  <p className="text-sm text-muted-foreground">{description}</p>
+                </div>
               </div>
-              
-              <div className="bg-card border border-border rounded-xl overflow-hidden">
-                <div className="grid grid-cols-1 lg:grid-cols-2">
-                  <div className="p-8">
-                    <h3 className="text-2xl font-bold mb-4">Advanced Data Processing</h3>
-                    <p className="text-muted-foreground mb-6">
-                      Our proprietary data processing pipeline combines multiple data sources to create comprehensive insights about your advertising performance.
-                    </p>
-                    
-                    <div className="space-y-4">
-                      <div className="flex items-start gap-3">
-                        <div className="mt-1 h-5 w-5 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
-                          <Check className="h-3 w-3 text-accent" />
-                        </div>
-                        <div>
-                          <h4 className="font-medium">Real-time Processing</h4>
-                          <p className="text-sm text-muted-foreground">Data is processed in real-time with less than 200ms latency</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start gap-3">
-                        <div className="mt-1 h-5 w-5 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
-                          <Check className="h-3 w-3 text-accent" />
-                        </div>
-                        <div>
-                          <h4 className="font-medium">Multi-source Integration</h4>
-                          <p className="text-sm text-muted-foreground">Camera feeds, IoT sensors, mobile data, and third-party data sources</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start gap-3">
-                        <div className="mt-1 h-5 w-5 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
-                          <Check className="h-3 w-3 text-accent" />
-                        </div>
-                        <div>
-                          <h4 className="font-medium">Privacy-first Approach</h4>
-                          <p className="text-sm text-muted-foreground">All data is anonymized and aggregated with strict privacy controls</p>
-                        </div>
-                      </div>
-                      
-                      <div className="flex items-start gap-3">
-                        <div className="mt-1 h-5 w-5 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
-                          <Check className="h-3 w-3 text-accent" />
-                        </div>
-                        <div>
-                          <h4 className="font-medium">Machine Learning Models</h4>
-                          <p className="text-sm text-muted-foreground">Continuously improving algorithms for greater accuracy</p>
-                        </div>
-                      </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="bg-muted/20 p-8 flex items-center justify-center">
+          <div className="relative perspective-800">
+            <div className="preserve-3d transform-gpu rotate-y-10 rotate-x-5 w-full max-w-md">
+              <div className="bg-gradient-to-br from-card to-background border border-border rounded-lg p-4 shadow-lg">
+                <div className="flex justify-between items-center mb-4">
+                  <h4 className="font-bold">Data Processing Pipeline</h4>
+                  <Badge variant="outline">Live</Badge>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="h-2 bg-muted rounded-full overflow-hidden">
+                    <div className="h-full bg-primary w-[85%]"></div>
+                  </div>
+
+                  <div className="grid grid-cols-4 gap-2">
+                    <div className="bg-primary/10 p-2 rounded text-xs text-center">Input</div>
+                    <div className="bg-secondary/10 p-2 rounded text-xs text-center">Process</div>
+                    <div className="bg-accent/10 p-2 rounded text-xs text-center">Analyze</div>
+                    <div className="bg-primary/10 p-2 rounded text-xs text-center">Output</div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-muted rounded p-2">
+                      <div className="text-xs font-medium">Processing Units</div>
+                      <div className="text-lg font-bold text-primary">1,249</div>
+                    </div>
+                    <div className="bg-muted rounded p-2">
+                      <div className="text-xs font-medium">Data Throughput</div>
+                      <div className="text-lg font-bold text-accent">42 TB/day</div>
                     </div>
                   </div>
-                  
-                  <div className="bg-muted/20 p-8 flex items-center justify-center">
-                    <div className="relative perspective-800">
-                      <div className="preserve-3d transform-gpu rotate-y-10 rotate-x-5 w-full max-w-md">
-                        <div className="bg-gradient-to-br from-card to-background border border-border rounded-lg p-4 shadow-lg">
-                          <div className="flex justify-between items-center mb-4">
-                            <h4 className="font-bold">Data Processing Pipeline</h4>
-                            <Badge variant="outline">Live</Badge>
-                          </div>
-                          
-                          <div className="space-y-4">
-                            <div className="h-2 bg-muted rounded-full overflow-hidden">
-                              <div className="h-full bg-primary w-[85%]"></div>
-                            </div>
-                            
-                            <div className="grid grid-cols-4 gap-2">
-                              <div className="bg-primary/10 p-2 rounded text-xs text-center">Input</div>
-                              <div className="bg-secondary/10 p-2 rounded text-xs text-center">Process</div>
-                              <div className="bg-accent/10 p-2 rounded text-xs text-center">Analyze</div>
-                              <div className="bg-primary/10 p-2 rounded text-xs text-center">Output</div>
-                            </div>
-                            
-                            <div className="grid grid-cols-2 gap-3">
-                              <div className="bg-muted rounded p-2">
-                                <div className="text-xs font-medium">Processing Units</div>
-                                <div className="text-lg font-bold text-primary">1,249</div>
-                              </div>
-                              <div className="bg-muted rounded p-2">
-                                <div className="text-xs font-medium">Data Throughput</div>
-                                <div className="text-lg font-bold text-accent">42 TB/day</div>
-                              </div>
-                            </div>
-                            
-                            <div className="h-16 bg-muted/50 rounded-lg p-2">
-                              <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                                <span>Camera Feeds</span>
-                                <span>97.3%</span>
-                              </div>
-                              <div className="h-2 bg-muted rounded-full overflow-hidden mb-2">
-                                <div className="h-full bg-primary w-[97%]"></div>
-                              </div>
-                              
-                              <div className="flex justify-between text-xs text-muted-foreground mb-1">
-                                <span>IoT Sensors</span>
-                                <span>99.5%</span>
-                              </div>
-                              <div className="h-2 bg-muted rounded-full overflow-hidden">
-                                <div className="h-full bg-accent w-[99%]"></div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      {/* 3D shadow effect */}
-                      <div className="absolute -bottom-2 left-4 right-4 h-[calc(100%-20px)] bg-black/20 rounded-xl blur-md -z-10 transform rotate-x-5"></div>
+
+                  <div className="h-16 bg-muted/50 rounded-lg p-2">
+                    <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                      <span>Camera Feeds</span>
+                      <span>97.3%</span>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full overflow-hidden mb-2">
+                      <div className="h-full bg-primary w-[97%]"></div>
+                    </div>
+
+                    <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                      <span>IoT Sensors</span>
+                      <span>99.5%</span>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <div className="h-full bg-accent w-[99%]"></div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </section>
+
+            {/* 3D shadow effect */}
+            <div className="absolute -bottom-2 left-4 right-4 h-[calc(100%-20px)] bg-black/20 rounded-xl blur-md -z-10 transform rotate-x-5"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
           
           {/* Business Benefits Section */}
           <section className="py-20 px-6 bg-background relative overflow-hidden">
