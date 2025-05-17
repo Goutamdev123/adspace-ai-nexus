@@ -21,17 +21,15 @@ export default defineConfig(({ mode }) => ({
   build: {
     rollupOptions: {
       external: [
-        "@tsparticles/react",
-        "@react-three/fiber",      // 👈 Add this
-        "@react-three/drei",       // 👈 Optionally externalize this too
+        "@tsparticles/react", // ✅ Only externalize this, not fiber or drei
       ],
     },
   },
   optimizeDeps: {
     include: [
       "@tsparticles/react",
-      "@react-three/fiber",       // 👈 Include for pre-bundling
-      "@react-three/drei",        // 👈 Include if you're using drei too
+      "@react-three/fiber", // ✅ Pre-bundle so it works in dev
+      "@react-three/drei",
     ],
   },
 }));
