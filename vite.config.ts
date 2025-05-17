@@ -11,8 +11,7 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     react(),
-    mode === 'development' &&
-    componentTagger(),
+    mode === "development" && componentTagger(),
   ].filter(Boolean),
   resolve: {
     alias: {
@@ -21,10 +20,18 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     rollupOptions: {
-      external: ['@tsparticles/react'], // Externalize @tsparticles/react
+      external: [
+        "@tsparticles/react",
+        "@react-three/fiber",      // 👈 Add this
+        "@react-three/drei",       // 👈 Optionally externalize this too
+      ],
     },
   },
   optimizeDeps: {
-    include: ['@tsparticles/react'], // Pre-bundle @tsparticles/react
+    include: [
+      "@tsparticles/react",
+      "@react-three/fiber",       // 👈 Include for pre-bundling
+      "@react-three/drei",        // 👈 Include if you're using drei too
+    ],
   },
 }));
