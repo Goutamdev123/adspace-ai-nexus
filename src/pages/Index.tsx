@@ -433,23 +433,6 @@ const Index = () => {
       </p>
     </div>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-16">
-      <div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {advancedTechnologies.map((tech, index) => (
-            <div key={index} className="bg-card border border-border rounded-xl p-6 h-full">
-              <div className="flex items-center justify-center mb-6">
-                <div className="h-16 w-16 rounded-full bg-muted/30 flex items-center justify-center">
-                  {tech.icon}
-                </div>
-              </div>
-              <h3 className="text-xl font-bold text-center mb-2">{tech.name}</h3>
-              <p className="text-sm text-muted-foreground text-center">{tech.description}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* 3D Robot Section */}
       <div className="flex items-center justify-center">
         <div className="w-full max-w-md h-[400px]">
