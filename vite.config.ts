@@ -1,18 +1,14 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
-import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig({
   server: {
     host: "::",
     port: 8080,
   },
-  plugins: [
-    react(),
-    mode === "development" && componentTagger(),
-  ].filter(Boolean),
+  plugins: [react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
@@ -21,15 +17,15 @@ export default defineConfig(({ mode }) => ({
   build: {
     rollupOptions: {
       external: [
-        "@tsparticles/react", // ✅ Only externalize this, not fiber or drei
+        "@tsparticles/react", // ✅ Externalize tsparticles only
       ],
     },
   },
   optimizeDeps: {
     include: [
       "@tsparticles/react",
-      "@react-three/fiber", // ✅ Pre-bundle so it works in dev
+      "@react-three/fiber", // ✅ Pre-bundled for dev
       "@react-three/drei",
     ],
   },
-}));
+});
