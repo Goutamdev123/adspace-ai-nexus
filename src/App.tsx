@@ -3,7 +3,9 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import Index from "./pages/Index";
+import Home from "./pages/Home";
 import Campaigns from "./pages/Campaigns";
 import DeepAnalytics from "./pages/DeepAnalytics";
 import Reports from "./pages/Reports";
@@ -25,7 +27,8 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/index" element={<Index />} />
           <Route path="/campaigns" element={<Campaigns />} />
           <Route path="/deep-analytics" element={<DeepAnalytics />} />
           <Route path="/reports" element={<Reports />} />
@@ -36,7 +39,7 @@ const App = () => (
           <Route path="/budget-campaign" element={<BudgetCampaign />} />
           <Route path="/ar-working-demo" element={<ARWorkingDemoPage />} />
           <Route path="/business-solutions" element={<BusinessSolutions />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          {/* Catch-all route for 404 */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
