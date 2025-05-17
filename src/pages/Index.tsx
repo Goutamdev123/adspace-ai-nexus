@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import DashboardHeader from "@/components/DashboardHeader";
 import DashboardSidebar from "@/components/DashboardSidebar";
+import Robot3D from "@/components/Robot3D";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { toast } from "@/hooks/use-toast";
 import { 
@@ -423,14 +424,39 @@ const Index = () => {
               <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-grid-pattern opacity-5"></div>
             </div>
             
-            <div className="container mx-auto relative z-10">
-              <div className="text-center mb-12">
-                <Badge className="mb-2 bg-primary/20 text-primary">Advanced Technology Stack</Badge>
-                <h2 className="text-3xl font-bold mb-4">The Science Behind Our Platform</h2>
-                <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Leveraging cutting-edge technologies to bring digital-grade analytics to outdoor advertising.
-                </p>
+           <div className="container mx-auto relative z-10">
+    <div className="text-center mb-12">
+      <Badge className="mb-2 bg-primary/20 text-primary">Advanced Technology Stack</Badge>
+      <h2 className="text-3xl font-bold mb-4">The Science Behind Our Platform</h2>
+      <p className="text-muted-foreground max-w-2xl mx-auto">
+        Leveraging cutting-edge technologies to bring digital-grade analytics to outdoor advertising.
+      </p>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-16">
+      <div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {advancedTechnologies.map((tech, index) => (
+            <div key={index} className="bg-card border border-border rounded-xl p-6 h-full">
+              <div className="flex items-center justify-center mb-6">
+                <div className="h-16 w-16 rounded-full bg-muted/30 flex items-center justify-center">
+                  {tech.icon}
+                </div>
               </div>
+              <h3 className="text-xl font-bold text-center mb-2">{tech.name}</h3>
+              <p className="text-sm text-muted-foreground text-center">{tech.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 3D Robot Section */}
+      <div className="flex items-center justify-center">
+        <div className="w-full max-w-md h-[400px]">
+          <Robot3D />
+        </div>
+      </div>
+    </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
                 {advancedTechnologies.map((tech, index) => (
