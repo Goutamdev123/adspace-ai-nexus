@@ -208,13 +208,13 @@ const Index = () => {
     }
   }, [isMobile]);
   
-  useEffect(() => {
-    // Show a welcome toast when the page loads
-    toast({
-      title: "Welcome,Thank you for being here !",
-      description: 
-    });
-  }, []);
+ useEffect(() => {
+  // Show a welcome toast when the page loads
+  toast({
+    title: "Welcome, thank you for being here!",
+  });
+}, []);
+
 
   
  return (
