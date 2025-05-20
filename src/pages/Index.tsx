@@ -211,8 +211,8 @@ const Index = () => {
   useEffect(() => {
     // Show a welcome toast when the page loads
     toast({
-      title: "Welcome to India's First AI-Powered Outdoor Ad Platform",
-      description: "Revolutionizing outdoor advertising with advanced AI and AR technology",
+      title: "Welcome,Thank you for being here !",
+      description: 
     });
   }, []);
 
