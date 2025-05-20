@@ -211,7 +211,7 @@ const Index = () => {
  useEffect(() => {
   // Show a welcome toast when the page loads
   toast({
-    title: "Welcome, thank you for being here!",
+    title: "Welcome, Thank you for being here!",
   });
 }, []);
 
