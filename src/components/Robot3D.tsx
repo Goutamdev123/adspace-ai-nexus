@@ -23,24 +23,30 @@ useGLTF.preload("/robo.glb");
 
 function AnimatedRobot() {
   const groupRef = useRef<THREE.Group>(null);
-  const positions = [-2, 0, 2, 0]; // Left, Center, Right, Center
-  const [index, setIndex] = useState(0);
+  const [direction, setDirection] = useState<"left" | "right">("right");
+  const [lastSwitchTime, setLastSwitchTime] = useState(0);
 
-  useFrame((_, delta) => {
+  useFrame((state, delta) => {
     const group = groupRef.current;
     if (!group) return;
 
-    const targetX = positions[index];
-    const currentX = group.position.x;
+    const speed = 0.5; // Adjust for smoother/slower movement
+    const minX = -3;
+    const maxX = 3;
 
-    // Smooth movement
-    group.position.x += (targetX - currentX) * 0.02;
-
-    // If close to target, switch to next position
-    if (Math.abs(targetX - currentX) < 0.01) {
-      setTimeout(() => {
-        setIndex((prev) => (prev + 1) % positions.length);
-      }, 1000); // wait 1 second before moving again
+    // Move in current direction
+    if (direction === "right") {
+      group.position.x += speed * delta;
+      if (group.position.x >= maxX) {
+        group.position.x = maxX;
+        setDirection("left");
+      }
+    } else {
+      group.position.x -= speed * delta;
+      if (group.position.x <= minX) {
+        group.position.x = minX;
+        setDirection("right");
+      }
     }
   });
 
