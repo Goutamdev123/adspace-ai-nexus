@@ -24,15 +24,17 @@ useGLTF.preload("/robo.glb");
 function AnimatedRobot() {
   const groupRef = useRef<THREE.Group>(null);
   const [direction, setDirection] = useState<"left" | "right">("right");
-  const [lastSwitchTime, setLastSwitchTime] = useState(0);
+
+  // Optional: timer for bounce animation
+  const timeRef = useRef(0);
 
   useFrame((state, delta) => {
     const group = groupRef.current;
     if (!group) return;
 
-    const speed = 0.5; // Adjust for smoother/slower movement
-    const minX = -3;
-    const maxX = 3;
+    const speed = 0.5; // Horizontal speed
+    const minX = -2.2; // Adjusted for hand clipping
+    const maxX = 2.2;
 
     // Move in current direction
     if (direction === "right") {
@@ -48,11 +50,19 @@ function AnimatedRobot() {
         setDirection("right");
       }
     }
+
+    // Update time for bounce
+    timeRef.current += delta;
+
+    // Apply bounce effect (y-axis float)
+    const bounceHeight = 0.1;
+    const bounceSpeed = 2;
+    group.position.y = -1 + Math.sin(timeRef.current * bounceSpeed) * bounceHeight;
   });
 
   return (
     <group ref={groupRef}>
-      <RobotModel scale={1.5} position={[0, -1, 0]} />
+      <RobotModel scale={1.5} position={[0, 0, 0]} />
     </group>
   );
 }
