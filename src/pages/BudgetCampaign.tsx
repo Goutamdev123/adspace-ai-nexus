@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Sparkles, Mic, Rocket, Brain, Lightbulb, MessageSquare, Loader2 } from "lucide-react";
+import { Sparkles, Mic, Rocket, Brain, Lightbulb, MessageSquare, Loader2, DollarSign } from "lucide-react"; // <-- DollarSign added here!
 
 // Define the shape of the minimal campaign brief for AI input
 interface CampaignBrief {
@@ -272,7 +272,7 @@ const BudgetCampaign = () => {
         <Card className="bg-gray-800/60 backdrop-blur-sm border border-yellow-700/30 shadow-lg shadow-yellow-900/20">
           <CardHeader className="border-b border-gray-700/50 pb-4">
             <CardTitle className="text-2xl text-yellow-300 flex items-center gap-2">
-              <DollarSign className="text-yellow-400" /> Detailed Budget Allocation Planner
+              <DollarSign className="text-yellow-400" /> Detailed Budget Allocation Planner {/* <-- DollarSign used here */}
             </CardTitle>
             <CardDescription className="text-gray-400">
               Refine your campaign budget across specific categories.
