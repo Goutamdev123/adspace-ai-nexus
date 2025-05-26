@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import DashboardHeader from "@/components/DashboardHeader";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import { useIsMobile } from "@/hooks/use-mobile";
-// Assuming CampaignBudgetForm handles detailed budget allocation, we'll keep it.
+// Assuming CampaignBudgetForm handles detailed budget allocation
 import CampaignBudgetForm from "@/components/CampaignBudgetForm";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,18 +11,34 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Sparkles, Mic, Rocket, Brain, Target, DollarSign, Clock, MapPin, Users, Lightbulb, TrendingUp, ShieldCheck, MessageSquare, Briefcase, ChevronDown } from "lucide-react";
+import { Sparkles, Mic, Rocket, Brain, DollarSign, MapPin, Briefcase, Lightbulb, ShieldCheck, MessageSquare } from "lucide-react";
 
-// Assuming these are custom components for the AI look
-// import AIGradientBorder from "@/components/AIGradientBorder";
-// import PulsatingDot from "@/components/PulsatingDot";
+// Define the shape of campaign details relevant to this simplified page
+interface CampaignDetails {
+  name: string;
+  sector: string;
+  industry: string;
+  goal: string;
+  budget: string;
+  duration: string;
+  location: string;
+  audience: string;
+  complianceRequired: boolean;
+  speechInput: string;
+  // Other potential fields for AI context, but not directly editable on this simplified form:
+  kpis?: string;
+  contentThemes?: string;
+  channelPreference?: string[];
+  competitorInsights?: string;
+  brandGuidelines?: string;
+}
 
 const BudgetCampaign = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isDarkMode, setIsDarkMode] = useState(true); // Default to dark for futuristic feel
   const [isListening, setIsListening] = useState(false);
-  const [aiSuggestions, setAiSuggestions] = useState("");
-  const [campaignDetails, setCampaignDetails] = useState({
+  const [aiSuggestions, setAiSuggestions] = useState<string>(""); // AI suggestions for outdoor services
+  const [campaignDetails, setCampaignDetails] = useState<CampaignDetails>({
     name: "",
     sector: "Business", // Business, Government, Non-Profit, Education
     industry: "", // e.g., Retail, Fintech, Healthcare, Logistics, Hospitality
@@ -33,11 +49,6 @@ const BudgetCampaign = () => {
     audience: "", // Demographics, psychographics, behaviors
     complianceRequired: false,
     speechInput: "",
-    kpis: "", // Key Performance Indicators (e.g., ROI, reach, conversions)
-    contentThemes: "", // Main messages, creative concepts
-    channelPreference: [], // OOH, Digital, Social, Print, Hybrid
-    competitorInsights: "", // Known competitors or market trends
-    brandGuidelines: "", // Specific brand voice, visual identity notes
   });
 
   const isMobile = useIsMobile();
@@ -49,16 +60,17 @@ const BudgetCampaign = () => {
   };
 
   useEffect(() => {
-    // Ensure dark mode is applied on initial render if it's the default state
+    // Apply dark mode on initial render
     if (isDarkMode) {
       document.documentElement.classList.add("dark");
     } else {
       document.documentElement.classList.remove("dark");
     }
+    // Collapse sidebar on mobile
     if (isMobile) setIsSidebarOpen(false);
   }, [isMobile, isDarkMode]);
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = (field: keyof CampaignDetails, value: any) => {
     setCampaignDetails((prev) => ({ ...prev, [field]: value }));
   };
 
@@ -70,13 +82,14 @@ const BudgetCampaign = () => {
 
     const recognition = new webkitSpeechRecognition();
     recognition.lang = "en-US";
-    recognition.interimResults = true; // Show interim results for a more futuristic feel
+    recognition.interimResults = true; // Show interim results for dynamic feedback
     recognition.continuous = true; // Allow continuous speaking
 
     let finalTranscript = "";
 
     recognition.onstart = () => {
       setIsListening(true);
+      setAiSuggestions("Listening... Speak your campaign ideas!"); // Immediate feedback
       console.log("Listening for voice input...");
     };
 
@@ -89,16 +102,18 @@ const BudgetCampaign = () => {
           interimTranscript += event.results[i][0].transcript;
         }
       }
-      // Update speech input field with both final and interim results for dynamic feedback
+      // Update speech input field with both final and interim results
       handleChange("speechInput", finalTranscript + interimTranscript);
     };
 
     recognition.onend = async () => {
       setIsListening(false);
       console.log("Voice input ended.");
-      // Only trigger AI suggestions after the user has finished speaking
+      // Trigger AI suggestions only after the user has finished speaking
       if (finalTranscript) {
         await fetchAISuggestions(finalTranscript);
+      } else {
+        setAiSuggestions("No voice input detected. Please try again.");
       }
     };
 
@@ -106,28 +121,28 @@ const BudgetCampaign = () => {
       setIsListening(false);
       console.error("Speech Recognition Error:", event.error);
       alert(`Speech recognition error: ${event.error}. Please try again.`);
+      setAiSuggestions(`Error: ${event.error}. Please ensure microphone access is allowed.`);
     };
 
-    recognition.start();
+    if (isListening) {
+      recognition.stop(); // Stop if already listening
+    } else {
+      recognition.start(); // Start listening
+    }
   };
 
   const fetchAISuggestions = async (input: string) => {
-    setAiSuggestions("Generating smart suggestions..."); // Provide immediate feedback
+    setAiSuggestions("🚀 Analyzing input and generating smart outdoor marketing suggestions..."); // Provide immediate feedback
     try {
       const res = await fetch("/api/generate-campaign-suggestion", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          input,
+          // Send all relevant campaign details for rich AI context
           ...campaignDetails,
-          // Include more relevant details for better AI context
-          detailedInput: {
-            kpis: campaignDetails.kpis,
-            contentThemes: campaignDetails.contentThemes,
-            channelPreference: campaignDetails.channelPreference,
-            competitorInsights: campaignDetails.competitorInsights,
-            brandGuidelines: campaignDetails.brandGuidelines,
-          }
+          speechInput: input, // Ensure speech input is passed
+          // We can also pass other implicit data points if needed,
+          // but for a simplified UI, these core details are crucial.
         }),
       });
 
@@ -137,39 +152,44 @@ const BudgetCampaign = () => {
       }
 
       const data = await res.json();
+      // Expect the AI to return suggestions for *traditional outdoor marketing services*
+      // provided by your company, based on budget, industry, and goal.
       setAiSuggestions(data.suggestions || "No unique suggestions at this time. Try adding more details!");
-    } catch (error) {
+    } catch (error: any) {
       console.error("AI Suggestion Error:", error);
-      setAiSuggestions(`Error generating suggestions: ${error.message || "Unknown error"}.`);
+      setAiSuggestions(`Error generating suggestions: ${error.message || "Unknown error"}. Please refine your input.`);
     }
   };
 
   const handleSubmit = async () => {
-    // Basic validation
+    // Basic validation for essential fields before launching
     if (!campaignDetails.name || !campaignDetails.goal || !campaignDetails.budget) {
       alert("Please fill in Campaign Name, Goal, and Budget before launching.");
       return;
     }
 
     try {
-      // Simulate loading state
       alert("🚀 Initiating campaign launch sequence...");
+      // This backend call would ideally take the final campaign details
+      // including insights from AI suggestions and potentially the detailed budget allocation.
       const res = await fetch("/api/submit-campaign", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(campaignDetails),
+        body: JSON.stringify(campaignDetails), // You might want to include detailed budget here later
       });
 
-      if (!res.ok) throw new Error("Campaign submission failed. Please check details.");
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.message || "Campaign submission failed.");
+      }
       alert("✅ Campaign successfully deployed! Get ready for impact.");
       // Optionally, clear form or redirect after successful submission
       setCampaignDetails({
         name: "", sector: "Business", industry: "", goal: "", budget: "", duration: "",
         location: "", audience: "", complianceRequired: false, speechInput: "",
-        kpis: "", contentThemes: "", channelPreference: [], competitorInsights: "", brandGuidelines: "",
       });
       setAiSuggestions("");
-    } catch (error) {
+    } catch (error: any) {
       console.error("Submit error:", error);
       alert(`❌ Error launching campaign: ${error.message || "Unknown error"}`);
     }
@@ -203,277 +223,182 @@ const BudgetCampaign = () => {
           {/* Section 1: Page Header with AI Vibe */}
           <div className="relative pb-4 border-b border-gray-700/50">
             <h1 className="text-4xl md:text-5xl font-extrabold flex items-center gap-3 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-500">
-              <Sparkles className="text-purple-400 animate-pulse-fast" size={32} /> Smart Campaign Architect
+              <Sparkles className="text-purple-400 animate-pulse-fast" size={32} /> Campaign AI Studio
             </h1>
             <p className="text-gray-300 mt-2 text-lg max-w-2xl">
-              Leverage AI to design your next impactful outdoor campaign, ensuring optimal budget allocation, compliance, and reach.
+              Quickly brief our AI about your campaign, get instant outdoor marketing service suggestions, and plan your budget.
             </p>
-            {/* <AIGradientBorder /> // Custom component for animated border */}
           </div>
 
-          {/* Section 2: Core Campaign Details */}
-          <Card className="bg-gray-800/60 backdrop-blur-sm border border-purple-700/30 shadow-lg shadow-purple-900/20">
-            <CardHeader className="border-b border-gray-700/50 pb-4">
-              <CardTitle className="text-2xl text-purple-300 flex items-center gap-2">
-                <Brain className="text-blue-400" /> Define Campaign Blueprint
-              </CardTitle>
-              <CardDescription className="text-gray-400">
-                Provide foundational information for our AI to craft your optimal strategy.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="pt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Campaign Name */}
-              <div className="space-y-2">
-                <Label htmlFor="campaignName" className="text-gray-300">Campaign Name <span className="text-red-400">*</span></Label>
-                <Input
-                  id="campaignName"
-                  placeholder="e.g., 'Winter Collection Launch 2025'"
-                  value={campaignDetails.name}
-                  onChange={(e) => handleChange("name", e.target.value)}
-                  className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400"
-                />
-              </div>
-
-              {/* Industry */}
-              <div className="space-y-2">
-                <Label htmlFor="industry" className="text-gray-300">Industry</Label>
-                <Input
-                  id="industry"
-                  placeholder="e.g., 'E-commerce Retail', 'Public Transport'"
-                  value={campaignDetails.industry}
-                  onChange={(e) => handleChange("industry", e.target.value)}
-                  className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400"
-                />
-              </div>
-
-              {/* Sector */}
-              <div className="space-y-2">
-                <Label htmlFor="sector" className="text-gray-300">Sector</Label>
-                <Select value={campaignDetails.sector} onValueChange={(val) => handleChange("sector", val)}>
-                  <SelectTrigger className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 data-[placeholder]:text-gray-400">
-                    <SelectValue placeholder="Select Sector" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-gray-800 border-gray-700 text-gray-50">
-                    <SelectItem value="Business">🏢 Business (Commercial)</SelectItem>
-                    <SelectItem value="Government">🏛️ Government (Public Sector)</SelectItem>
-                    <SelectItem value="Non-Profit">🤝 Non-Profit / NGO</SelectItem>
-                    <SelectItem value="Education">🎓 Education</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Goal */}
-              <div className="space-y-2">
-                <Label htmlFor="goal" className="text-gray-300">Campaign Goal <span className="text-red-400">*</span></Label>
-                <Input
-                  id="goal"
-                  placeholder="e.g., 'Increase brand awareness by 20%', 'Drive app installs'"
-                  value={campaignDetails.goal}
-                  onChange={(e) => handleChange("goal", e.target.value)}
-                  className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400"
-                />
-              </div>
-
-              {/* Budget */}
-              <div className="space-y-2">
-                <Label htmlFor="budget" className="text-gray-300">Allocated Budget (USD) <span className="text-red-400">*</span></Label>
-                <Input
-                  id="budget"
-                  type="number"
-                  placeholder="e.g., '50000'"
-                  value={campaignDetails.budget}
-                  onChange={(e) => handleChange("budget", e.target.value)}
-                  className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400"
-                />
-              </div>
-
-              {/* Duration */}
-              <div className="space-y-2">
-                <Label htmlFor="duration" className="text-gray-300">Campaign Duration</Label>
-                <Input
-                  id="duration"
-                  placeholder="e.g., '30 days', 'Q3 2025'"
-                  value={campaignDetails.duration}
-                  onChange={(e) => handleChange("duration", e.target.value)}
-                  className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400"
-                />
-              </div>
-
-              {/* Location */}
-              <div className="space-y-2">
-                <Label htmlFor="location" className="text-gray-300">Target Location</Label>
-                <Input
-                  id="location"
-                  placeholder="e.g., 'New York City, USA', 'Pan-India'"
-                  value={campaignDetails.location}
-                  onChange={(e) => handleChange("location", e.target.value)}
-                  className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400"
-                />
-              </div>
-
-              {/* Audience */}
-              <div className="space-y-2">
-                <Label htmlFor="audience" className="text-gray-300">Target Audience</Label>
-                <Input
-                  id="audience"
-                  placeholder="e.g., 'Gen Z, tech-savvy urban dwellers', 'Families with young children'"
-                  value={campaignDetails.audience}
-                  onChange={(e) => handleChange("audience", e.target.value)}
-                  className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400"
-                />
-              </div>
-
-              {/* KPIs */}
-              <div className="space-y-2">
-                <Label htmlFor="kpis" className="text-gray-300">Key Performance Indicators (KPIs)</Label>
-                <Input
-                  id="kpis"
-                  placeholder="e.g., 'Website visits, lead conversions, brand recall'"
-                  value={campaignDetails.kpis}
-                  onChange={(e) => handleChange("kpis", e.target.value)}
-                  className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400"
-                />
-              </div>
-
-              {/* Content Themes */}
-              <div className="space-y-2 col-span-1 md:col-span-2">
-                <Label htmlFor="contentThemes" className="text-gray-300">Key Content Themes / Messaging Ideas</Label>
-                <Textarea
-                  id="contentThemes"
-                  placeholder="e.g., 'Innovation, Sustainability, Community Impact. Use vibrant colors and bold typography.'"
-                  value={campaignDetails.contentThemes}
-                  onChange={(e) => handleChange("contentThemes", e.target.value)}
-                  className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400 min-h-[80px]"
-                />
-              </div>
-
-              {/* Channel Preference (Multi-select or checkboxes would be better for actual implementation) */}
-              <div className="space-y-2 col-span-1 md:col-span-2">
-                <Label htmlFor="channelPreference" className="text-gray-300">Preferred Channels (e.g., OOH, Digital, Print)</Label>
-                <Input
-                  id="channelPreference"
-                  placeholder="e.g., 'Billboards, Digital Signage, Social Media Ads'"
-                  value={campaignDetails.channelPreference.join(", ")} // Display as comma-separated
-                  onChange={(e) => handleChange("channelPreference", e.target.value.split(",").map(s => s.trim()))} // Convert back to array
-                  className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400"
-                />
-              </div>
-
-              {/* Competitive Insights */}
-              <div className="space-y-2 col-span-1 md:col-span-2">
-                <Label htmlFor="competitorInsights" className="text-gray-300">Competitive Insights / Market Analysis</Label>
-                <Textarea
-                  id="competitorInsights"
-                  placeholder="e.g., 'Competitor X is strong in digital, we need OOH dominance. Market trend is towards experiential campaigns.'"
-                  value={campaignDetails.competitorInsights}
-                  onChange={(e) => handleChange("competitorInsights", e.target.value)}
-                  className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400 min-h-[80px]"
-                />
-              </div>
-
-              {/* Brand Guidelines */}
-              <div className="space-y-2 col-span-1 md:col-span-2">
-                <Label htmlFor="brandGuidelines" className="text-gray-300">Brand Guidelines / Specific Requirements</Label>
-                <Textarea
-                  id="brandGuidelines"
-                  placeholder="e.g., 'Must adhere to brand color palette #XXXXXX, use sans-serif fonts, maintain a professional tone.'"
-                  value={campaignDetails.brandGuidelines}
-                  onChange={(e) => handleChange("brandGuidelines", e.target.value)}
-                  className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400 min-h-[80px]"
-                />
-              </div>
-
-              {/* Compliance Checkbox */}
-              <div className="flex items-center space-x-2 col-span-full mt-4">
-                <Checkbox
-                  id="complianceRequired"
-                  checked={campaignDetails.complianceRequired}
-                  onCheckedChange={(checked) => handleChange("complianceRequired", checked)}
-                  className="data-[state=checked]:bg-purple-600 data-[state=checked]:text-white border-purple-500"
-                />
-                <Label htmlFor="complianceRequired" className="text-gray-300 cursor-pointer">
-                  <ShieldCheck className="inline-block w-4 h-4 mr-1 text-green-400" />
-                  This campaign requires Government/Regulatory Compliance
-                </Label>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Section 3: AI Voice Input & Predictive Assistance */}
+          {/* Section 2: AI Voice Input & Initial Campaign Brief */}
           <Card className="bg-gray-800/60 backdrop-blur-sm border border-blue-700/30 shadow-lg shadow-blue-900/20">
             <CardHeader className="border-b border-gray-700/50 pb-4">
               <CardTitle className="text-2xl text-blue-300 flex items-center gap-2">
-                <Mic className="text-purple-400" /> AI Voice Command & Elaboration
+                <Brain className="text-purple-400" /> Initial Campaign Brief & AI Input
               </CardTitle>
               <CardDescription className="text-gray-400">
-                Describe your campaign vision verbally. Our AI will transcribe and generate instant suggestions.
+                Tell us about your campaign: you can type, or use the AI Voice Assistant for a natural conversation.
               </CardDescription>
             </CardHeader>
-            <CardContent className="pt-6 space-y-4">
-              <div className="relative">
-                <Textarea
-                  value={campaignDetails.speechInput}
-                  readOnly
-                  placeholder="Speak your campaign ideas, and our AI will capture them here. E.g., 'I want a global campaign targeting young professionals for our new eco-friendly smart device.'"
-                  className="bg-gray-700/50 border-blue-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400 min-h-[120px] resize-none"
-                />
-                {isListening && (
-                  <div className="absolute top-2 right-2 flex items-center gap-1 text-blue-400">
-                    <span className="relative flex h-3 w-3">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
-                    </span>
-                    Listening...
-                  </div>
-                )}
+            <CardContent className="pt-6 space-y-6">
+              {/* Voice Input Area */}
+              <div className="space-y-4">
+                <Label htmlFor="speechInput" className="text-gray-300 flex items-center gap-2">
+                  <MessageSquare className="w-5 h-5 text-blue-400" /> Describe Your Campaign Vision (Voice or Text)
+                </Label>
+                <div className="relative">
+                  <Textarea
+                    id="speechInput"
+                    value={campaignDetails.speechInput}
+                    onChange={(e) => handleChange("speechInput", e.target.value)}
+                    placeholder="Speak or type your campaign ideas here. E.g., 'I need an outdoor campaign for a new smartphone targeting young tech enthusiasts in urban areas with a budget of $50,000.'"
+                    className="bg-gray-700/50 border-blue-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400 min-h-[100px] resize-y"
+                  />
+                  {isListening && (
+                    <div className="absolute top-2 right-2 flex items-center gap-1 text-blue-400">
+                      <span className="relative flex h-3 w-3">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
+                      </span>
+                      Listening...
+                    </div>
+                  )}
+                </div>
+                <Button
+                  variant="outline"
+                  onClick={handleSpeechToText}
+                  className={`w-full py-3 text-lg font-semibold transition-all duration-300 ${isListening ? 'bg-red-600/70 hover:bg-red-700/80 text-white' : 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 border-none'}`}
+                >
+                  <Mic className="w-5 h-5 mr-2" />
+                  {isListening ? "Stop AI Voice Input" : "Activate AI Voice Input"}
+                </Button>
+              </div>
+
+              {/* Core Input Fields */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="campaignName" className="text-gray-300">Campaign Name <span className="text-red-400">*</span></Label>
+                  <Input
+                    id="campaignName"
+                    placeholder="e.g., 'Product Launch Blitz'"
+                    value={campaignDetails.name}
+                    onChange={(e) => handleChange("name", e.target.value)}
+                    className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="industry" className="text-gray-300">Your Business / Industry</Label>
+                  <Input
+                    id="industry"
+                    placeholder="e.g., 'Tech Gadgets', 'Real Estate', 'Food & Beverage'"
+                    value={campaignDetails.industry}
+                    onChange={(e) => handleChange("industry", e.target.value)}
+                    className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="goal" className="text-gray-300">Main Campaign Goal <span className="text-red-400">*</span></Label>
+                  <Input
+                    id="goal"
+                    placeholder="e.g., 'Increase brand awareness', 'Drive sales'"
+                    value={campaignDetails.goal}
+                    onChange={(e) => handleChange("goal", e.target.value)}
+                    className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="budget" className="text-gray-300">Approx. Total Budget (USD) <span className="text-red-400">*</span></Label>
+                  <Input
+                    id="budget"
+                    type="number"
+                    placeholder="e.g., '50000'"
+                    value={campaignDetails.budget}
+                    onChange={(e) => handleChange("budget", e.target.value)}
+                    className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400"
+                  />
+                </div>
+                 <div className="space-y-2">
+                  <Label htmlFor="location" className="text-gray-300">Target Location</Label>
+                  <Input
+                    id="location"
+                    placeholder="e.g., 'Delhi, India', 'New York City'"
+                    value={campaignDetails.location}
+                    onChange={(e) => handleChange("location", e.target.value)}
+                    className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="audience" className="text-gray-300">Target Audience Brief</Label>
+                  <Input
+                    id="audience"
+                    placeholder="e.g., 'Young professionals, age 25-35'"
+                    value={campaignDetails.audience}
+                    onChange={(e) => handleChange("audience", e.target.value)}
+                    className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 placeholder:text-gray-400"
+                  />
+                </div>
+                <div className="flex items-center space-x-2 col-span-full mt-4">
+                  <Checkbox
+                    id="complianceRequired"
+                    checked={campaignDetails.complianceRequired}
+                    onCheckedChange={(checked) => handleChange("complianceRequired", checked as boolean)}
+                    className="data-[state=checked]:bg-purple-600 data-[state=checked]:text-white border-purple-500"
+                  />
+                  <Label htmlFor="complianceRequired" className="text-gray-300 cursor-pointer">
+                    <ShieldCheck className="inline-block w-4 h-4 mr-1 text-green-400" />
+                    Campaign requires Government/Regulatory Compliance
+                  </Label>
+                </div>
               </div>
               <Button
-                variant="outline"
-                onClick={handleSpeechToText}
-                className={`w-full py-3 text-lg font-semibold transition-all duration-300 ${isListening ? 'bg-red-600/70 hover:bg-red-700/80 text-white' : 'bg-gradient-to-r from-purple-600 to-blue-600 text-white hover:from-purple-700 hover:to-blue-700 border-none'}`}
+                onClick={() => fetchAISuggestions(campaignDetails.speechInput || JSON.stringify(campaignDetails))} // Trigger suggestions on button click
+                className="w-full py-3 text-lg font-semibold bg-gradient-to-r from-teal-500 to-green-500 hover:from-teal-600 hover:to-green-600 text-white shadow-md shadow-teal-500/30"
               >
-                <Mic className="w-5 h-5 mr-2" />
-                {isListening ? "Stop Voice Input" : "Activate AI Voice Assistant"}
+                <Lightbulb className="w-5 h-5 mr-2" /> Get AI Suggestions
               </Button>
             </CardContent>
           </Card>
 
-          {/* Section 4: AI Generated Insights & Suggestions */}
+          {/* Section 3: AI-Powered Outdoor Marketing Service Suggestions */}
           {aiSuggestions && (
             <Card className="bg-gray-800/60 backdrop-blur-sm border border-green-700/30 shadow-lg shadow-green-900/20 animate-fade-in">
               <CardHeader className="border-b border-gray-700/50 pb-4">
                 <CardTitle className="text-2xl text-green-300 flex items-center gap-2">
-                  <Lightbulb className="text-green-400" /> AI-Powered Insights
+                  <Lightbulb className="text-green-400" /> AI-Powered Outdoor Marketing Service Suggestions
                 </CardTitle>
                 <CardDescription className="text-gray-400">
-                  Our intelligence engine has processed your input and offers these strategic enhancements.
+                  Based on your brief, our AI recommends these traditional outdoor marketing services to achieve your goals.
                 </CardDescription>
               </CardHeader>
               <CardContent className="pt-6">
                 <div className="bg-gray-900/50 p-4 rounded-xl border border-green-600/50 text-gray-100 whitespace-pre-wrap font-mono text-sm leading-relaxed">
                   {aiSuggestions}
                 </div>
-                {/* Optional: Add buttons to apply/refine suggestions */}
+                <p className="text-gray-500 text-sm mt-3">
+                  *These suggestions are generated by AI based on your input and general industry best practices.
+                  **The actual services provided by [Your Company Name] will be tailored upon further consultation.**
+                </p>
+                {/* Optional: Add buttons to apply/refine suggestions or jump to detailed planning */}
                 <div className="flex justify-end gap-2 mt-4">
                   <Button variant="secondary" className="bg-gray-700 hover:bg-gray-600 text-gray-50">Refine Suggestions</Button>
-                  <Button className="bg-green-600 hover:bg-green-700 text-white">Apply Best Practices</Button>
+                  {/* You could add a button here to pre-fill parts of CampaignBudgetForm based on suggestions */}
                 </div>
               </CardContent>
             </Card>
           )}
 
-          {/* Section 5: Detailed Budget Allocation (from CampaignBudgetForm) */}
+          {/* Section 4: Detailed Budget Allocation (from CampaignBudgetForm) */}
           <Card className="bg-gray-800/60 backdrop-blur-sm border border-yellow-700/30 shadow-lg shadow-yellow-900/20">
             <CardHeader className="border-b border-gray-700/50 pb-4">
               <CardTitle className="text-2xl text-yellow-300 flex items-center gap-2">
-                <DollarSign className="text-yellow-400" /> Dynamic Budget Allocation
+                <DollarSign className="text-yellow-400" /> Detailed Budget Allocation Planner
               </CardTitle>
               <CardDescription className="text-gray-400">
-                Detail how your budget will be distributed across various campaign elements.
+                Break down your campaign budget into specific categories. Our AI can help optimize this.
               </CardDescription>
             </CardHeader>
             <CardContent className="pt-6">
-              <CampaignBudgetForm /> {/* This component is assumed to be detailed */}
+              <CampaignBudgetForm /> {/* This component handles detailed budget allocation */}
             </CardContent>
           </Card>
 
@@ -483,7 +408,7 @@ const BudgetCampaign = () => {
               className="px-8 py-4 text-xl font-bold bg-gradient-to-r from-purple-700 to-blue-700 hover:from-purple-800 hover:to-blue-800 text-white rounded-full shadow-lg shadow-purple-500/30 transition-transform transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
               onClick={handleSubmit}
             >
-              <Rocket className="w-6 h-6 animate-pulse" /> Initiate Campaign Launch
+              <Rocket className="w-6 h-6 animate-pulse" /> Finalize & Submit Campaign
             </Button>
             <p className="text-gray-500 text-sm mt-3">Ready to transform your vision into reality?</p>
           </div>
