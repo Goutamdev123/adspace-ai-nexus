@@ -1,330 +1,214 @@
-
-import React, { useState } from 'react';
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
+import React, { useState, useEffect } from "react";
+import DashboardHeader from "@/components/DashboardHeader";
+import DashboardSidebar from "@/components/DashboardSidebar";
+import { useIsMobile } from "@/hooks/use-mobile";
+import CampaignBudgetForm from "@/components/CampaignBudgetForm";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
-import { toast } from "sonner";
-import { BadgePercent, BarChart3, DollarSign, LineChart, Milestone, Target } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Sparkles, Mic, Rocket } from "lucide-react";
 
-// Form schema
-const formSchema = z.object({
-  budget: z.string().min(1, "Budget is required"),
-  industry: z.string().min(1, "Industry is required"),
-  duration: z.string().min(1, "Campaign duration is required"),
-  objective: z.string().min(1, "Campaign objective is required"),
-});
-
-// Package types
-interface AdPackage {
-  name: string;
-  price: string;
-  description: string;
-  features: string[];
-  recommended: boolean;
-  icon: React.ReactNode;
-}
-
-const CampaignBudgetForm = () => {
-  const [showPackages, setShowPackages] = useState(false);
-  const [packages, setPackages] = useState<AdPackage[]>([]);
-
-  // Form setup
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      budget: "",
-      industry: "",
-      duration: "30",
-      objective: "awareness",
-    },
+const BudgetCampaign = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isListening, setIsListening] = useState(false);
+  const [aiSuggestions, setAiSuggestions] = useState("");
+  const [campaignDetails, setCampaignDetails] = useState({
+    name: "",
+    sector: "Business",
+    industry: "",
+    goal: "",
+    budget: "",
+    duration: "",
+    location: "",
+    audience: "",
+    complianceRequired: false,
+    speechInput: "",
   });
 
-  // Get recommended packages based on form data
-  const getRecommendedPackages = (data: z.infer<typeof formSchema>) => {
-    const budget = parseInt(data.budget);
-    let recommendedPackages: AdPackage[] = [];
+  const isMobile = useIsMobile();
 
-    // Basic package - always available
-    recommendedPackages.push({
-      name: "Starter",
-      price: `₹${Math.round(budget * 0.7).toLocaleString()}`,
-      description: "Essential advertising to get your business noticed",
-      features: [
-        "Basic ad placement",
-        "Standard targeting",
-        "Weekly performance reports",
-        "Email support"
-      ],
-      recommended: budget < 50000,
-      icon: <BarChart3 className="h-5 w-5 text-adtech-blue" />
-    });
-
-    // Mid-tier package for medium budgets
-    if (budget >= 25000) {
-      recommendedPackages.push({
-        name: "Growth",
-        price: `₹${Math.round(budget * 0.9).toLocaleString()}`,
-        description: "Expanded reach and enhanced targeting for growing businesses",
-        features: [
-          "Premium ad placement",
-          "Advanced audience targeting",
-          "A/B testing capabilities",
-          "Bi-weekly optimization",
-          "Priority support"
-        ],
-        recommended: budget >= 50000 && budget < 100000,
-        icon: <LineChart className="h-5 w-5 text-adtech-purple" />
-      });
-    }
-
-    // Premium package for high budgets
-    if (budget >= 100000) {
-      recommendedPackages.push({
-        name: "Enterprise",
-        price: `₹${budget.toLocaleString()}`,
-        description: "Comprehensive advertising solution for maximum impact",
-        features: [
-          "Premium ad placement across all platforms",
-          "Custom audience targeting",
-          "Advanced analytics dashboard",
-          "Weekly optimization",
-          "Dedicated account manager",
-          "ROI guarantees"
-        ],
-        recommended: budget >= 100000,
-        icon: <Target className="h-5 w-5 text-adtech-orange" />
-      });
-    }
-
-    // Add a custom package based on specific industry and objective
-    const industryFocus = data.industry === "retail" ? 
-      "Retail-focused consumer targeting" : 
-      data.industry === "technology" ? 
-        "Tech-savvy audience segments" : 
-        "Industry-specific audience targeting";
-    
-    const objectiveFocus = data.objective === "awareness" ? 
-      "Brand awareness metrics" : 
-      data.objective === "conversions" ? 
-        "Conversion optimization" : 
-        "Engagement tracking";
-
-    recommendedPackages.push({
-      name: "Custom",
-      price: `₹${Math.round(budget * 0.85).toLocaleString()}`,
-      description: `Tailored package for ${data.industry} industry with ${data.objective} focus`,
-      features: [
-        industryFocus,
-        objectiveFocus,
-        `${data.duration}-day campaign timeline`,
-        "Personalized strategy session",
-        "Custom reporting dashboard"
-      ],
-      recommended: true,
-      icon: <Milestone className="h-5 w-5 text-adtech-green" />
-    });
-
-    return recommendedPackages;
+  const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
+  const toggleDarkMode = () => {
+    setIsDarkMode(!isDarkMode);
+    document.documentElement.classList.toggle("dark", !isDarkMode);
   };
 
-  // Submit handler
-  const onSubmit = (data: z.infer<typeof formSchema>) => {
-    toast.success("Budget information submitted", {
-      description: "Generating package recommendations...",
-    });
-    
-    // Simulate API call with timeout
-    setTimeout(() => {
-      const recommendedPackages = getRecommendedPackages(data);
-      setPackages(recommendedPackages);
-      setShowPackages(true);
-    }, 1000);
+  useEffect(() => {
+    if (isMobile) setIsSidebarOpen(false);
+  }, [isMobile]);
+
+  const handleChange = (field: string, value: any) => {
+    setCampaignDetails((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSpeechToText = () => {
+    if (!("webkitSpeechRecognition" in window)) {
+      alert("Speech Recognition not supported.");
+      return;
+    }
+
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+    recognition.continuous = false;
+
+    recognition.onstart = () => setIsListening(true);
+    recognition.onend = () => setIsListening(false);
+    recognition.onresult = async (event) => {
+      const transcript = event.results[0][0].transcript;
+      handleChange("speechInput", transcript);
+      await fetchAISuggestions(transcript);
+    };
+
+    recognition.start();
+  };
+
+  const fetchAISuggestions = async (input: string) => {
+    try {
+      const res = await fetch("/api/generate-campaign-suggestion", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ input, ...campaignDetails }),
+      });
+
+      const data = await res.json();
+      setAiSuggestions(data.suggestions || "No suggestions returned.");
+    } catch (error) {
+      console.error("AI Suggestion Error:", error);
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const res = await fetch("/api/submit-campaign", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(campaignDetails),
+      });
+
+      if (!res.ok) throw new Error("Submission failed");
+      alert("✅ Campaign submitted successfully!");
+    } catch (error) {
+      console.error("Submit error:", error);
+    }
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Campaign Details</CardTitle>
-          <CardDescription>
-            Tell us about your advertising needs and budget
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="budget"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Monthly Budget (₹)</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <DollarSign className="absolute left-3 top-2.5 h-5 w-5 text-muted-foreground" />
-                        <Input 
-                          placeholder="50000" 
-                          className="pl-10" 
-                          type="number" 
-                          {...field} 
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="industry"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Industry</FormLabel>
-                    <Select 
-                      onValueChange={field.onChange} 
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select your industry" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="retail">Retail</SelectItem>
-                        <SelectItem value="technology">Technology</SelectItem>
-                        <SelectItem value="finance">Finance</SelectItem>
-                        <SelectItem value="healthcare">Healthcare</SelectItem>
-                        <SelectItem value="education">Education</SelectItem>
-                        <SelectItem value="food">Food & Beverage</SelectItem>
-                        <SelectItem value="travel">Travel & Hospitality</SelectItem>
-                        <SelectItem value="other">Other</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+    <div className="min-h-screen flex bg-background w-full">
+      <DashboardSidebar isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
 
-              <FormField
-                control={form.control}
-                name="duration"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Campaign Duration (Days): {field.value}</FormLabel>
-                    <FormControl>
-                      <Slider
-                        min={7}
-                        max={90}
-                        step={1}
-                        defaultValue={[parseInt(field.value)]}
-                        onValueChange={(values) => field.onChange(values[0].toString())}
-                        className="py-4"
-                      />
-                    </FormControl>
-                    <div className="flex justify-between text-xs text-muted-foreground">
-                      <span>7 days</span>
-                      <span>30 days</span>
-                      <span>90 days</span>
-                    </div>
-                    <FormMessage />
-                  </FormItem>
-                )}
+      <div
+        className="flex-1 flex flex-col transition-all duration-300"
+        style={{
+          marginLeft: isMobile ? 0 : isSidebarOpen ? "16rem" : "4rem",
+        }}
+      >
+        <DashboardHeader
+          toggleSidebar={toggleSidebar}
+          isDarkMode={isDarkMode}
+          toggleDarkMode={toggleDarkMode}
+        />
+
+        <main className="flex-1 p-4 md:p-6 space-y-8">
+          <div>
+            <h2 className="text-3xl font-extrabold flex items-center gap-2">
+              <Sparkles className="text-purple-500" /> Smart Campaign Planner
+            </h2>
+            <p className="text-muted-foreground mt-1">
+              Plan futuristic outdoor marketing using AI, AR, tracking & government-ready compliance.
+            </p>
+          </div>
+
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input
+              placeholder="📛 Campaign Name"
+              value={campaignDetails.name}
+              onChange={(e) => handleChange("name", e.target.value)}
+            />
+            <Input
+              placeholder="🏭 Industry (Retail, Transport, etc.)"
+              value={campaignDetails.industry}
+              onChange={(e) => handleChange("industry", e.target.value)}
+            />
+            <Input
+              placeholder="🎯 Goal (Awareness, Installs, Public Info)"
+              value={campaignDetails.goal}
+              onChange={(e) => handleChange("goal", e.target.value)}
+            />
+            <Input
+              placeholder="💰 Budget in USD"
+              value={campaignDetails.budget}
+              onChange={(e) => handleChange("budget", e.target.value)}
+            />
+            <Input
+              placeholder="🕒 Duration (e.g., 30 days)"
+              value={campaignDetails.duration}
+              onChange={(e) => handleChange("duration", e.target.value)}
+            />
+            <Input
+              placeholder="📍 Target Location"
+              value={campaignDetails.location}
+              onChange={(e) => handleChange("location", e.target.value)}
+            />
+            <Input
+              placeholder="👥 Target Audience"
+              value={campaignDetails.audience}
+              onChange={(e) => handleChange("audience", e.target.value)}
+            />
+            <select
+              className="p-2 rounded-md border"
+              value={campaignDetails.sector}
+              onChange={(e) => handleChange("sector", e.target.value)}
+            >
+              <option value="Business">🏢 Business Sector</option>
+              <option value="Government">🏛️ Government Sector</option>
+            </select>
+            <label className="flex items-center space-x-2 col-span-2">
+              <input
+                type="checkbox"
+                checked={campaignDetails.complianceRequired}
+                onChange={(e) =>
+                  handleChange("complianceRequired", e.target.checked)
+                }
               />
+              <span>Requires Govt/Regulatory Compliance</span>
+            </label>
+          </section>
 
-              <FormField
-                control={form.control}
-                name="objective"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Campaign Objective</FormLabel>
-                    <FormControl>
-                      <Tabs 
-                        onValueChange={field.onChange} 
-                        defaultValue={field.value}
-                        className="w-full"
-                      >
-                        <TabsList className="grid grid-cols-3 w-full">
-                          <TabsTrigger value="awareness">Awareness</TabsTrigger>
-                          <TabsTrigger value="engagement">Engagement</TabsTrigger>
-                          <TabsTrigger value="conversions">Conversions</TabsTrigger>
-                        </TabsList>
-                      </Tabs>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+          <section className="space-y-2">
+            <label className="text-sm font-semibold">
+              🎙️ Voice Describe Campaign
+            </label>
+            <Textarea
+              value={campaignDetails.speechInput}
+              readOnly
+              placeholder="Your spoken campaign idea will appear here..."
+            />
+            <Button variant="secondary" onClick={handleSpeechToText}>
+              <Mic className="w-4 h-4 mr-1" />
+              {isListening ? "Listening..." : "Start Voice Input"}
+            </Button>
+          </section>
 
-              <Button type="submit" className="w-full">
-                Get Recommendations
-              </Button>
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+          {aiSuggestions && (
+            <div className="bg-muted border p-4 rounded-xl">
+              <h4 className="font-semibold text-lg mb-2 text-purple-600">
+                🤖 AI Suggestions:
+              </h4>
+              <p>{aiSuggestions}</p>
+            </div>
+          )}
 
-      {showPackages && (
-        <Card>
-          <CardHeader>
-            <CardTitle>Recommended Packages</CardTitle>
-            <CardDescription>
-              Based on your budget and requirements
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {packages.map((pkg, index) => (
-              <Card key={index} className={`overflow-hidden ${pkg.recommended ? 'border-2 border-adtech-blue' : ''}`}>
-                {pkg.recommended && (
-                  <div className="bg-adtech-blue text-white text-xs font-medium py-1 px-3 text-center">
-                    RECOMMENDED
-                  </div>
-                )}
-                <CardHeader className="pb-2">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      {pkg.icon}
-                      <CardTitle className="text-lg">{pkg.name}</CardTitle>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <BadgePercent className="h-4 w-4 text-adtech-orange" />
-                      <span className="text-sm text-muted-foreground">Best Value</span>
-                    </div>
-                  </div>
-                  <CardDescription>{pkg.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="pb-2">
-                  <div className="text-2xl font-bold mb-2">{pkg.price}</div>
-                  <ul className="space-y-1">
-                    {pkg.features.map((feature, i) => (
-                      <li key={i} className="text-sm flex items-start gap-2">
-                        <div className="rounded-full bg-adtech-green/20 p-1 mt-0.5">
-                          <div className="h-1.5 w-1.5 rounded-full bg-adtech-green" />
-                        </div>
-                        {feature}
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-                <CardFooter>
-                  <Button className="w-full" variant={pkg.recommended ? "default" : "outline"}>
-                    {pkg.recommended ? "Select This Package" : "View Details"}
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
-          </CardContent>
-        </Card>
-      )}
+          <CampaignBudgetForm />
+
+          <Button className="mt-6 text-lg" onClick={handleSubmit}>
+            <Rocket className="w-5 h-5 mr-2" /> Launch Campaign
+          </Button>
+        </main>
+      </div>
     </div>
   );
 };
 
-export default CampaignBudgetForm;
+export default BudgetCampaign;
