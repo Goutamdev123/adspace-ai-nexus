@@ -164,7 +164,7 @@ const BudgetCampaign = () => {
     setAiSuggestions("🚀 Analyzing your vision and generating smart outdoor marketing suggestions...");
     try {
       // API Key is automatically provided by Canvas if left empty
-      const apiKey = "";
+      const apiKey = "AIzaSyA_sg_wwEl7c5U63Mi4QiZBtPPtgeZpx2A";
       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
       const promptText = `Generate traditional outdoor marketing service suggestions for a company based on this campaign brief: "${input}". Focus on services like billboards, digital screens, transit ads, street furniture, experiential, and AR integrations. Provide specific examples relevant to inferred industry, goal, budget, and location. Structure the output as a clear, concise list of recommendations with a brief rationale for each. Please provide the response in ${languages.find(l => l.code === selectedLanguage)?.name || "English"} language.`;
