@@ -13,22 +13,46 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
-import { Sparkles, Mic, Rocket, Brain, Lightbulb, MessageSquare, Loader2, DollarSign } from "lucide-react"; // <-- DollarSign added here!
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Sparkles, Mic, Rocket, Brain, Lightbulb, MessageSquare, Loader2, DollarSign, Volume2, VolumeX } from "lucide-react";
 
 // Define the shape of the minimal campaign brief for AI input
 interface CampaignBrief {
   textInput: string; // Combined text input for campaign idea
-  // The AI will infer details like budget, industry, goal, etc., from this text
 }
+
+// List of Indian official languages (and English) with their BCP 47 language tags
+const languages = [
+  { code: "en-IN", name: "English (India)" },
+  { code: "hi-IN", name: "Hindi (India)" },
+  { code: "bn-IN", name: "Bengali (India)" },
+  { code: "te-IN", name: "Telugu (India)" },
+  { code: "mr-IN", name: "Marathi (India)" },
+  { code: "ta-IN", name: "Tamil (India)" },
+  { code: "ur-IN", name: "Urdu (India)" },
+  { code: "gu-IN", name: "Gujarati (India)" },
+  { code: "kn-IN", name: "Kannada (India)" },
+  { code: "ml-IN", name: "Malayalam (India)" },
+  { code: "or-IN", name: "Odia (India)" },
+  { code: "pa-IN", name: "Punjabi (India)" },
+  { code: "as-IN", name: "Assamese (India)" },
+  { code: "ks-IN", name: "Kashmiri (India)" },
+  { code: "sd-IN", name: "Sindhi (India)" },
+  { code: "ne-IN", name: "Nepali (India)" },
+  // Note: More specific regional variants might exist, but these are common.
+  // Not all browsers will have high-quality voices for all these languages.
+];
 
 const BudgetCampaign = () => {
   const [isDarkMode, setIsDarkMode] = useState(true); // Default to dark for futuristic feel
   const [isListening, setIsListening] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false); // New state for AI generation loading
+  const [isSpeaking, setIsSpeaking] = useState(false); // New state for AI speaking
   const [aiSuggestions, setAiSuggestions] = useState<string>(""); // AI suggestions for outdoor services
   const [campaignBrief, setCampaignBrief] = useState<CampaignBrief>({
     textInput: "",
   });
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("en-IN"); // Default to English (India)
 
   const isMobile = useIsMobile();
 
@@ -44,13 +68,12 @@ const BudgetCampaign = () => {
   // Function to handle speech-to-text input
   const handleSpeechToText = () => {
     if (!("webkitSpeechRecognition" in window)) {
-      // Using custom alert message instead of browser's alert()
       setAiSuggestions("Voice input requires a browser that supports Web Speech API (e.g., Chrome).");
       return;
     }
 
     const recognition = new webkitSpeechRecognition();
-    recognition.lang = "en-US";
+    recognition.lang = selectedLanguage; // Set language for speech input
     recognition.interimResults = true; // Show interim results for dynamic feedback
     recognition.continuous = true; // Allow continuous speaking
 
@@ -59,7 +82,7 @@ const BudgetCampaign = () => {
     recognition.onstart = () => {
       setIsListening(true);
       setAiSuggestions("Listening... Speak your campaign idea clearly."); // Immediate feedback
-      console.log("Listening for voice input...");
+      console.log("Listening for voice input in:", selectedLanguage);
     };
 
     recognition.onresult = (event) => {
@@ -99,25 +122,57 @@ const BudgetCampaign = () => {
     }
   };
 
+  // Function to speak the AI suggestions
+  const speakAISuggestions = (text: string) => {
+    if ("speechSynthesis" in window) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = selectedLanguage; // Set language for speech output
+
+      utterance.onstart = () => setIsSpeaking(true);
+      utterance.onend = () => setIsSpeaking(false);
+      utterance.onerror = (event) => {
+        setIsSpeaking(false);
+        console.error("Speech Synthesis Error:", event.error);
+        alert(`Text-to-Speech error: ${event.error}. Your browser might not support this language or voice.`);
+      };
+
+      // Optional: Try to find a specific voice if available
+      const voices = window.speechSynthesis.getVoices();
+      const preferredVoice = voices.find(
+        (voice) => voice.lang === selectedLanguage && voice.name.includes("India") // Try to find an Indian specific voice
+      );
+      if (preferredVoice) {
+        utterance.voice = preferredVoice;
+      } else {
+        // Fallback to any voice that matches the language
+        const fallbackVoice = voices.find((voice) => voice.lang === selectedLanguage);
+        if (fallbackVoice) {
+          utterance.voice = fallbackVoice;
+        }
+      }
+
+      window.speechSynthesis.speak(utterance);
+    } else {
+      alert("Text-to-Speech is not supported in your browser.");
+    }
+  };
+
+
   // Function to fetch AI suggestions from backend
   const fetchAISuggestions = async (input: string) => {
     setIsGenerating(true); // Set loading state
     setAiSuggestions("🚀 Analyzing your vision and generating smart outdoor marketing suggestions...");
     try {
-      const payload = {
-        prompt: input,
-        // You can add more structured data here if your AI model benefits from it,
-        // but for a simplified UI, the free-form text is primary.
-      };
-
       // API Key is automatically provided by Canvas if left empty
       const apiKey = "";
       const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
+      const promptText = `Generate traditional outdoor marketing service suggestions for a company based on this campaign brief: "${input}". Focus on services like billboards, digital screens, transit ads, street furniture, experiential, and AR integrations. Provide specific examples relevant to inferred industry, goal, budget, and location. Structure the output as a clear, concise list of recommendations with a brief rationale for each. Please provide the response in ${languages.find(l => l.code === selectedLanguage)?.name || "English"} language.`;
+
       const response = await fetch(apiUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: `Generate traditional outdoor marketing service suggestions for a company based on this campaign brief: "${input}". Focus on services like billboards, digital screens, transit ads, street furniture, experiential, and AR integrations. Provide specific examples relevant to inferred industry, goal, budget, and location. Structure the output as a clear, concise list of recommendations with a brief rationale for each.` }] }] })
+        body: JSON.stringify({ contents: [{ role: "user", parts: [{ text: promptText }] }] })
       });
 
       if (!response.ok) {
@@ -131,13 +186,18 @@ const BudgetCampaign = () => {
           result.candidates[0].content.parts.length > 0) {
         const text = result.candidates[0].content.parts[0].text;
         setAiSuggestions(text);
+        speakAISuggestions(text); // Speak the AI's response
       } else {
-        setAiSuggestions("No unique suggestions at this time. Try rephrasing your brief!");
+        const noSuggestionsText = "No unique suggestions at this time. Try rephrasing your brief!";
+        setAiSuggestions(noSuggestionsText);
+        speakAISuggestions(noSuggestionsText);
       }
 
     } catch (error: any) {
       console.error("AI Suggestion Error:", error);
-      setAiSuggestions(`Error generating suggestions: ${error.message || "Unknown error"}. Please refine your input.`);
+      const errorResponseText = `Error generating suggestions: ${error.message || "Unknown error"}. Please refine your input.`;
+      setAiSuggestions(errorResponseText);
+      speakAISuggestions(errorResponseText);
     } finally {
       setIsGenerating(false); // Clear loading state
     }
@@ -195,6 +255,26 @@ const BudgetCampaign = () => {
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-6 space-y-6">
+            {/* Language Selection */}
+            <div className="space-y-2">
+              <Label htmlFor="language-select" className="text-gray-300 flex items-center gap-2">
+                <Volume2 className="w-5 h-5 text-green-400" /> AI Language Preference
+              </Label>
+              <Select value={selectedLanguage} onValueChange={setSelectedLanguage}>
+                <SelectTrigger id="language-select" className="bg-gray-700/50 border-purple-500/30 text-gray-50 focus:border-blue-400 focus:ring-1 focus:ring-blue-400 data-[placeholder]:text-gray-400">
+                  <SelectValue placeholder="Select Language" />
+                </SelectTrigger>
+                <SelectContent className="bg-gray-800 border-gray-700 text-gray-50">
+                  {languages.map((lang) => (
+                    <SelectItem key={lang.code} value={lang.code}>
+                      {lang.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Voice Input Area */}
             <div className="space-y-4">
               <Label htmlFor="campaignBrief" className="text-gray-300 flex items-center gap-2">
                 <MessageSquare className="w-5 h-5 text-blue-400" /> Describe Your Campaign Vision
@@ -214,6 +294,11 @@ const BudgetCampaign = () => {
                       <span className="relative inline-flex rounded-full h-3 w-3 bg-blue-500"></span>
                     </span>
                     Listening...
+                  </div>
+                )}
+                {isSpeaking && (
+                  <div className="absolute bottom-2 left-2 flex items-center gap-1 text-green-400">
+                    <Volume2 className="w-4 h-4 animate-pulse" /> AI Speaking...
                   </div>
                 )}
               </div>
@@ -272,7 +357,7 @@ const BudgetCampaign = () => {
         <Card className="bg-gray-800/60 backdrop-blur-sm border border-yellow-700/30 shadow-lg shadow-yellow-900/20">
           <CardHeader className="border-b border-gray-700/50 pb-4">
             <CardTitle className="text-2xl text-yellow-300 flex items-center gap-2">
-              <DollarSign className="text-yellow-400" /> Detailed Budget Allocation Planner {/* <-- DollarSign used here */}
+              <DollarSign className="text-yellow-400" /> Detailed Budget Allocation Planner
             </CardTitle>
             <CardDescription className="text-gray-400">
               Refine your campaign budget across specific categories.
@@ -288,7 +373,7 @@ const BudgetCampaign = () => {
           <Button
             className="px-8 py-4 text-xl font-bold bg-gradient-to-r from-purple-700 to-blue-700 hover:from-purple-800 hover:to-blue-800 text-white rounded-full shadow-lg shadow-purple-500/30 transition-transform transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2"
             onClick={handleSubmitCampaign}
-            disabled={isGenerating || (!campaignBrief.textInput.trim() && !aiSuggestions.trim())} // Disable if no brief/suggestions or generating
+            disabled={isGenerating || isSpeaking || (!campaignBrief.textInput.trim() && !aiSuggestions.trim())} // Disable if no brief/suggestions or generating/speaking
           >
             <Rocket className="w-6 h-6 animate-pulse" /> Finalize & Submit Campaign Plan
           </Button>
