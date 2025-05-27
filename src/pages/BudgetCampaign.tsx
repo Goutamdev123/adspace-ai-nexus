@@ -2,53 +2,44 @@ import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Progress } from "@/components/ui/progress";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { PlusCircle, Trash2, DollarSign, Percent } from "lucide-react";
+const industries = [
+  "Technology",
+  "Retail",
+  "Healthcare",
+  "Education",
+  "Entertainment",
+  "Automotive",
+  "Finance",
+  "Travel",
+];
 
-// Type for budget items
-interface BudgetItem {
-  id: string;
-  category: string;
-  amount: number;
-}
+const faqItems = [
+  {
+    question: "How accurate are the AI suggestions?",
+    answer:
+      "The suggestions are generated based on speech input and preset algorithms. They are a starting point, and you can customize further.",
+  },
+  {
+    question: "Can I use multiple industries?",
+    answer:
+      "Currently, you can select one industry at a time. We plan to support multi-industry targeting soon.",
+  },
+  {
+    question: "Is my speech data saved?",
+    answer:
+      "No, all speech recognition is done locally in your browser for privacy and security.",
+  },
+];
 
 const BudgetCampaign = () => {
-  // Speech input and suggestions
   const [listening, setListening] = useState(false);
   const [transcript, setTranscript] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [selectedIndustry, setSelectedIndustry] = useState(industries[0]);
+  const [faqOpenIndex, setFaqOpenIndex] = useState<number | null>(null);
   const audioRef = useRef<HTMLDivElement>(null);
 
-  // Budget form state
-  const [budgetItems, setBudgetItems] = useState<BudgetItem[]>([
-    { id: "media-buying", category: "Media Buying (OOH Displays)", amount: 25000 },
-    { id: "creative-prod", category: "Creative Production & Design", amount: 10000 },
-    { id: "tech-platform", category: "Technology & Platform Fees (AI/AR)", amount: 7500 },
-    { id: "installation", category: "Installation & Logistics", amount: 5000 },
-    { id: "measurement", category: "Measurement & Analytics", amount: 3000 },
-    { id: "contingency", category: "Contingency (10%)", amount: 5500 },
-  ]);
-  const [newCategoryName, setNewCategoryName] = useState("");
-  const [newCategoryAmount, setNewCategoryAmount] = useState<number>(0);
-
-  // Animate neon bars when listening
+  // Animate visualizer bars when listening
   useEffect(() => {
     if (!listening) return;
 
@@ -56,15 +47,16 @@ const BudgetCampaign = () => {
       if (audioRef.current) {
         const bars = audioRef.current.children;
         Array.from(bars).forEach((bar: any) => {
-          bar.style.height = `${Math.random() * 30 + 10}px`;
+          bar.style.height = `${Math.random() * 50 + 10}px`;
+          bar.style.background = `hsl(${Math.random() * 360}, 80%, 60%)`;
+          bar.style.filter = `drop-shadow(0 0 6px hsl(${Math.random() * 360}, 80%, 60%))`;
         });
       }
-    }, 100);
+    }, 120);
 
     return () => clearInterval(interval);
   }, [listening]);
 
-  // Speech recognition handler
   const handleStartListening = () => {
     const SpeechRecognition =
       (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
@@ -85,13 +77,14 @@ const BudgetCampaign = () => {
       setTranscript(speech);
       setListening(false);
 
-      // Simulated AI suggestions
+      // AI suggestions tailored by industry
       setSuggestions([
-        `Smart Campaign for "${speech}"`,
-        "Target: Urban Millennials & Gen-Z",
-        "Reach Estimate: 1.5M+",
-        "Channel: AR Billboards + AI QR Engagement",
-        "Budget Split: 60% AR, 30% Digital, 10% Print",
+        `🚀 Smart Campaign Idea for: "${speech}"`,
+        `🏭 Industry: ${selectedIndustry}`,
+        "🎯 Target Audience: Urban Millennials & Gen-Z",
+        "📈 Reach Estimate: 1.5M+ Impressions",
+        "📡 Channels: AR Billboards + AI QR Engagement",
+        "💰 Budget Split: 60% AR, 30% Digital, 10% Print",
       ]);
     };
 
@@ -101,97 +94,98 @@ const BudgetCampaign = () => {
     recognition.start();
   };
 
-  // Budget form handlers
-  const totalBudget = budgetItems.reduce((sum, item) => sum + item.amount, 0);
-
-  const handleAmountChange = (id: string, value: string) => {
-    const amount = parseFloat(value);
-    setBudgetItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, amount: isNaN(amount) ? 0 : amount } : item
-      )
-    );
-  };
-
-  const handleAddCustomCategory = () => {
-    if (newCategoryName.trim() && newCategoryAmount >= 0) {
-      setBudgetItems((prev) => [
-        ...prev,
-        {
-          id: `custom-${Date.now()}`,
-          category: newCategoryName.trim(),
-          amount: newCategoryAmount,
-        },
-      ]);
-      setNewCategoryName("");
-      setNewCategoryAmount(0);
-    }
-  };
-
-  const handleRemoveItem = (id: string) => {
-    setBudgetItems((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  const getProgressBarColor = (index: number) => {
-    const colors = [
-      "bg-purple-500",
-      "bg-blue-500",
-      "bg-green-500",
-      "bg-yellow-500",
-      "bg-red-500",
-      "bg-teal-500",
-      "bg-indigo-500",
-    ];
-    return colors[index % colors.length];
+  // Toggle FAQ item open state
+  const toggleFaq = (index: number) => {
+    setFaqOpenIndex(faqOpenIndex === index ? null : index);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black text-white px-4 py-12 flex flex-col items-center">
-      {/* Title and Speech Button */}
-      <h1 className="text-3xl md:text-5xl font-extrabold text-center bg-gradient-to-r from-cyan-400 to-purple-600 text-transparent bg-clip-text drop-shadow-lg mb-8">
+    <div className="min-h-screen bg-gradient-to-tr from-black via-gray-900 to-gray-800 text-white px-6 py-12 flex flex-col items-center max-w-5xl mx-auto">
+      {/* Title */}
+      <h1 className="text-4xl md:text-6xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600 drop-shadow-lg text-center">
         Futuristic AI Budget Campaign
       </h1>
 
+      {/* Industry Selector */}
+      <div className="mb-8 w-full max-w-xs">
+        <label htmlFor="industry" className="block mb-2 font-semibold text-lg text-cyan-300">
+          Select Industry:
+        </label>
+        <select
+          id="industry"
+          className="w-full p-3 rounded-md bg-gray-900 border border-cyan-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+          value={selectedIndustry}
+          onChange={(e) => setSelectedIndustry(e.target.value)}
+        >
+          {industries.map((ind) => (
+            <option key={ind} value={ind}>
+              {ind}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Microphone Button */}
       <Button
         onClick={handleStartListening}
-        className="text-lg px-8 py-3 rounded-full bg-gradient-to-r from-blue-600 to-purple-700 hover:scale-105 transition-transform shadow-lg mb-6"
+        className={`relative z-10 rounded-full w-28 h-28 flex items-center justify-center
+          ${listening ? "bg-gradient-to-r from-pink-500 to-red-500 animate-pulse" : "bg-gradient-to-r from-blue-600 to-purple-700 hover:scale-105"}
+          shadow-lg shadow-purple-700/70`}
+        aria-label="Start voice input"
       >
-        {listening ? "Listening..." : "Speak Your Campaign Idea"}
+        <svg
+          className="w-12 h-12 text-white"
+          fill="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path d="M12 14a3 3 0 003-3V5a3 3 0 10-6 0v6a3 3 0 003 3z" />
+          <path d="M19 11a1 1 0 10-2 0 5 5 0 01-10 0 1 1 0 10-2 0 7 7 0 006 6.92V21a1 1 0 102 0v-3.08A7 7 0 0019 11z" />
+        </svg>
+        {listening && (
+          <span className="absolute top-0 right-0 w-6 h-6 bg-red-600 rounded-full animate-ping"></span>
+        )}
       </Button>
 
-      {/* Neon Audio Visualizer */}
+      {/* Audio Visualizer */}
       {listening && (
         <div
           ref={audioRef}
-          className="flex gap-1 h-10 items-end mb-8"
+          className="flex gap-2 mt-8 w-40 h-24 items-end justify-center"
           aria-label="Audio visualizer"
         >
-          {Array.from({ length: 16 }).map((_, i) => (
+          {Array.from({ length: 20 }).map((_, i) => (
             <div
               key={i}
-              className="w-1 rounded bg-cyan-400 shadow-[0_0_8px_cyan] transition-all"
-              style={{ height: "20px" }}
+              className="w-2 rounded-md bg-cyan-500"
+              style={{ height: "20px", transition: "height 0.1s ease, background-color 0.3s ease" }}
             />
           ))}
         </div>
       )}
 
-      {/* Animated AI Suggestions */}
+      {/* Transcript */}
+      {transcript && (
+        <p className="mt-6 text-center text-sm text-gray-400 max-w-lg italic select-text">
+          🎙 You said: <span className="text-white font-semibold">{transcript}</span>
+        </p>
+      )}
+
+      {/* Suggestions Section */}
       <AnimatePresence>
         {suggestions.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="w-full max-w-xl mb-10 space-y-4"
+            className="max-w-xl w-full mt-12 space-y-4"
           >
             {suggestions.map((text, idx) => (
               <motion.div
                 key={idx}
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.2 }}
-                className="bg-gradient-to-r from-[#1e1e1e] to-[#2c2c2c] border border-purple-600/30 shadow-xl rounded-xl p-4 text-center text-base md:text-lg"
+                transition={{ delay: idx * 0.15, type: "spring", stiffness: 100 }}
+                className="bg-gradient-to-r from-cyan-900 to-purple-900 border border-purple-700 rounded-xl p-5 shadow-lg text-lg md:text-xl font-semibold tracking-wide select-text"
               >
                 {text}
               </motion.div>
@@ -200,106 +194,106 @@ const BudgetCampaign = () => {
         )}
       </AnimatePresence>
 
-      {/* Budget Form Card */}
-      <Card className="bg-gray-900/80 backdrop-blur-md border border-purple-700/50 shadow-lg shadow-purple-900/40 max-w-5xl w-full">
-        <CardHeader className="border-b border-gray-700/50 pb-4">
-          <CardTitle className="text-2xl text-yellow-300 flex items-center gap-2">
-            <DollarSign className="text-yellow-400" /> Budget Allocation Breakdown
-          </CardTitle>
-          <CardDescription className="text-gray-400">
-            Allocate your campaign budget across various categories. Our AI can help optimize this based on your goals.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="pt-6 space-y-8">
-          {/* Budget Allocation Table */}
-          <div className="overflow-x-auto">
-            <Table className="min-w-full">
-              <TableHeader>
-                <TableRow className="bg-gray-700/50">
-                  <TableHead className="text-gray-300 font-bold w-2/5">Category</TableHead>
-                  <TableHead className="text-gray-300 font-bold text-right w-1/5">Amount (USD)</TableHead>
-                  <TableHead className="text-gray-300 font-bold text-right w-1/5">Percentage (%)</TableHead>
-                  <TableHead className="text-gray-300 font-bold w-1/5"></TableHead> {/* Delete btn */}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {budgetItems.map((item, index) => {
-                  const percentage = totalBudget > 0 ? (item.amount / totalBudget) * 100 : 0;
-                  return (
-                    <TableRow
-                      key={item.id}
-                      className="border-b border-gray-700/50 hover:bg-gray-700/30 transition-colors"
-                    >
-                      <TableCell className="font-medium text-gray-100 py-3">
-                        {item.category}
-                        <div className="w-full h-1 mt-1 rounded-full overflow-hidden">
-                          <Progress value={percentage} className={`${getProgressBarColor(index)} h-full`} />
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Input
-                          type="number"
-                          min={0}
-                          value={item.amount}
-                          onChange={(e) => handleAmountChange(item.id, e.target.value)}
-                          className="max-w-[100px] bg-gray-800 text-yellow-400 font-semibold text-right"
-                        />
-                      </TableCell>
-                      <TableCell className="text-right text-yellow-400 font-semibold">
-                        {percentage.toFixed(1)}%
-                      </TableCell>
-                      <TableCell className="text-center">
-                        {item.id.startsWith("custom-") && (
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => handleRemoveItem(item.id)}
-                            aria-label={`Remove ${item.category}`}
-                            className="text-red-500 hover:text-red-600"
-                          >
-                            <Trash2 size={18} />
-                          </Button>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
+      {/* Campaign Overview */}
+      {suggestions.length > 0 && (
+        <div className="w-full max-w-4xl mt-14 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+          <div className="bg-gradient-to-tr from-cyan-800 to-purple-900 rounded-xl p-6 shadow-lg">
+            <h3 className="text-cyan-400 text-3xl font-bold mb-2">🎯 Target Audience</h3>
+            <p className="text-white font-medium text-lg">Urban Millennials & Gen-Z</p>
           </div>
+          <div className="bg-gradient-to-tr from-purple-800 to-pink-900 rounded-xl p-6 shadow-lg">
+            <h3 className="text-pink-400 text-3xl font-bold mb-2">📈 Reach</h3>
+            <p className="text-white font-medium text-lg">1.5M+ Impressions</p>
+          </div>
+          <div className="bg-gradient-to-tr from-blue-800 to-cyan-900 rounded-xl p-6 shadow-lg">
+            <h3 className="text-blue-400 text-3xl font-bold mb-2">📡 Channels</h3>
+            <p className="text-white font-medium text-lg">AR Billboards + AI QR Engagement</p>
+          </div>
+        </div>
+      )}
 
-          {/* Add Custom Category */}
-          <div className="flex flex-col md:flex-row md:items-center gap-4">
-            <Input
-              type="text"
-              placeholder="New Category Name"
-              value={newCategoryName}
-              onChange={(e) => setNewCategoryName(e.target.value)}
-              className="flex-1 bg-gray-800 text-yellow-400 placeholder-yellow-300"
-            />
-            <Input
-              type="number"
-              min={0}
-              placeholder="Amount (USD)"
-              value={newCategoryAmount || ""}
-              onChange={(e) => setNewCategoryAmount(parseFloat(e.target.value) || 0)}
-              className="w-36 bg-gray-800 text-yellow-400 placeholder-yellow-300"
-            />
-            <Button
-              onClick={handleAddCustomCategory}
-              disabled={!newCategoryName.trim() || newCategoryAmount <= 0}
-              className="bg-yellow-500 hover:bg-yellow-600 text-black"
+      {/* Budget Allocation Bar */}
+      {suggestions.length > 0 && (
+        <div className="w-full max-w-3xl mt-12 bg-gray-900 rounded-xl p-6 shadow-inner border border-cyan-600">
+          <h3 className="text-cyan-400 text-2xl font-semibold mb-4">Budget Allocation</h3>
+          <div className="flex space-x-4 h-8 rounded overflow-hidden text-sm font-semibold select-none">
+            <div
+              className="bg-cyan-500 flex items-center justify-center"
+              style={{ width: "60%" }}
             >
-              <PlusCircle className="mr-2" size={18} /> Add Category
-            </Button>
+              AR (60%)
+            </div>
+            <div
+              className="bg-purple-600 flex items-center justify-center"
+              style={{ width: "30%" }}
+            >
+              Digital (30%)
+            </div>
+            <div
+              className="bg-pink-600 flex items-center justify-center"
+              style={{ width: "10%" }}
+            >
+              Print (10%)
+            </div>
           </div>
+        </div>
+      )}
 
-          {/* Total Budget Summary */}
-          <div className="text-right text-xl font-bold text-yellow-300">
-            Total Budget: ${totalBudget.toLocaleString()}
-          </div>
-        </CardContent>
-      </Card>
+      {/* Additional Campaign Tips */}
+      <div className="w-full max-w-4xl mt-16">
+        <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500 mb-6 text-center">
+          Campaign Tips & Tricks
+        </h2>
+        <ul className="space-y-4 text-lg text-gray-300">
+          <li>✨ Use AR to create immersive brand experiences that engage users longer.</li>
+          <li>📊 Leverage data analytics to optimize your campaign in real-time.</li>
+          <li>🔗 Integrate AI-driven QR codes for seamless offline-to-online transitions.</li>
+          <li>💡 Tailor messaging to specific audience segments for maximum impact.</li>
+          <li>📱 Combine outdoor campaigns with digital social media boosts.</li>
+        </ul>
+      </div>
+
+      {/* FAQ Section */}
+      <div className="w-full max-w-3xl mt-16">
+        <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600 mb-6 text-center">
+          Frequently Asked Questions
+        </h2>
+        <div className="space-y-4">
+          {faqItems.map((item, idx) => (
+            <div key={idx} className="bg-gray-900 rounded-lg border border-cyan-700 shadow-lg">
+              <button
+                onClick={() => toggleFaq(idx)}
+                className="w-full flex justify-between items-center px-6 py-4 text-left text-lg font-semibold text-cyan-300 hover:bg-cyan-900 rounded-lg focus:outline-none"
+                aria-expanded={faqOpenIndex === idx}
+                aria-controls={`faq-panel-${idx}`}
+                id={`faq-header-${idx}`}
+              >
+                {item.question}
+                <span className="ml-4 text-xl">
+                  {faqOpenIndex === idx ? "−" : "+"}
+                </span>
+              </button>
+              <AnimatePresence>
+                {faqOpenIndex === idx && (
+                  <motion.div
+                    key="content"
+                    id={`faq-panel-${idx}`}
+                    role="region"
+                    aria-labelledby={`faq-header-${idx}`}
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="px-6 pb-6 text-gray-300 text-base"
+                  >
+                    {item.answer}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
