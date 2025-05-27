@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
+import CampaignBudgetForm from "./CampaignBudgetForm";  // <- import added here
 
 const industries = [
   "Technology",
@@ -105,6 +106,9 @@ const BudgetCampaign = () => {
       <h1 className="text-4xl md:text-6xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600 drop-shadow-lg text-center">
         Futuristic AI Budget Campaign
       </h1>
+
+      {/* Insert CampaignBudgetForm here */}
+      <CampaignBudgetForm />
 
       {/* Industry Selector */}
       <div className="mb-8 w-full max-w-xs">
