@@ -1,96 +1,108 @@
-import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-
-const suggestions = [
-  "Optimize your outdoor campaign with AI.",
-  "Get location-based tracking in real-time.",
-  "Let AR-powered hoardings speak your brand.",
-  "Run multi-city campaigns with smart budgeting.",
-  "Generate campaign ideas via voice!"
-];
+import { useEffect, useState, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { motion, AnimatePresence } from "framer-motion";
 
 const BudgetCampaign = () => {
   const [listening, setListening] = useState(false);
+  const [transcript, setTranscript] = useState("");
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const audioRef = useRef<HTMLDivElement>(null);
 
-  const toggleListening = () => {
-    setListening(prev => !prev);
+  // Neon audio visualizer
+  useEffect(() => {
+    if (!listening) return;
+    const interval = setInterval(() => {
+      if (audioRef.current) {
+        const bars = audioRef.current.children;
+        Array.from(bars).forEach((bar: any) => {
+          bar.style.height = `${Math.random() * 30 + 10}px`;
+        });
+      }
+    }, 100);
+    return () => clearInterval(interval);
+  }, [listening]);
+
+  const handleStartListening = () => {
+    const SpeechRecognition =
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert("Speech Recognition not supported in your browser");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.onstart = () => setListening(true);
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      const speech = event.results[0][0].transcript;
+      setTranscript(speech);
+      setListening(false);
+
+      // Simulated AI suggestions
+      setSuggestions([
+        `Optimized Campaign for "${speech}"`,
+        "Estimated Reach: 1M+",
+        "Location: Urban Metro Zones",
+        "Medium: AR Hoardings + Digital Sync",
+      ]);
+    };
+    recognition.onend = () => setListening(false);
+    recognition.onerror = () => setListening(false);
+
+    recognition.start();
   };
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-[#0f0c29] via-[#302b63] to-[#24243e] text-white p-6 flex flex-col items-center justify-center">
-      
-      {/* Neon AI Glow Background */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[10%] left-[10%] w-[200px] h-[200px] bg-purple-500 rounded-full blur-3xl opacity-30 animate-ping"></div>
-        <div className="absolute bottom-[15%] right-[15%] w-[200px] h-[200px] bg-blue-500 rounded-full blur-3xl opacity-30 animate-ping"></div>
-      </div>
+    <div className="min-h-screen bg-black text-white px-4 py-8 flex flex-col items-center justify-center space-y-6">
+      <h1 className="text-3xl md:text-5xl font-bold text-center bg-gradient-to-r from-cyan-400 to-purple-500 text-transparent bg-clip-text">
+        AI-Powered Budget Campaign
+      </h1>
 
-      {/* Main Card */}
-      <Card className="z-10 w-full max-w-2xl rounded-2xl bg-white/10 border border-white/20 backdrop-blur-md p-6">
-        <CardContent>
-          <h1 className="text-3xl md:text-4xl font-bold text-center mb-6 text-blue-300 tracking-wide">AI Campaign Generator</h1>
-          
-          {/* Visualizer */}
-          <div className="flex justify-center items-center mb-6">
-            <div className="flex gap-1">
-              {[...Array(5)].map((_, i) => (
-                <div
-                  key={i}
-                  className={`w-1.5 h-6 bg-cyan-400 rounded-md animate-pulse`}
-                  style={{
-                    animationDelay: `${i * 0.1}s`,
-                    animation: listening ? 'pulseWave 1s infinite' : 'none'
-                  }}
-                ></div>
-              ))}
-            </div>
-          </div>
+      <Button
+        className="px-6 py-3 text-lg rounded-full bg-gradient-to-r from-blue-500 to-purple-700 shadow-lg hover:scale-105 transition-all"
+        onClick={handleStartListening}
+      >
+        {listening ? "Listening..." : "Speak Your Campaign Idea"}
+      </Button>
 
-          {/* Dynamic Suggestions */}
-          <motion.ul
-            initial="hidden"
-            animate="visible"
-            variants={{
-              visible: {
-                transition: {
-                  staggerChildren: 0.3,
-                }
-              }
-            }}
-            className="space-y-3 mb-8"
+      {listening && (
+        <div ref={audioRef} className="flex gap-1 mt-4 h-10 items-end">
+          {Array.from({ length: 12 }).map((_, i) => (
+            <div
+              key={i}
+              className="w-1 rounded-sm bg-neon-glow transition-all"
+              style={{ height: "20px" }}
+            />
+          ))}
+        </div>
+      )}
+
+      <AnimatePresence>
+        {suggestions.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            className="mt-6 w-full max-w-xl space-y-4"
           >
-            {suggestions.map((text, index) => (
-              <motion.li
+            {suggestions.map((suggestion, index) => (
+              <motion.div
                 key={index}
-                variants={{
-                  hidden: { opacity: 0, y: 20 },
-                  visible: { opacity: 1, y: 0 },
-                }}
-                className="text-white/90 bg-white/5 p-3 rounded-lg border border-white/10 backdrop-blur-sm hover:bg-white/10 transition"
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.2 }}
+                className="p-4 bg-gradient-to-br from-[#0f0f0f] to-[#1f1f1f] border border-purple-500/40 shadow-xl rounded-lg text-center"
               >
-                {text}
-              </motion.li>
+                {suggestion}
+              </motion.div>
             ))}
-          </motion.ul>
-
-          {/* Control Buttons */}
-          <div className="flex justify-center gap-4">
-            <Button
-              onClick={toggleListening}
-              className="bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-md hover:scale-105 transition-transform"
-            >
-              {listening ? 'Stop Listening' : 'Start Speaking'}
-            </Button>
-            <Button
-              className="bg-white text-black hover:bg-slate-200 transition"
-            >
-              Generate Campaign
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
