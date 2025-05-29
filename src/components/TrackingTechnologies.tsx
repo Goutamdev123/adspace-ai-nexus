@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -14,6 +13,17 @@ import { Badge } from '@/components/ui/badge';
 
 const TrackingTechnologies = () => {
   const [activeTab, setActiveTab] = useState('satellite');
+  const [loading, setLoading] = useState(false);
+  const [showNotice, setShowNotice] = useState(false);
+
+  const handleSatelliteClick = () => {
+    setLoading(true);
+    setShowNotice(true);
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  };
 
   return (
     <Card className="animate-fade-in" style={{ animationDelay: '0.3s' }}>
@@ -67,9 +77,14 @@ const TrackingTechnologies = () => {
               </div>
             </div>
             
-            <Button variant="outline" size="sm" className="w-full">
+            <Button variant="outline" size="sm" className="w-full" onClick={handleSatelliteClick}>
               Explore Satellite Data
             </Button>
+            {showNotice && (
+              <div className="text-center text-xs mt-2 text-yellow-600">
+                Satellite Data is under development, coming soon {loading ? "⏳" : "✅"}
+              </div>
+            )}
           </TabsContent>
           
           <TabsContent value="gis" className="space-y-4">
