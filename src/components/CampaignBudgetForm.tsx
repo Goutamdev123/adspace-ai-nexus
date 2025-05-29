@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import CampaignBudgetForm from "./CampaignBudgetForm"; // Make sure this path is correct
 import { motion, AnimatePresence } from "framer-motion";
-import { Cpu, WaveSawTool, Lightbulb, Info } from "lucide-react";
+import { Cpu, Lightbulb, Info } from "lucide-react";
 
 const BudgetCampaign = () => {
   const [listening, setListening] = useState(false);
