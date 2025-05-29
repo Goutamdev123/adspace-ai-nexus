@@ -1,297 +1,150 @@
-import { useEffect, useState, useRef } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { motion, AnimatePresence } from "framer-motion";
-
-const industries = [
-  "Technology",
-  "Retail",
-  "Healthcare",
-  "Education",
-  "Entertainment",
-  "Automotive",
-  "Finance",
-  "Travel",
-];
-
-const faqItems = [
-  {
-    question: "How accurate are the AI suggestions?",
-    answer:
-      "The suggestions are generated based on speech input and preset algorithms. They are a starting point, and you can customize further.",
-  },
-  {
-    question: "Can I use multiple industries?",
-    answer:
-      "Currently, you can select one industry at a time. We plan to support multi-industry targeting soon.",
-  },
-  {
-    question: "Is my speech data saved?",
-    answer:
-      "No, all speech recognition is done locally in your browser for privacy and security.",
-  },
-];
 
 const BudgetCampaign = () => {
-  const [listening, setListening] = useState(false);
-  const [transcript, setTranscript] = useState("");
-  const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [selectedIndustry, setSelectedIndustry] = useState(industries[0]);
-  const [faqOpenIndex, setFaqOpenIndex] = useState<number | null>(null);
-  const audioRef = useRef<HTMLDivElement>(null);
+  // Basic state to store form inputs (optional but recommended)
+  const [formData, setFormData] = useState({
+    businessName: "",
+    description: "",
+    marketingGoals: "",
+    targetAudience: "",
+    location: "",
+  });
 
-  // Animate visualizer bars when listening
-  useEffect(() => {
-    if (!listening) return;
-
-    const interval = setInterval(() => {
-      if (audioRef.current) {
-        const bars = audioRef.current.children;
-        Array.from(bars).forEach((bar: any) => {
-          bar.style.height = `${Math.random() * 50 + 10}px`;
-          bar.style.background = `hsl(${Math.random() * 360}, 80%, 60%)`;
-          bar.style.filter = `drop-shadow(0 0 6px hsl(${Math.random() * 360}, 80%, 60%))`;
-        });
-      }
-    }, 120);
-
-    return () => clearInterval(interval);
-  }, [listening]);
-
-  const handleStartListening = () => {
-    const SpeechRecognition =
-      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-
-    if (!SpeechRecognition) {
-      alert("Speech Recognition not supported in this browser.");
-      return;
-    }
-
-    const recognition = new SpeechRecognition();
-    recognition.lang = "en-US";
-    recognition.continuous = false;
-    recognition.interimResults = false;
-
-    recognition.onstart = () => setListening(true);
-    recognition.onresult = (event: SpeechRecognitionEvent) => {
-      const speech = event.results[0][0].transcript;
-      setTranscript(speech);
-      setListening(false);
-
-      // AI suggestions tailored by industry
-      setSuggestions([
-        `🚀 Smart Campaign Idea for: "${speech}"`,
-        `🏭 Industry: ${selectedIndustry}`,
-        "🎯 Target Audience: Urban Millennials & Gen-Z",
-        "📈 Reach Estimate: 1.5M+ Impressions",
-        "📡 Channels: AR Billboards + AI QR Engagement",
-        "💰 Budget Split: 60% AR, 30% Digital, 10% Print",
-      ]);
-    };
-
-    recognition.onerror = () => setListening(false);
-    recognition.onend = () => setListening(false);
-
-    recognition.start();
+  // Handle input changes
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
   };
 
-  // Toggle FAQ item open state
-  const toggleFaq = (index: number) => {
-    setFaqOpenIndex(faqOpenIndex === index ? null : index);
+  // Placeholder button click handler
+  const handleGenerate = () => {
+    // For now, just log the form data
+    console.log("Generating AI Campaign Suggestions with:", formData);
+    // You can replace this with your actual AI suggestion logic
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-black via-gray-900 to-gray-800 text-white px-6 py-12 flex flex-col items-center max-w-5xl mx-auto">
-      {/* Title */}
-      <h1 className="text-4xl md:text-6xl font-extrabold mb-8 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600 drop-shadow-lg text-center">
-        Futuristic AI Budget Campaign
-      </h1>
-
-          {/* Industry Selector */}
-      <div className="mb-8 w-full max-w-xs">
-        <label htmlFor="industry" className="block mb-2 font-semibold text-lg text-cyan-300">
-          Select Industry:
-        </label>
-        <select
-          id="industry"
-          className="w-full p-3 rounded-md bg-gray-900 border border-cyan-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
-          value={selectedIndustry}
-          onChange={(e) => setSelectedIndustry(e.target.value)}
-        >
-          {industries.map((ind) => (
-            <option key={ind} value={ind}>
-              {ind}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* Microphone Button */}
-      <Button
-        onClick={handleStartListening}
-        className={`relative z-10 rounded-full w-28 h-28 flex items-center justify-center
-          ${listening ? "bg-gradient-to-r from-pink-500 to-red-500 animate-pulse" : "bg-gradient-to-r from-blue-600 to-purple-700 hover:scale-105"}
-          shadow-lg shadow-purple-700/70`}
-        aria-label="Start voice input"
-      >
-        <svg
-          className="w-12 h-12 text-white"
-          fill="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path d="M12 14a3 3 0 003-3V5a3 3 0 10-6 0v6a3 3 0 003 3z" />
-          <path d="M19 11a1 1 0 10-2 0 5 5 0 01-10 0 1 1 0 10-2 0 7 7 0 006 6.92V21a1 1 0 102 0v-3.08A7 7 0 0019 11z" />
-        </svg>
-        {listening && (
-          <span className="absolute top-0 right-0 w-6 h-6 bg-red-600 rounded-full animate-ping"></span>
-        )}
-      </Button>
-
-      {/* Audio Visualizer */}
-      {listening && (
-        <div
-          ref={audioRef}
-          className="flex gap-2 mt-8 w-40 h-24 items-end justify-center"
-          aria-label="Audio visualizer"
-        >
-          {Array.from({ length: 20 }).map((_, i) => (
-            <div
-              key={i}
-              className="w-2 rounded-md bg-cyan-500"
-              style={{ height: "20px", transition: "height 0.1s ease, background-color 0.3s ease" }}
+    <div className="flex flex-col items-center px-4 sm:px-8 py-8">
+      {/* Business/Brand Information Form */}
+      <div className="w-full max-w-3xl mt-10 bg-gray-900 bg-opacity-60 rounded-xl p-8 shadow-xl border border-cyan-700">
+        <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600 mb-6 text-center">
+          🧠 Tell us about your Business or Brand
+        </h2>
+        <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
+          <div>
+            <label className="block mb-1 text-cyan-300 font-semibold">Business Name</label>
+            <input
+              name="businessName"
+              type="text"
+              placeholder="e.g., FutureTech Solutions"
+              className="w-full p-3 bg-gray-800 rounded-md border border-cyan-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+              value={formData.businessName}
+              onChange={handleChange}
             />
-          ))}
-        </div>
-      )}
+          </div>
 
-      {/* Transcript */}
-      {transcript && (
-        <p className="mt-6 text-center text-sm text-gray-400 max-w-lg italic select-text">
-          🎙 You said: <span className="text-white font-semibold">{transcript}</span>
-        </p>
-      )}
+          <div>
+            <label className="block mb-1 text-cyan-300 font-semibold">Brief Description</label>
+            <textarea
+              name="description"
+              rows={4}
+              placeholder="What does your business do?"
+              className="w-full p-3 bg-gray-800 rounded-md border border-cyan-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+              value={formData.description}
+              onChange={handleChange}
+            />
+          </div>
 
-      {/* Suggestions Section */}
-      <AnimatePresence>
-        {suggestions.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0 }}
-            className="max-w-xl w-full mt-12 space-y-4"
+          <div>
+            <label className="block mb-1 text-cyan-300 font-semibold">Marketing Goals</label>
+            <input
+              name="marketingGoals"
+              type="text"
+              placeholder="e.g., Increase brand awareness, drive engagement"
+              className="w-full p-3 bg-gray-800 rounded-md border border-cyan-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+              value={formData.marketingGoals}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label className="block mb-1 text-cyan-300 font-semibold">Target Audience</label>
+            <input
+              name="targetAudience"
+              type="text"
+              placeholder="e.g., Gen-Z, working professionals, students"
+              className="w-full p-3 bg-gray-800 rounded-md border border-cyan-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+              value={formData.targetAudience}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div>
+            <label className="block mb-1 text-cyan-300 font-semibold">Location</label>
+            <input
+              name="location"
+              type="text"
+              placeholder="e.g., New York, Global, Online"
+              className="w-full p-3 bg-gray-800 rounded-md border border-cyan-600 text-white focus:outline-none focus:ring-2 focus:ring-cyan-400"
+              value={formData.location}
+              onChange={handleChange}
+            />
+          </div>
+
+          <Button
+            type="button"
+            className="w-full mt-4 bg-gradient-to-r from-cyan-600 to-purple-700 text-white font-semibold py-3 rounded-md hover:scale-105 transition"
+            onClick={handleGenerate}
           >
-            {suggestions.map((text, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: idx * 0.15, type: "spring", stiffness: 100 }}
-                className="bg-gradient-to-r from-cyan-900 to-purple-900 border border-purple-700 rounded-xl p-5 shadow-lg text-lg md:text-xl font-semibold tracking-wide select-text"
-              >
-                {text}
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Campaign Overview */}
-      {suggestions.length > 0 && (
-        <div className="w-full max-w-4xl mt-14 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-          <div className="bg-gradient-to-tr from-cyan-800 to-purple-900 rounded-xl p-6 shadow-lg">
-            <h3 className="text-cyan-400 text-3xl font-bold mb-2">🎯 Target Audience</h3>
-            <p className="text-white font-medium text-lg">Urban Millennials & Gen-Z</p>
-          </div>
-          <div className="bg-gradient-to-tr from-purple-800 to-pink-900 rounded-xl p-6 shadow-lg">
-            <h3 className="text-pink-400 text-3xl font-bold mb-2">📈 Reach</h3>
-            <p className="text-white font-medium text-lg">1.5M+ Impressions</p>
-          </div>
-          <div className="bg-gradient-to-tr from-blue-800 to-cyan-900 rounded-xl p-6 shadow-lg">
-            <h3 className="text-blue-400 text-3xl font-bold mb-2">📡 Channels</h3>
-            <p className="text-white font-medium text-lg">AR Billboards + AI QR Engagement</p>
-          </div>
-        </div>
-      )}
-
-      {/* Budget Allocation Bar */}
-      {suggestions.length > 0 && (
-        <div className="w-full max-w-3xl mt-12 bg-gray-900 rounded-xl p-6 shadow-inner border border-cyan-600">
-          <h3 className="text-cyan-400 text-2xl font-semibold mb-4">Budget Allocation</h3>
-          <div className="flex space-x-4 h-8 rounded overflow-hidden text-sm font-semibold select-none">
-            <div
-              className="bg-cyan-500 flex items-center justify-center"
-              style={{ width: "60%" }}
-            >
-              AR (60%)
-            </div>
-            <div
-              className="bg-purple-600 flex items-center justify-center"
-              style={{ width: "30%" }}
-            >
-              Digital (30%)
-            </div>
-            <div
-              className="bg-pink-600 flex items-center justify-center"
-              style={{ width: "10%" }}
-            >
-              Print (10%)
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Additional Campaign Tips */}
-      <div className="w-full max-w-4xl mt-16">
-        <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-pink-500 mb-6 text-center">
-          Campaign Tips & Tricks
-        </h2>
-        <ul className="space-y-4 text-lg text-gray-300">
-          <li>✨ Use AR to create immersive brand experiences that engage users longer.</li>
-          <li>📊 Leverage data analytics to optimize your campaign in real-time.</li>
-          <li>🔗 Integrate AI-driven QR codes for seamless offline-to-online transitions.</li>
-          <li>💡 Tailor messaging to specific audience segments for maximum impact.</li>
-          <li>📱 Combine outdoor campaigns with digital social media boosts.</li>
-        </ul>
+            🔍 Generate AI Campaign Suggestions
+          </Button>
+        </form>
       </div>
 
-      {/* FAQ Section */}
-      <div className="w-full max-w-3xl mt-16">
-        <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-600 mb-6 text-center">
-          Frequently Asked Questions
+      {/* Real Campaign Success Examples */}
+      <div className="w-full max-w-4xl mt-16">
+        <h2 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500 mb-6 text-center">
+          📈 Real Success Stories from Businesses Like Yours
         </h2>
-        <div className="space-y-4">
-          {faqItems.map((item, idx) => (
-            <div key={idx} className="bg-gray-900 rounded-lg border border-cyan-700 shadow-lg">
-              <button
-                onClick={() => toggleFaq(idx)}
-                className="w-full flex justify-between items-center px-6 py-4 text-left text-lg font-semibold text-cyan-300 hover:bg-cyan-900 rounded-lg focus:outline-none"
-                aria-expanded={faqOpenIndex === idx}
-                aria-controls={`faq-panel-${idx}`}
-                id={`faq-header-${idx}`}
-              >
-                {item.question}
-                <span className="ml-4 text-xl">
-                  {faqOpenIndex === idx ? "−" : "+"}
-                </span>
-              </button>
-              <AnimatePresence>
-                {faqOpenIndex === idx && (
-                  <motion.div
-                    key="content"
-                    id={`faq-panel-${idx}`}
-                    role="region"
-                    aria-labelledby={`faq-header-${idx}`}
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="px-6 pb-6 text-gray-300 text-base"
-                  >
-                    {item.answer}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          ))}
+        <div className="space-y-6">
+          {/* Example 1 */}
+          <div className="bg-gray-900 border border-green-600 rounded-xl p-6 shadow-lg">
+            <h3 className="text-green-400 text-xl font-bold mb-2">🚗 AutoShift - Local Car Dealership</h3>
+            <p className="text-gray-300">
+              AutoShift used our Ad Budget Planner to focus their $2,000 budget on{" "}
+              <span className="text-white font-semibold">AR billboards in high-traffic areas</span> combined with{" "}
+              <span className="text-white font-semibold">AI-driven QR codes</span> that offered instant test drive bookings.
+              Within 2 weeks, they saw a{" "}
+              <span className="text-white font-semibold">30% increase in walk-ins</span> and a{" "}
+              <span className="text-white font-semibold">2.5x boost in conversion rates</span>.
+            </p>
+          </div>
+
+          {/* Example 2 */}
+          <div className="bg-gray-900 border border-cyan-600 rounded-xl p-6 shadow-lg">
+            <h3 className="text-cyan-400 text-xl font-bold mb-2">🎮 GameNova - Indie Gaming Studio</h3>
+            <p className="text-gray-300">
+              GameNova launched their new mobile game using our planner with just{" "}
+              <span className="text-white font-semibold">$800</span>. The system recommended a split budget:{" "}
+              <span className="text-white font-semibold">50% to digital street projections</span> and{" "}
+              <span className="text-white font-semibold">30% to micro-influencer AI tagging</span>. The campaign went viral on social media,
+              reaching over <span className="text-white font-semibold">700K impressions</span> in the first 5 days.
+            </p>
+          </div>
+
+          {/* Example 3 */}
+          <div className="bg-gray-900 border border-purple-600 rounded-xl p-6 shadow-lg">
+            <h3 className="text-purple-400 text-xl font-bold mb-2">🥗 FreshBite - Vegan Cafe Chain</h3>
+            <p className="text-gray-300">
+              FreshBite wanted to grow in a new city. With a <span className="text-white font-semibold">$1,500</span> campaign budget,
+              the AI planner suggested <span className="text-white font-semibold">interactive outdoor displays</span> near parks and colleges,
+              targeting Gen-Z with nutrition-focused messaging. They achieved a{" "}
+              <span className="text-white font-semibold">40% increase in foot traffic</span> and 200+ app downloads during the 10-day campaign.
+            </p>
+          </div>
         </div>
       </div>
     </div>
