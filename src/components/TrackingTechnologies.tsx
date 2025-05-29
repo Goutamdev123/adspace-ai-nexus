@@ -43,7 +43,7 @@ const TrackingTechnologies = () => {
           <TabsContent value="satellite" className="space-y-4">
             <div className="relative h-32 rounded-md overflow-hidden bg-black">
               <div className="absolute inset-0 bg-gradient-to-br from-adtech-dark-blue to-black opacity-70"></div>
-              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1610374792793-f016b77ca51a?q=80&w=500')] bg-cover bg-center opacity-50"></div>
+              <div className="absolute inset-0 bg-[url('https://raw.githubusercontent.com/Goutamdev123/adspace-ai-nexus/refs/heads/main/public/aerospace-final.jpeg')] bg-cover bg-center opacity-50"></div>
               <div className="absolute bottom-0 left-0 p-3">
                 <h4 className="text-xs font-semibold text-white">Satellite Imagery Analytics</h4>
                 <p className="text-xs text-white/80">High-resolution area analysis</p>
@@ -75,7 +75,7 @@ const TrackingTechnologies = () => {
           <TabsContent value="gis" className="space-y-4">
             <div className="relative h-32 rounded-md overflow-hidden bg-black">
               <div className="absolute inset-0 bg-gradient-to-br from-adtech-dark-blue to-black opacity-70"></div>
-              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1543286386-2e659306cd6c?q=80&w=500')] bg-cover bg-center opacity-50"></div>
+              <div className="absolute inset-0 bg-[url('"></div>
               <div className="absolute bottom-0 left-0 p-3">
                 <h4 className="text-xs font-semibold text-white">GIS Integration</h4>
                 <p className="text-xs text-white/80">Layered demographic analysis</p>
@@ -107,7 +107,7 @@ const TrackingTechnologies = () => {
           <TabsContent value="mobile" className="space-y-4">
             <div className="relative h-32 rounded-md overflow-hidden bg-black">
               <div className="absolute inset-0 bg-gradient-to-br from-adtech-dark-blue to-black opacity-70"></div>
-              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1529679083279-c83137afd3f4?q=80&w=500')] bg-cover bg-center opacity-50"></div>
+              <div className="absolute inset-0 bg-[url('"></div>
               <div className="absolute bottom-0 left-0 p-3">
                 <h4 className="text-xs font-semibold text-white">Mobile Tracking</h4>
                 <p className="text-xs text-white/80">Footfall & engagement analysis</p>
