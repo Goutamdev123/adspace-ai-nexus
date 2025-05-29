@@ -45,7 +45,7 @@ const BillboardUploader = () => {
       name: "Downtown Plaza Billboard",
       type: "urban",
       mediaType: "image",
-      url: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b",
+      url: "",
       dimensions: "48ft × 14ft",
       arEnabled: true
     },
@@ -54,7 +54,7 @@ const BillboardUploader = () => {
       name: "Highway 101 Billboard",
       type: "highway",
       mediaType: "image",
-      url: "https://images.unsplash.com/photo-1605810230434-7631ac76ec81",
+      url: "",
       dimensions: "60ft × 20ft",
       arEnabled: true
     },
@@ -63,7 +63,7 @@ const BillboardUploader = () => {
       name: "Metro Station Display",
       type: "transit",
       mediaType: "video",
-      url: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6",
+      url: "",
       dimensions: "16ft × 9ft",
       arEnabled: true
     },
@@ -72,7 +72,7 @@ const BillboardUploader = () => {
       name: "Shopping Mall Digital Screen",
       type: "mall",
       mediaType: "video",
-      url: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d",
+      url: "",
       dimensions: "12ft × 8ft",
       arEnabled: false
     }
@@ -150,7 +150,7 @@ const BillboardUploader = () => {
           <div>
             <div className="flex items-center gap-2">
               <ImagePlus className="h-5 w-5 text-primary" />
-              <CardTitle className="text-xl">Billboard AR Preview</CardTitle>
+              <CardTitle className="text-xl">Billboard AR Preview(Under Development)</CardTitle>
               <Badge variant="outline" className="bg-primary/10 text-primary text-xs">UPLOAD & PREVIEW</Badge>
             </div>
             <CardDescription className="mt-1">
