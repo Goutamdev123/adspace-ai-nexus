@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-import CampaignBudgetForm from "./CampaignBudgetForm";  // <- import added here
+import CampaignBudgetForm from "@/components/CampaignBudgetForm";  // <- import added here
 
 const industries = [
   "Technology",
