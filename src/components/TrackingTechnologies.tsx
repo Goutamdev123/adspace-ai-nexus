@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
@@ -6,24 +6,33 @@ import {
   Satellite, 
   Smartphone, 
   MapPin, 
-  Layers, 
-  TrendingUp 
+  Layers
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
 const TrackingTechnologies = () => {
   const [activeTab, setActiveTab] = useState('satellite');
-  const [loading, setLoading] = useState(false);
-  const [showNotice, setShowNotice] = useState(false);
+  const [noticeVisible, setNoticeVisible] = useState(null); // can be 'satellite', 'gis', 'mobile', or null
 
-  const handleSatelliteClick = () => {
-    setLoading(true);
-    setShowNotice(true);
+  // Automatically hide the notice after 3.5 seconds
+  useEffect(() => {
+    if (noticeVisible) {
+      const timer = setTimeout(() => setNoticeVisible(null), 3500);
+      return () => clearTimeout(timer);
+    }
+  }, [noticeVisible]);
 
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+  // Show notice for clicked button tab
+  const showNotice = (tab) => {
+    setNoticeVisible(tab);
   };
+
+  const Notice = () => (
+    <div className="mt-2 p-2 bg-yellow-100 border border-yellow-300 text-yellow-900 rounded text-xs shadow-sm animate-fade-in">
+      <p>It's under development, coming soon.</p>
+      <p>Thank you for showing interest!</p>
+    </div>
+  );
 
   return (
     <Card className="animate-fade-in" style={{ animationDelay: '0.3s' }}>
@@ -77,20 +86,22 @@ const TrackingTechnologies = () => {
               </div>
             </div>
             
-            <Button variant="outline" size="sm" className="w-full" onClick={handleSatelliteClick}>
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full"
+              onClick={() => showNotice('satellite')}
+            >
               Explore Satellite Data
             </Button>
-            {showNotice && (
-              <div className="text-center text-xs mt-2 text-yellow-600">
-                Satellite Data is under development, coming soon {loading ? "⏳" : "✅"}
-              </div>
-            )}
+
+            {noticeVisible === 'satellite' && <Notice />}
           </TabsContent>
           
           <TabsContent value="gis" className="space-y-4">
             <div className="relative h-32 rounded-md overflow-hidden bg-black">
               <div className="absolute inset-0 bg-gradient-to-br from-adtech-dark-blue to-black opacity-70"></div>
-              <div className="absolute inset-0 bg-[url('"></div>
+              <div className="absolute inset-0 bg-[url('')]"></div>
               <div className="absolute bottom-0 left-0 p-3">
                 <h4 className="text-xs font-semibold text-white">GIS Integration</h4>
                 <p className="text-xs text-white/80">Layered demographic analysis</p>
@@ -114,15 +125,22 @@ const TrackingTechnologies = () => {
               </div>
             </div>
             
-            <Button variant="outline" size="sm" className="w-full">
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full"
+              onClick={() => showNotice('gis')}
+            >
               Analyze GIS Data
             </Button>
+
+            {noticeVisible === 'gis' && <Notice />}
           </TabsContent>
           
           <TabsContent value="mobile" className="space-y-4">
             <div className="relative h-32 rounded-md overflow-hidden bg-black">
               <div className="absolute inset-0 bg-gradient-to-br from-adtech-dark-blue to-black opacity-70"></div>
-              <div className="absolute inset-0 bg-[url('"></div>
+              <div className="absolute inset-0 bg-[url('')]"></div>
               <div className="absolute bottom-0 left-0 p-3">
                 <h4 className="text-xs font-semibold text-white">Mobile Tracking</h4>
                 <p className="text-xs text-white/80">Footfall & engagement analysis</p>
@@ -146,9 +164,16 @@ const TrackingTechnologies = () => {
               </div>
             </div>
             
-            <Button variant="outline" size="sm" className="w-full">
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full"
+              onClick={() => showNotice('mobile')}
+            >
               View Mobile Analytics
             </Button>
+
+            {noticeVisible === 'mobile' && <Notice />}
           </TabsContent>
         </Tabs>
       </CardContent>
