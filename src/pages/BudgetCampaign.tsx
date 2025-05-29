@@ -113,7 +113,7 @@ const BudgetCampaign = () => {
             <button
               type="button"
               onClick={handleVoiceInput}
-              className={`absolute top-2 right-2 px-3 py-1 rounded-md font-semibold transition ${
+              className={`absolute top-2 right-2 px-3 py-1 rounded-md font-semibold transition ₹{
                 isRecording ? "bg-red-600 text-white" : "bg-cyan-600 text-gray-900 hover:bg-cyan-500"
               }`}
               aria-label="Toggle voice input"
@@ -190,7 +190,7 @@ const BudgetCampaign = () => {
           <div className="bg-gray-900 border border-green-600 rounded-xl p-8 shadow-lg hover:shadow-cyan-600 transition-shadow">
             <h3 className="text-green-400 text-2xl font-bold mb-3">🚗 AutoShift - Local Car Dealership</h3>
             <p className="text-gray-300 leading-relaxed">
-              AutoShift used our Ad Budget Planner to focus their <span className="text-white font-semibold">$2,000</span> budget on{" "}
+              AutoShift used our Ad Budget Planner to focus their <span className="text-white font-semibold">₹20,000</span> budget on{" "}
               <span className="text-white font-semibold">AR billboards in high-traffic areas</span> combined with{" "}
               <span className="text-white font-semibold">AI-driven QR codes</span> that offered instant test drive bookings.
               Within 2 weeks, they saw a <span className="text-white font-semibold">30% increase in walk-ins</span> and a{" "}
@@ -202,7 +202,7 @@ const BudgetCampaign = () => {
           <div className="bg-gray-900 border border-cyan-600 rounded-xl p-8 shadow-lg hover:shadow-cyan-400 transition-shadow">
             <h3 className="text-cyan-400 text-2xl font-bold mb-3">🎮 GameNova - Indie Gaming Studio</h3>
             <p className="text-gray-300 leading-relaxed">
-              GameNova launched their new mobile game using our planner with just <span className="text-white font-semibold">$800</span>.
+              GameNova launched their new mobile game using our planner with just <span className="text-white font-semibold">₹80,000</span>.
               The system recommended a split budget: <span className="text-white font-semibold">50% to digital street projections</span> and{" "}
               <span className="text-white font-semibold">30% to micro-influencer AI tagging</span>. The campaign went viral on social media,
               reaching over <span className="text-white font-semibold">700K impressions</span> in the first 5 days.
@@ -213,7 +213,7 @@ const BudgetCampaign = () => {
           <div className="bg-gray-900 border border-purple-600 rounded-xl p-8 shadow-lg hover:shadow-purple-600 transition-shadow">
             <h3 className="text-purple-400 text-2xl font-bold mb-3">🥗 FreshBite - Vegan Cafe Chain</h3>
             <p className="text-gray-300 leading-relaxed">
-              FreshBite wanted to grow in a new city. With a <span className="text-white font-semibold">$1,500</span> campaign budget,
+              FreshBite wanted to grow in a new city. With a <span className="text-white font-semibold">₹15,000</span> campaign budget,
               the AI planner suggested <span className="text-white font-semibold">interactive outdoor displays</span> near parks and colleges,
               targeting Gen-Z with nutrition-focused messaging. They achieved a <span className="text-white font-semibold">40% increase in foot traffic</span>{" "}
               and 200+ app downloads during the 10-day campaign.
