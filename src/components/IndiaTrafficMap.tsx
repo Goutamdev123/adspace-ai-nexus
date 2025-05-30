@@ -101,12 +101,11 @@ const IndiaTrafficMap = () => {
         <div 
           key={city.id}
           className="absolute"
-          style={{ 
-            left: ${city.x}%, 
-            top: ${city.y}%, 
-            zIndex: hoveredCity === city.id ? 30 : 20,
-            transition: 'transform 0.3s ease-out'
-          }}
+          style={{
+      left: `${city.x}%`,
+     top: `${city.y}%`,
+     zIndex: hoveredCity === city.id ? 30 : 20,
+    }}
           onMouseEnter={() => setHoveredCity(city.id)}
           onMouseLeave={() => setHoveredCity(null)}
         >
