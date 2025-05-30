@@ -98,49 +98,49 @@ const IndiaTrafficMap = () => {
       
       {/* City Dots */}
       {cityData.map((city) => (
-        <div 
-          key={city.id}
-          className="absolute"
-          style={{
+  <div 
+    key={city.id}
+    className="absolute"
+    style={{
       left: `${city.x}%`,
-     top: `${city.y}%`,
-     zIndex: hoveredCity === city.id ? 30 : 20,
+      top: `${city.y}%`,
+      zIndex: hoveredCity === city.id ? 30 : 20,
     }}
-          onMouseEnter={() => setHoveredCity(city.id)}
-          onMouseLeave={() => setHoveredCity(null)}
-        >
-          {/* Pulsing effect */}
-          <div 
-            className={absolute rounded-full bg-primary/10 -translate-x-1/2 -translate-y-1/2 ${pulseClasses[city.size as keyof typeof pulseClasses]}} 
-            style={{ 
-              animationDuration: activeCities.includes(city.id) ? '3s' : '6s',
-              animationDelay: city.pulseDelay,
-              opacity: activeCities.includes(city.id) ? 0.7 : 0.3,
-            }}
-          ></div>
-          
-          {/* City dot */}
-          <div className={absolute rounded-full -translate-x-1/2 -translate-y-1/2 ${sizeClasses[city.size as keyof typeof sizeClasses]}}></div>
-          
-          {/* City info tooltip */}
-          {hoveredCity === city.id && (
-            <div className="absolute top-0 left-0 transform -translate-x-1/2 -translate-y-full bg-card/95 backdrop-blur-sm border border-border rounded-lg p-3 shadow-lg w-48 z-30">
-              <div className="font-bold text-sm mb-1">{city.name}</div>
-              <div className="grid grid-cols-2 gap-1 text-xs">
-                <div className="flex items-center gap-1">
-                  <MapPin className="h-3 w-3 text-primary" />
-                  <span>Traffic: {city.traffic}</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Activity className="h-3 w-3 text-accent" />
-                  <span>Imp: {city.impressions}</span>
-                </div>
-              </div>
-              <div className="text-xs mt-1">Engagement: {city.engagementRate}%</div>
-            </div>
-          )}
+    onMouseEnter={() => setHoveredCity(city.id)}
+    onMouseLeave={() => setHoveredCity(null)}
+  >
+    {/* Pulsing effect */}
+    <div 
+      className={`absolute rounded-full bg-primary/10 -translate-x-1/2 -translate-y-1/2 ${pulseClasses[city.size as keyof typeof pulseClasses]}`} 
+      style={{ 
+        animationDuration: activeCities.includes(city.id) ? '3s' : '6s',
+        animationDelay: city.pulseDelay,
+        opacity: activeCities.includes(city.id) ? 0.7 : 0.3,
+      }}
+    ></div>
+    
+    {/* City dot */}
+    <div className={`absolute rounded-full -translate-x-1/2 -translate-y-1/2 ${sizeClasses[city.size as keyof typeof sizeClasses]}`}></div>
+    
+    {/* City info tooltip */}
+    {hoveredCity === city.id && (
+      <div className="absolute top-0 left-0 transform -translate-x-1/2 -translate-y-full bg-card/95 backdrop-blur-sm border border-border rounded-lg p-3 shadow-lg w-48 z-30">
+        <div className="font-bold text-sm mb-1">{city.name}</div>
+        <div className="grid grid-cols-2 gap-1 text-xs">
+          <div className="flex items-center gap-1">
+            <MapPin className="h-3 w-3 text-primary" />
+            <span>Traffic: {city.traffic}</span>
+          </div>
+          <div className="flex items-center gap-1">
+            <Activity className="h-3 w-3 text-primary" />
+            <span>Engagement: {city.engagementRate}%</span>
+          </div>
         </div>
-      ))}
+      </div>
+    )}
+  </div>
+))}
+
       
       {/* State boundaries - simplified strokes */}
       <div className="absolute inset-0 pointer-events-none">
