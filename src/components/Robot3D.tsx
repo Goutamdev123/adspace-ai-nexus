@@ -25,18 +25,16 @@ function AnimatedRobot() {
   const groupRef = useRef<THREE.Group>(null);
   const [direction, setDirection] = useState<"left" | "right">("right");
 
-  // Optional: timer for bounce animation
   const timeRef = useRef(0);
 
   useFrame((state, delta) => {
     const group = groupRef.current;
     if (!group) return;
 
-    const speed = 0.5; // Horizontal speed
-    const minX = -2.2; // Adjusted for hand clipping
+    const speed = 0.5;
+    const minX = -2.2;
     const maxX = 2.2;
 
-    // Move in current direction
     if (direction === "right") {
       group.position.x += speed * delta;
       if (group.position.x >= maxX) {
@@ -51,10 +49,8 @@ function AnimatedRobot() {
       }
     }
 
-    // Update time for bounce
     timeRef.current += delta;
 
-    // Apply bounce effect (y-axis float)
     const bounceHeight = 0.1;
     const bounceSpeed = 2;
     group.position.y = -1 + Math.sin(timeRef.current * bounceSpeed) * bounceHeight;
@@ -75,7 +71,8 @@ export default function Robot3D() {
       <Suspense fallback={null}>
         <AnimatedRobot />
       </Suspense>
-      <OrbitControls enableZoom={false} />
+      {/* Disable user interaction */}
+      <OrbitControls enabled={false} />
     </Canvas>
   );
 }
