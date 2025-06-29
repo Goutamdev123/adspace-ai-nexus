@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 const ARWorkingDemoPage = () => {
   useEffect(() => {
     const timeout = setTimeout(() => {
-      window.location.href = "https://augmentedreality-six.vercel.app/";
+      window.location.href = "https://realityads.adproject.in/";
     }, 1000); // 1-second delay before redirect
 
     return () => clearTimeout(timeout);
