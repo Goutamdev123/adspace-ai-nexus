@@ -592,110 +592,115 @@ const Index = () => {
 
           
         {/* Business Benefits Section */}
-<section className="py-20 px-6 bg-background relative overflow-hidden text-white">
-  <div className="container mx-auto">
-    <div className="text-center mb-16">
-      <Badge className="mb-2 bg-secondary/20 text-white">Business Impact</Badge>
-      <h2 className="text-3xl font-bold mb-4">Transform Your Outdoor Advertising Strategy</h2>
-      <p className="text-white/80 max-w-2xl mx-auto">
-        Join businesses across India that are experiencing measurable results with our AI-enhanced outdoor advertising platform.
-      </p>
-    </div>
-    
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-      {businessBenefits.map((benefit, index) => (
-        <div key={index} className="bg-gradient-to-br from-background to-muted/30 backdrop-blur-sm border-border border overflow-hidden rounded-xl">
-          <div className="p-6">
-            <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
-              {benefit.icon}
-            </div>
-            <h3 className="text-xl font-bold mb-2">{benefit.title}</h3>
-            <p className="text-white/80">{benefit.description}</p>
-          </div>
-        </div>
-      ))}
-    </div>
-    
-    <div className="bg-card border border-border rounded-xl overflow-hidden">
-      <div className="grid grid-cols-1 lg:grid-cols-2">
-        <div className="p-8">
-          <Badge variant="outline" className="mb-4 text-white">FOR ALL BUSINESSES</Badge>
-          <h3 className="text-2xl font-bold mb-4">From Local Businesses to Enterprise Brands</h3>
-          <p className="text-white/80 mb-6">
-            Our platform scales to meet the needs of businesses of all sizes, providing actionable insights regardless of your budget or campaign scope.
-          </p>
-          
-          <div className="space-y-5">
-            <div className="flex items-start gap-4">
-              <div className="h-10 w-10 rounded-full bg-muted/30 flex items-center justify-center shrink-0">
-                <Building className="h-5 w-5 text-primary" />
+          <section className="py-20 px-6 bg-background/90 backdrop-blur-sm relative">
+            <div className="container mx-auto">
+              <div className="text-center mb-16">
+                <Badge className="mb-2 bg-secondary/20 text-secondary">Business Impact</Badge>
+                <h2 className="text-3xl font-bold mb-4">Transform Your Advertising Strategy</h2>
               </div>
-              <div>
-                <h4 className="font-bold">Local Businesses</h4>
-                <p className="text-sm text-white/80">Target neighborhoods with precision and measure foot traffic to your location from nearby advertising.</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start gap-4">
-              <div className="h-10 w-10 rounded-full bg-muted/30 flex items-center justify-center shrink-0">
-                <Rocket className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <h4 className="font-bold">Growing Startups</h4>
-                <p className="text-sm text-white/80">Build brand awareness efficiently with data-driven placement and measurable results for investors.</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start gap-4">
-              <div className="h-10 w-10 rounded-full bg-muted/30 flex items-center justify-center shrink-0">
-                <Globe className="h-5 w-5 text-primary" />
-              </div>
-              <div>
-                <h4 className="font-bold">Enterprise Brands</h4>
-                <p className="text-sm text-white/80">Coordinate multi-city campaigns with consistent measurement and integration with your existing marketing stack.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div className="bg-muted/30 p-8">
-          <h3 className="text-xl font-bold mb-4">From Outdoor to Digital Tracking</h3>
-          <p className="text-sm text-white/80 mb-6">
-            Compare the traditional outdoor advertising approach with our AI-powered analytics platform.
-          </p>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-muted/30 rounded-lg p-4">
-              <h4 className="font-medium text-sm mb-3 text-white">Traditional Outdoor Advertising</h4>
-              <ul className="space-y-2">
-                <li className="flex items-start gap-2">
-                  <div className="h-5 w-5 rounded-full bg-destructive/10 flex items-center justify-center shrink-0 mt-0.5">
-                    <BadgeIcon className="h-3 w-3 text-destructive" />
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+                {businessBenefits.map((benefit, index) => (
+                  <div 
+                    key={index} 
+                    className="bg-gradient-to-br from-background to-muted/20 backdrop-blur-sm border border-border/30 overflow-hidden rounded-xl transition-all hover:border-primary/50"
+                  >
+                    <div className="p-6">
+                      <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+                        {benefit.icon}
+                      </div>
+                      <h3 className="text-xl font-bold mb-2">{benefit.title}</h3>
+                      <p className="text-muted-foreground">{benefit.description}</p>
+                    </div>
                   </div>
-                  <span className="text-xs text-white/80">Estimated impressions</span>
-                </li>
-                {/* Other list items with same text-white/80 */}
-              </ul>
-            </div>
-            
-            <div className="bg-primary/5 rounded-lg p-4 border border-primary/20">
-              <h4 className="font-medium text-sm mb-3 text-white">Our AI-Powered Platform</h4>
-              <ul className="space-y-2">
-                <li className="flex items-start gap-2">
-                  <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
-                    <Check className="h-3 w-3 text-primary" />
+                ))}
+              </div>
+              
+              {/* Comparison Section */}
+              <div className="bg-card border border-border/30 rounded-xl overflow-hidden">
+                <div className="grid grid-cols-1 lg:grid-cols-2">
+                  <div className="p-8">
+                    <h3 className="text-2xl font-bold mb-4">From Local Businesses to Enterprise Brands</h3>
+                    
+                    <div className="space-y-5">
+                      {[
+                        {
+                          icon: <Building className="h-5 w-5 text-primary" />,
+                          title: "Local Businesses",
+                          desc: "Target neighborhoods with precision"
+                        },
+                        {
+                          icon: <Rocket className="h-5 w-5 text-primary" />,
+                          title: "Growing Startups",
+                          desc: "Build brand awareness efficiently"
+                        },
+                        {
+                          icon: <Globe className="h-5 w-5 text-primary" />,
+                          title: "Enterprise Brands",
+                          desc: "Coordinate multi-city campaigns"
+                        }
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-start gap-4">
+                          <div className="h-10 w-10 rounded-full bg-muted/20 flex items-center justify-center shrink-0">
+                            {item.icon}
+                          </div>
+                          <div>
+                            <h4 className="font-bold">{item.title}</h4>
+                            <p className="text-sm text-muted-foreground">{item.desc}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <span className="text-xs text-white">Precise impression counts</span>
-                </li>
-                {/* Other list items with same text-white */}
-              </ul>
+                  
+                  <div className="bg-muted/10 p-8">
+                    <h3 className="text-xl font-bold mb-4">Traditional vs. AI-Powered</h3>
+                    
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="bg-muted/20 rounded-lg p-4 border border-border/30">
+                        <h4 className="font-medium text-sm mb-3">Traditional Outdoor</h4>
+                        <ul className="space-y-2">
+                          {[
+                            "Estimated impressions",
+                            "No demographic data",
+                            "Unknown engagement",
+                            "No conversion tracking"
+                          ].map((item, i) => (
+                            <li key={i} className="flex items-start gap-2">
+                              <div className="mt-0.5 h-5 w-5 rounded-full bg-destructive/10 flex items-center justify-center shrink-0">
+                                <BadgeIcon className="h-3 w-3 text-destructive" />
+                              </div>
+                              <span className="text-xs text-muted-foreground">{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      <div className="bg-primary/5 rounded-lg p-4 border border-primary/20">
+                        <h4 className="font-medium text-sm mb-3 text-primary">AI-Powered Platform</h4>
+                        <ul className="space-y-2">
+                          {[
+                            "Precise impression counts",
+                            "Detailed demographic insights",
+                            "Engagement time measurement",
+                            "Conversion tracking"
+                          ].map((item, i) => (
+                            <li key={i} className="flex items-start gap-2">
+                              <div className="mt-0.5 h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                                <Check className="h-3 w-3 text-primary" />
+                              </div>
+                              <span className="text-xs">{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+          </section>
+          
           {/* CTA Section */}
           <section className="py-20 px-6 bg-gradient-to-br from-background via-primary/10 to-background relative overflow-hidden">
             <div className="absolute inset-0">
