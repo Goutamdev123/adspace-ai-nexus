@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import DashboardHeader from "@/components/DashboardHeader";
@@ -35,15 +36,57 @@ import {
   Building,
   Ban as BadgeIcon
 } from "lucide-react";
-import TrafficHeatmap from "@/components/TrafficHeatmap";
-import IndiaTrafficMap from "@/components/IndiaTrafficMap";
 import TrackingTechnologies from "@/components/TrackingTechnologies";
 
-const successMetrics = [
-  { metric: "43%", description: "Average increase in brand recall" },
-  { metric: "3.7x", description: "Higher engagement than traditional ads" },
-  { metric: "27%", description: "Improvement in conversion rates" },
-  { metric: "5.2M", description: "Daily impressions tracked across India" }
+
+const features = [
+  {
+    title: "AI-Powered Analytics",
+    description: "Our deep learning algorithms analyze footfall, impressions, and engagement in real-time",
+    icon: <Microscope className="h-6 w-6 text-primary" />,
+    image: "https://im.runware.ai/image/ws/0.5/ii/219a5961-3e2c-45a0-91a9-52c9e2c3fac1.webp"
+  },
+  {
+    title: "Geospatial Mapping",
+    description: "Precision location targeting with demographic data layers for optimal ad placement",
+    icon: <MapPin className="h-6 w-6 text-primary" />,
+    image: "https://im.runware.ai/image/ws/0.5/ii/9922cbbc-b70d-4244-9dc3-a5b0caa04e78.webp"
+  },
+  {
+    title: "Real-time Metrics",
+    description: "Monitor campaign performance with instant analytics and audience insights",
+    icon: <BarChart3 className="h-6 w-6 text-primary" />,
+    image: "https://im.runware.ai/image/ws/0.5/ii/8aa34f20-bd1d-46aa-bd36-56281da8fe61.webp"
+  },
+  {
+    title: "AR Enhancement",
+    description: "Drive engagement with interactive augmented reality experiences directly from ads",
+    icon: <Camera className="h-6 w-6 text-primary" />,
+    image: "https://im.runware.ai/image/ws/0.5/ii/7c8403b5-b842-4e3a-ac81-d80f491706bf.webp"
+  }
+];
+
+const businessBenefits = [
+  {
+    title: "ROI Maximization",
+    description: "Average 37% higher return on investment compared to traditional advertising methods",
+    icon: <TrendingUp className="h-6 w-6 text-primary" />
+  },
+  {
+    title: "Brand Awareness",
+    description: "Increase brand recall by up to 43% through targeted outdoor engagement",
+    icon: <Globe className="h-6 w-6 text-primary" />
+  },
+  {
+    title: "Customer Insights",
+    description: "Gather rich demographic and behavioral data to inform future campaigns",
+    icon: <Users className="h-6 w-6 text-primary" />
+  },
+  {
+    title: "Hyperlocal Targeting",
+    description: "Reach specific neighborhoods and demographics with precision targeting",
+    icon: <Target className="h-6 w-6 text-primary" />
+  }
 ];
 
 const trackingTechnologies = [
@@ -99,113 +142,115 @@ const advancedTechnologies = [
   },
 ];
 
-const businessBenefits = [
+const techHighlights = [
   {
-    title: "ROI Maximization",
-    description: "Average 37% higher return on investment compared to traditional advertising methods",
-    icon: <TrendingUp className="h-6 w-6 text-primary" />
+    title: "Computer Vision",
+    description: "Advanced object recognition algorithms count impressions and analyze engagement patterns",
+    icon: <Rocket className="h-6 w-6 text-accent" />
   },
   {
-    title: "Brand Awareness",
-    description: "Increase brand recall by up to 43% through targeted outdoor engagement",
-    icon: <Globe className="h-6 w-6 text-primary" />
+    title: "Predictive Analytics",
+    description: "ML models forecast campaign performance based on historical and real-time data",
+    icon: <Lightbulb className="h-6 w-6 text-accent" />
   },
   {
-    title: "Customer Insights",
-    description: "Gather rich demographic and behavioral data to inform future campaigns",
-    icon: <Users className="h-6 w-6 text-primary" />
+    title: "Neural Networks",
+    description: "Deep learning systems optimize ad placement based on evolving traffic patterns",
+    icon: <InfinityIcon className="h-6 w-6 text-accent" />
   },
   {
-    title: "Hyperlocal Targeting",
-    description: "Reach specific neighborhoods and demographics with precision targeting",
-    icon: <Target className="h-6 w-6 text-primary" />
+    title: "Augmented Reality",
+    description: "WebXR technology enables immersive interactive experiences from static ads",
+    icon: <Sparkles className="h-6 w-6 text-accent" />
   }
+];
+
+const successMetrics = [
+  { metric: "43%", description: "Average increase in brand recall" },
+  { metric: "3.7x", description: "Higher engagement than traditional ads" },
+  { metric: "27%", description: "Improvement in conversion rates" },
+  { metric: "5.2M", description: "Daily impressions tracked across India" }
 ];
 
 const Index = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    return localStorage.getItem('darkMode') === 'true' || 
-      (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
-  });
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const isMobile = useIsMobile();
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const [activeTab, setActiveTab] = useState("technology");
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
  
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
   const toggleDarkMode = () => {
-    const newMode = !isDarkMode;
-    setIsDarkMode(newMode);
-    localStorage.setItem('darkMode', String(newMode));
-    document.documentElement.classList.toggle('dark', newMode);
+    setIsDarkMode(!isDarkMode);
+    if (isDarkMode) {
+      document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+    }
   };
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', isDarkMode);
-    
-    const handleVideoPlay = () => {
-      if (videoRef.current) {
-        videoRef.current.play().catch(e => console.log("Video play prevented:", e));
-      }
-    };
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
 
+  useEffect(() => {
     if (isMobile) {
-      document.addEventListener('click', handleVideoPlay, { once: true });
       setIsSidebarOpen(false);
     }
-
-    toast({
-      title: "Welcome to AdTech Platform!",
-      description: "Thank you for being here.",
-    });
-
-    return () => {
-      if (isMobile) {
-        document.removeEventListener('click', handleVideoPlay);
-      }
-    };
   }, [isMobile]);
+  
+ useEffect(() => {
+  // Show a welcome toast when the page loads
+  toast({
+    title: "Welcome, Thank you for being here!",
+  });
+}, []);
 
-  return (
-    <div className="flex flex-col min-h-screen bg-background">
-      {/* Video background only for hero section */}
-      <div className="relative">
-        <div className="fixed inset-0 z-0">
-          <video
-            ref={videoRef}
-            className="absolute top-0 left-0 w-full h-full object-cover"
-            autoPlay
-            muted
-            loop
-            playsInline
-          >
-            <source src="/074a3d5b-2179-4749-b1d5-564c72b95ef1.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 to-black/40" />
-        </div>
 
-        <DashboardSidebar
-          isOpen={isSidebarOpen}
+  
+ return (
+  <div className="relative min-h-screen w-full overflow-hidden bg-background">
+      {/* Background video fixed behind everything */}
+      <video
+        className="fixed top-0 left-0 w-full h-full object-cover z-0"
+        autoPlay
+        muted
+        playsInline
+      >
+        <source src="/074a3d5b-2179-4749-b1d5-564c72b95ef1.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+
+      {/* Optional overlay for better contrast */}
+      <div className="fixed top-0 left-0 w-full h-full bg-black/50 z-10" />
+      <DashboardSidebar
+        isOpen={isSidebarOpen}
+        toggleSidebar={toggleSidebar}
+      />
+      <div
+        className="flex-1 flex flex-col transition-all duration-300"
+        style={{
+          marginLeft: isMobile ? 0 : (isSidebarOpen ? '16rem' : '4rem')
+        }}
+      >
+        <DashboardHeader
           toggleSidebar={toggleSidebar}
+          isDarkMode={isDarkMode}
+          toggleDarkMode={toggleDarkMode}
         />
-        
-        <div
-          className="flex-1 flex flex-col transition-all duration-300 relative z-10"
-          style={{
-            marginLeft: isMobile ? 0 : (isSidebarOpen ? '16rem' : '4rem')
-          }}
-        >
-          <DashboardHeader
-            toggleSidebar={toggleSidebar}
-            isDarkMode={isDarkMode}
-            toggleDarkMode={toggleDarkMode}
-          />
 
-          {/* Hero Section with video background */}
-          <section className="relative min-h-screen flex items-center">
+        <main className="flex-1 overflow-auto">
+          {/* AI & AR Technology Hero Section */}
+          <section className="relative min-h-[90vh] flex items-center bg-gradient-to-br from-background/90 via-primary/5 to-background/90 overflow-hidden">
+                     
+                       
             <div className="container mx-auto px-6 py-16 relative z-10">
               <div className="max-w-4xl mx-auto text-center mb-8">
                 <Badge variant="outline" className="mb-4 bg-primary/20 text-primary px-3 py-1 text-sm font-medium">
@@ -215,7 +260,7 @@ const Index = () => {
                   Making <span className="text-primary">Outdoor Advertising</span> as Measurable as <span className="text-accent">Digital Marketing</span>
                 </h1>
                 <p className="text-xl text-muted-foreground mb-8 max-w-3xl mx-auto">
-                  Our advanced AI and AR technologies bring digital-grade tracking, analytics, and engagement to traditional outdoor media.
+                  Our advanced AI and AR technologies bring digital-grade tracking, analytics, and engagement to traditional outdoor media, providing businesses with precise ROI measurements and audience insights.
                 </p>
                 
                 <div className="flex flex-wrap justify-center gap-4 mb-12">
@@ -223,7 +268,7 @@ const Index = () => {
                     Explore Platform <Rocket className="h-4 w-4" />
                   </Button>
                   <Button size="lg" variant="outline" asChild>
-                    <Link to="/ar-working-demo" className="flex items-center">
+                    <Link to="/ar-working-demo">
                       Try AR Demo <Camera className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
@@ -233,10 +278,7 @@ const Index = () => {
               {/* Key Metrics */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 max-w-4xl mx-auto">
                 {successMetrics.map((item, index) => (
-                  <div 
-                    key={index} 
-                    className="bg-card/80 backdrop-blur-sm border border-border/30 rounded-xl p-4 text-center transition-all hover:border-primary/50"
-                  >
+                  <div key={index} className="bg-card/50 backdrop-blur-sm border border-border rounded-xl p-4 text-center">
                     <div className="text-3xl md:text-4xl font-bold text-primary mb-2">{item.metric}</div>
                     <div className="text-sm text-muted-foreground">{item.description}</div>
                   </div>
@@ -244,17 +286,7 @@ const Index = () => {
               </div>
             </div>
           </section>
-        </div>
-      </div>
-
-      {/* Rest of content without video background */}
-      <div
-        className="flex-1 flex flex-col transition-all duration-300 relative z-10 bg-background"
-        style={{
-          marginLeft: isMobile ? 0 : (isSidebarOpen ? '16rem' : '4rem')
-        }}
-      >
-        <main className="flex-1">
+          
           {/* Tracking Technologies Section */}
           <section className="py-20 px-6 bg-background relative overflow-hidden">
             <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
@@ -264,7 +296,7 @@ const Index = () => {
                 <Badge className="mb-2 bg-accent/20 text-accent">Industry-First Tracking</Badge>
                 <h2 className="text-3xl font-bold mb-4">End-to-End Outdoor Ad Measurement</h2>
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Track every impression, engagement, and conversion with digital precision.
+                  Track every impression, engagement, and conversion with the same precision you expect from digital marketing platforms.
                 </p>
               </div>
               
@@ -274,10 +306,7 @@ const Index = () => {
                   <h3 className="text-2xl font-bold mb-4">How We Track Outdoor Advertising</h3>
                   
                   {trackingTechnologies.map((tech, index) => (
-                    <div 
-                      key={index} 
-                      className="flex gap-4 p-4 bg-card/50 rounded-lg border border-border/30 transition-all hover:border-accent/50"
-                    >
+                    <div key={index} className="flex gap-4 p-4 bg-card/30 rounded-lg border border-border/50">
                       <div className="h-12 w-12 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
                         {tech.icon}
                       </div>
@@ -289,20 +318,17 @@ const Index = () => {
                   ))}
                 </div>
                 
-                {/* Right Side: Data Accuracy */}
-                <div className="bg-card border border-border/30 rounded-xl overflow-hidden">
+                {/* Right Side: Data Accuracy & Visualization */}
+                <div className="bg-card border border-border rounded-xl overflow-hidden">
                   <div className="p-6">
                     <h3 className="text-xl font-bold mb-4">Data Collection Accuracy</h3>
                     <p className="text-sm text-muted-foreground mb-6">
-                      Our multi-layered verification ensures industry-leading accuracy.
+                      Our multi-layered data verification system ensures industry-leading accuracy across all metrics and dimensions.
                     </p>
                     
                     <div className="grid grid-cols-2 gap-4 mb-6">
                       {dataAccuracyMetrics.map((metric, index) => (
-                        <div 
-                          key={index} 
-                          className="bg-muted/20 rounded-lg p-4 border border-border/30 flex flex-col items-center transition-all hover:border-primary/30"
-                        >
+                        <div key={index} className="bg-muted/30 rounded-lg p-4 border border-border/50 flex flex-col items-center">
                           <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center mb-2">
                             {metric.icon}
                           </div>
@@ -313,188 +339,272 @@ const Index = () => {
                     </div>
                   </div>
                   
-                  <TrafficHeatmap />
+                  {/* Live Heatmap Replacement */}
+                  <div className="p-6 bg-muted/10 border-t border-border">
+                    <h3 className="font-medium mb-3">Real-time Traffic Monitoring</h3>
+                    <p className="text-sm text-muted-foreground">
+                      We monitor over 5,000 locations across India with industry-leading 97.3% data accuracy. 
+                      Our system tracks impressions, dwell time, and engagement metrics in real-time.
+                    </p>
+                    <div className="mt-4">
+                      <div className="flex justify-between text-sm mb-1">
+                        <span>Active Locations</span>
+                        <span className="font-medium">5,248</span>
+                      </div>
+                      <div className="flex justify-between text-sm mb-1">
+                        <span>Daily Data Points</span>
+                        <span className="font-medium">5.7M</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span>Uptime Reliability</span>
+                        <span className="font-medium">99.8%</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
               
-              {/* India Map */}
-              <div className="mb-16">
-                <h3 className="text-2xl font-bold mb-6 text-center">Live Traffic Data Across India</h3>
-                <IndiaTrafficMap />
+              {/* India Map replacement */}
+              <div className="mb-16 bg-card p-6 rounded-xl border border-border">
+                <h3 className="text-2xl font-bold mb-6 text-center">India Coverage Statistics</h3>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div className="bg-muted/20 rounded-lg p-4 text-center">
+                    <div className="text-2xl font-bold text-primary">28</div>
+                    <div className="text-sm text-muted-foreground">States Covered</div>
+                  </div>
+                  <div className="bg-muted/20 rounded-lg p-4 text-center">
+                    <div className="text-2xl font-bold text-primary">150+</div>
+                    <div className="text-sm text-muted-foreground">Cities Monitored</div>
+                  </div>
+                  <div className="bg-muted/20 rounded-lg p-4 text-center">
+                    <div className="text-2xl font-bold text-primary">5,000+</div>
+                    <div className="text-sm text-muted-foreground">Active Locations</div>
+                  </div>
+                  <div className="bg-muted/20 rounded-lg p-4 text-center">
+                    <div className="text-2xl font-bold text-primary">97.3%</div>
+                    <div className="text-sm text-muted-foreground">Data Accuracy</div>
+                  </div>
+                </div>
                 <p className="text-sm text-muted-foreground text-center mt-4">
-                  Real-time monitoring of 5,000+ locations across India
+                  Our network provides comprehensive coverage across India with real-time analytics.
                 </p>
               </div>
               
-              {/* Metrics Cards */}
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-                <div>
-                  <div className="bg-card border border-border/30 rounded-lg p-6 relative overflow-hidden">
+                <div className="order-2 lg:order-1">
+                  <div className="bg-card border border-border rounded-lg p-6 relative overflow-hidden">
                     <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-3xl -z-10 transform translate-x-1/4 -translate-y-1/4"></div>
                     
                     <h3 className="text-2xl font-bold mb-4">Digital-Grade Campaign Metrics</h3>
+                    <p className="text-muted-foreground mb-6">
+                      Our platform provides all the metrics you expect from digital marketing, applied to your outdoor advertising campaigns.
+                    </p>
                     
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      {[
-                        { 
-                          icon: <Eye className="h-3 w-3 text-primary" />,
-                          title: "Impressions",
-                          desc: "Accurate count of unique viewers" 
-                        },
-                        { 
-                          icon: <Users className="h-3 w-3 text-primary" />,
-                          title: "Demographics",
-                          desc: "Audience profiles" 
-                        },
-                        { 
-                          icon: <Activity className="h-3 w-3 text-primary" />,
-                          title: "Engagement",
-                          desc: "Dwell time and interaction rates" 
-                        },
-                        { 
-                          icon: <TrendingUp className="h-3 w-3 text-primary" />,
-                          title: "Conversions",
-                          desc: "QR scans and AR activations" 
-                        }
-                      ].map((item, i) => (
-                        <div 
-                          key={i} 
-                          className="p-4 bg-muted/10 rounded-lg border border-border/20 transition-colors hover:bg-muted/20"
-                        >
-                          <div className="flex items-center gap-2 mb-2">
-                            <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
-                              {item.icon}
-                            </div>
-                            <h4 className="font-medium">{item.title}</h4>
+                      <div className="p-4 bg-muted/20 rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                            <Eye className="h-3 w-3 text-primary" />
                           </div>
-                          <p className="text-xs text-muted-foreground">{item.desc}</p>
+                          <h4 className="font-medium">Impressions</h4>
                         </div>
-                      ))}
+                        <p className="text-xs text-muted-foreground">Accurate count of unique viewers exposed to your outdoor ads</p>
+                      </div>
+                      
+                      <div className="p-4 bg-muted/20 rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                            <Users className="h-3 w-3 text-primary" />
+                          </div>
+                          <h4 className="font-medium">Demographics</h4>
+                        </div>
+                        <p className="text-xs text-muted-foreground">Age, gender, and socioeconomic profiles of your audience</p>
+                      </div>
+                      
+                      <div className="p-4 bg-muted/20 rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                            <Activity className="h-3 w-3 text-primary" />
+                          </div>
+                          <h4 className="font-medium">Engagement</h4>
+                        </div>
+                        <p className="text-xs text-muted-foreground">Dwell time, attention metrics, and interaction rates</p>
+                      </div>
+                      
+                      <div className="p-4 bg-muted/20 rounded-lg">
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="h-6 w-6 rounded-full bg-primary/10 flex items-center justify-center">
+                            <TrendingUp className="h-3 w-3 text-primary" />
+                          </div>
+                          <h4 className="font-medium">Conversions</h4>
+                        </div>
+                        <p className="text-xs text-muted-foreground">Store visits, QR code scans, and AR experience activations</p>
+                      </div>
                     </div>
                   </div>
                 </div>
                 
-                <TrackingTechnologies />
+                <div className="order-1 lg:order-2">
+                  <TrackingTechnologies />
+                </div>
               </div>
             </div>
           </section>
           
-          {/* Technology Stack Section */}
-          <section className="py-20 px-6 bg-gradient-to-br from-background/90 via-primary/5 to-background/90 relative">
-            <div className="absolute inset-0 opacity-10 bg-grid-pattern"></div>
-            
-            <div className="container mx-auto relative z-10">
-              <div className="text-center mb-12">
-                <Badge className="mb-2 bg-primary/20 text-primary">Advanced Technology Stack</Badge>
-                <h2 className="text-3xl font-bold mb-4">The Science Behind Our Platform</h2>
-              </div>
+         {/* Technology Stack Section */}
+<section className="py-20 px-6 bg-gradient-to-br from-background via-primary/5 to-background relative overflow-hidden">
+  <div className="absolute inset-0">
+    <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-grid-pattern opacity-5 transform rotate-180"></div>
+    <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-grid-pattern opacity-5"></div>
+  </div>
 
-              {/* 3D Robot */}
-              <div className="flex justify-center mb-12">
-                <div className="w-full max-w-md h-[400px]">
-                  <Robot3D />
+  <div className="container mx-auto relative z-10">
+    <div className="text-center mb-12">
+      <Badge className="mb-2 bg-primary/20 text-primary">Advanced Technology Stack</Badge>
+      <h2 className="text-3xl font-bold mb-4">The Science Behind Our Platform</h2>
+      <p className="text-muted-foreground max-w-2xl mx-auto">
+        Leveraging cutting-edge technologies to bring digital-grade analytics to outdoor advertising.
+      </p>
+    </div>
+
+    {/* 3D Robot Section */}
+    <div className="flex items-center justify-center">
+      <div className="w-full max-w-md h-[400px]">
+        <Robot3D />
+      </div>
+    </div>
+
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+      {advancedTechnologies.map((tech, index) => (
+        <div key={index} className="bg-card border border-border rounded-xl p-6 h-full">
+          <div className="flex items-center justify-center mb-6">
+            <div className="h-16 w-16 rounded-full bg-muted/30 flex items-center justify-center">
+              {tech.icon}
+            </div>
+          </div>
+          <h3 className="text-xl font-bold text-center mb-2">{tech.name}</h3>
+          <p className="text-sm text-muted-foreground text-center">{tech.description}</p>
+        </div>
+      ))}
+    </div>
+
+    <div className="bg-card border border-border rounded-xl overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-2">
+        <div className="p-8">
+          <h3 className="text-2xl font-bold mb-4">Advanced Data Processing</h3>
+          <p className="text-muted-foreground mb-6">
+            Our proprietary data processing pipeline combines multiple data sources to create comprehensive insights about your advertising performance.
+          </p>
+
+          <div className="space-y-4">
+            {[
+              {
+                title: "Real-time Processing",
+                description: "Data is processed in real-time with less than 200ms latency",
+              },
+              {
+                title: "Multi-source Integration",
+                description: "Camera feeds, IoT sensors, mobile data, and third-party data sources",
+              },
+              {
+                title: "Privacy-first Approach",
+                description: "All data is anonymized and aggregated with strict privacy controls",
+              },
+              {
+                title: "Machine Learning Models",
+                description: "Continuously improving algorithms for greater accuracy",
+              },
+            ].map(({ title, description }, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <div className="mt-1 h-5 w-5 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
+                  <Check className="h-3 w-3 text-accent" />
+                </div>
+                <div>
+                  <h4 className="font-medium">{title}</h4>
+                  <p className="text-sm text-muted-foreground">{description}</p>
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
 
-              {/* Technology Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-                {advancedTechnologies.map((tech, index) => (
-                  <div 
-                    key={index} 
-                    className="bg-card border border-border/30 rounded-xl p-6 h-full transition-all hover:border-primary/50"
-                  >
-                    <div className="flex justify-center mb-6">
-                      <div className="h-16 w-16 rounded-full bg-muted/20 flex items-center justify-center">
-                        {tech.icon}
-                      </div>
-                    </div>
-                    <h3 className="text-xl font-bold text-center mb-2">{tech.name}</h3>
-                    <p className="text-sm text-muted-foreground text-center">{tech.description}</p>
+        <div className="bg-muted/20 p-8 flex items-center justify-center">
+          <div className="relative perspective-800">
+            <div className="preserve-3d transform-gpu rotate-y-10 rotate-x-5 w-full max-w-md">
+              <div className="bg-gradient-to-br from-card to-background border border-border rounded-lg p-4 shadow-lg">
+                <div className="flex justify-between items-center mb-4">
+                  <h4 className="font-bold">Data Processing Pipeline</h4>
+                  <Badge variant="outline">Live</Badge>
+                </div>
+
+                <div className="space-y-4">
+                  <div className="h-2 bg-muted rounded-full overflow-hidden">
+                    <div className="h-full bg-primary w-[85%]"></div>
                   </div>
-                ))}
-              </div>
 
-              {/* Data Processing */}
-              <div className="bg-card border border-border/30 rounded-xl overflow-hidden">
-                <div className="grid grid-cols-1 lg:grid-cols-2">
-                  <div className="p-8">
-                    <h3 className="text-2xl font-bold mb-4">Advanced Data Processing</h3>
-                    
-                    <div className="space-y-4">
-                      {[
-                        "Real-time Processing",
-                        "Multi-source Integration",
-                        "Privacy-first Approach",
-                        "Machine Learning Models"
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-start gap-3">
-                          <div className="mt-1 h-5 w-5 rounded-full bg-accent/10 flex items-center justify-center shrink-0">
-                            <Check className="h-3 w-3 text-accent" />
-                          </div>
-                          <div>
-                            <h4 className="font-medium">{item}</h4>
-                          </div>
-                        </div>
-                      ))}
+                  <div className="grid grid-cols-4 gap-2">
+                    <div className="bg-primary/10 p-2 rounded text-xs text-center">Input</div>
+                    <div className="bg-secondary/10 p-2 rounded text-xs text-center">Process</div>
+                    <div className="bg-accent/10 p-2 rounded text-xs text-center">Analyze</div>
+                    <div className="bg-primary/10 p-2 rounded text-xs text-center">Output</div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-muted rounded p-2">
+                      <div className="text-xs font-medium">Processing Units</div>
+                      <div className="text-lg font-bold text-primary">1,249</div>
+                    </div>
+                    <div className="bg-muted rounded p-2">
+                      <div className="text-xs font-medium">Data Throughput</div>
+                      <div className="text-lg font-bold text-accent">42 TB/day</div>
                     </div>
                   </div>
 
-                  {/* Visualization */}
-                  <div className="bg-muted/10 p-8 flex items-center justify-center">
-                    <div className="w-full max-w-md bg-gradient-to-br from-card to-background border border-border/30 rounded-lg p-4 shadow-lg">
-                      <div className="flex justify-between items-center mb-4">
-                        <h4 className="font-bold">Data Processing Pipeline</h4>
-                        <Badge variant="outline">Live</Badge>
-                      </div>
+                  <div className="h-16 bg-muted/50 rounded-lg p-2">
+                    <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                      <span>Camera Feeds</span>
+                      <span>97.3%</span>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full overflow-hidden mb-2">
+                      <div className="h-full bg-primary w-[97%]"></div>
+                    </div>
 
-                      <div className="space-y-4">
-                        <div className="h-2 bg-muted/30 rounded-full overflow-hidden">
-                          <div className="h-full bg-primary w-[85%]"></div>
-                        </div>
-
-                        <div className="grid grid-cols-4 gap-2">
-                          {["Input", "Process", "Analyze", "Output"].map((step, i) => (
-                            <div 
-                              key={i} 
-                              className="p-2 rounded text-xs text-center bg-muted/20 border border-border/20"
-                            >
-                              {step}
-                            </div>
-                          ))}
-                        </div>
-
-                        <div className="grid grid-cols-2 gap-3">
-                          <div className="bg-muted/10 rounded p-2 border border-border/20">
-                            <div className="text-xs font-medium">Processing Units</div>
-                            <div className="text-lg font-bold text-primary">1,249</div>
-                          </div>
-                          <div className="bg-muted/10 rounded p-2 border border-border/20">
-                            <div className="text-xs font-medium">Data Throughput</div>
-                            <div className="text-lg font-bold text-accent">42 TB/day</div>
-                          </div>
-                        </div>
-                      </div>
+                    <div className="flex justify-between text-xs text-muted-foreground mb-1">
+                      <span>IoT Sensors</span>
+                      <span>99.5%</span>
+                    </div>
+                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <div className="h-full bg-accent w-[99%]"></div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </section>
+
+            {/* 3D shadow effect */}
+            <div className="absolute -bottom-2 left-4 right-4 h-[calc(100%-20px)] bg-black/20 rounded-xl blur-md -z-10 transform rotate-x-5"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
           
           {/* Business Benefits Section */}
-          <section className="py-20 px-6 bg-background/90 backdrop-blur-sm relative">
+          <section className="py-20 px-6 bg-background relative overflow-hidden">
             <div className="container mx-auto">
               <div className="text-center mb-16">
                 <Badge className="mb-2 bg-secondary/20 text-secondary">Business Impact</Badge>
-                <h2 className="text-3xl font-bold mb-4">Transform Your Advertising Strategy</h2>
+                <h2 className="text-3xl font-bold mb-4">Transform Your Outdoor Advertising Strategy</h2>
+                <p className="text-muted-foreground max-w-2xl mx-auto">
+                  Join businesses across India that are experiencing measurable results with our AI-enhanced outdoor advertising platform.
+                </p>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
                 {businessBenefits.map((benefit, index) => (
-                  <div 
-                    key={index} 
-                    className="bg-gradient-to-br from-background to-muted/20 backdrop-blur-sm border border-border/30 overflow-hidden rounded-xl transition-all hover:border-primary/50"
-                  >
+                  <div key={index} className="bg-gradient-to-br from-background to-muted/30 backdrop-blur-sm border-border border overflow-hidden rounded-xl">
                     <div className="p-6">
                       <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
                         {benefit.icon}
@@ -506,82 +616,124 @@ const Index = () => {
                 ))}
               </div>
               
-              {/* Comparison Section */}
-              <div className="bg-card border border-border/30 rounded-xl overflow-hidden">
+              <div className="bg-card border border-border rounded-xl overflow-hidden">
                 <div className="grid grid-cols-1 lg:grid-cols-2">
                   <div className="p-8">
+                    <Badge variant="outline" className="mb-4">FOR ALL BUSINESSES</Badge>
                     <h3 className="text-2xl font-bold mb-4">From Local Businesses to Enterprise Brands</h3>
+                    <p className="text-muted-foreground mb-6">
+                      Our platform scales to meet the needs of businesses of all sizes, providing actionable insights regardless of your budget or campaign scope.
+                    </p>
                     
                     <div className="space-y-5">
-                      {[
-                        {
-                          icon: <Building className="h-5 w-5 text-primary" />,
-                          title: "Local Businesses",
-                          desc: "Target neighborhoods with precision"
-                        },
-                        {
-                          icon: <Rocket className="h-5 w-5 text-primary" />,
-                          title: "Growing Startups",
-                          desc: "Build brand awareness efficiently"
-                        },
-                        {
-                          icon: <Globe className="h-5 w-5 text-primary" />,
-                          title: "Enterprise Brands",
-                          desc: "Coordinate multi-city campaigns"
-                        }
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-start gap-4">
-                          <div className="h-10 w-10 rounded-full bg-muted/20 flex items-center justify-center shrink-0">
-                            {item.icon}
-                          </div>
-                          <div>
-                            <h4 className="font-bold">{item.title}</h4>
-                            <p className="text-sm text-muted-foreground">{item.desc}</p>
-                          </div>
+                      <div className="flex items-start gap-4">
+                        <div className="h-10 w-10 rounded-full bg-muted/30 flex items-center justify-center shrink-0">
+                          <Building className="h-5 w-5 text-primary" />
                         </div>
-                      ))}
+                        <div>
+                          <h4 className="font-bold">Local Businesses</h4>
+                          <p className="text-sm text-muted-foreground">Target neighborhoods with precision and measure foot traffic to your location from nearby advertising.</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start gap-4">
+                        <div className="h-10 w-10 rounded-full bg-muted/30 flex items-center justify-center shrink-0">
+                          <Rocket className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold">Growing Startups</h4>
+                          <p className="text-sm text-muted-foreground">Build brand awareness efficiently with data-driven placement and measurable results for investors.</p>
+                        </div>
+                      </div>
+                      
+                      <div className="flex items-start gap-4">
+                        <div className="h-10 w-10 rounded-full bg-muted/30 flex items-center justify-center shrink-0">
+                          <Globe className="h-5 w-5 text-primary" />
+                        </div>
+                        <div>
+                          <h4 className="font-bold">Enterprise Brands</h4>
+                          <p className="text-sm text-muted-foreground">Coordinate multi-city campaigns with consistent measurement and integration with your existing marketing stack.</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                   
-                  <div className="bg-muted/10 p-8">
-                    <h3 className="text-xl font-bold mb-4">Traditional vs. AI-Powered</h3>
+                  <div className="bg-muted/30 p-8">
+                    <h3 className="text-xl font-bold mb-4">From Outdoor to Digital Tracking</h3>
+                    <p className="text-sm text-muted-foreground mb-6">
+                      Compare the traditional outdoor advertising approach with our AI-powered analytics platform.
+                    </p>
                     
                     <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-muted/20 rounded-lg p-4 border border-border/30">
-                        <h4 className="font-medium text-sm mb-3">Traditional Outdoor</h4>
+                      <div className="bg-muted/30 rounded-lg p-4">
+                        <h4 className="font-medium text-sm mb-3">Traditional Outdoor Advertising</h4>
                         <ul className="space-y-2">
-                          {[
-                            "Estimated impressions",
-                            "No demographic data",
-                            "Unknown engagement",
-                            "No conversion tracking"
-                          ].map((item, i) => (
-                            <li key={i} className="flex items-start gap-2">
-                              <div className="mt-0.5 h-5 w-5 rounded-full bg-destructive/10 flex items-center justify-center shrink-0">
-                                <BadgeIcon className="h-3 w-3 text-destructive" />
-                              </div>
-                              <span className="text-xs text-muted-foreground">{item}</span>
-                            </li>
-                          ))}
+                          <li className="flex items-start gap-2">
+                            <div className="h-5 w-5 rounded-full bg-destructive/10 flex items-center justify-center shrink-0 mt-0.5">
+                              <BadgeIcon className="h-3 w-3 text-destructive" />
+                            </div>
+                            <span className="text-xs text-muted-foreground">Estimated impressions</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <div className="h-5 w-5 rounded-full bg-destructive/10 flex items-center justify-center shrink-0 mt-0.5">
+                              <BadgeIcon className="h-3 w-3 text-destructive" />
+                            </div>
+                            <span className="text-xs text-muted-foreground">No demographic data</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <div className="h-5 w-5 rounded-full bg-destructive/10 flex items-center justify-center shrink-0 mt-0.5">
+                              <BadgeIcon className="h-3 w-3 text-destructive" />
+                            </div>
+                            <span className="text-xs text-muted-foreground">Unknown engagement rates</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <div className="h-5 w-5 rounded-full bg-destructive/10 flex items-center justify-center shrink-0 mt-0.5">
+                              <BadgeIcon className="h-3 w-3 text-destructive" />
+                            </div>
+                            <span className="text-xs text-muted-foreground">No conversion tracking</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <div className="h-5 w-5 rounded-full bg-destructive/10 flex items-center justify-center shrink-0 mt-0.5">
+                              <BadgeIcon className="h-3 w-3 text-destructive" />
+                            </div>
+                            <span className="text-xs text-muted-foreground">Limited optimization options</span>
+                          </li>
                         </ul>
                       </div>
                       
                       <div className="bg-primary/5 rounded-lg p-4 border border-primary/20">
-                        <h4 className="font-medium text-sm mb-3 text-primary">AI-Powered Platform</h4>
+                        <h4 className="font-medium text-sm mb-3 text-primary">Our AI-Powered Platform</h4>
                         <ul className="space-y-2">
-                          {[
-                            "Precise impression counts",
-                            "Detailed demographic insights",
-                            "Engagement time measurement",
-                            "Conversion tracking"
-                          ].map((item, i) => (
-                            <li key={i} className="flex items-start gap-2">
-                              <div className="mt-0.5 h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
-                                <Check className="h-3 w-3 text-primary" />
-                              </div>
-                              <span className="text-xs">{item}</span>
-                            </li>
-                          ))}
+                          <li className="flex items-start gap-2">
+                            <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                              <Check className="h-3 w-3 text-primary" />
+                            </div>
+                            <span className="text-xs">Precise impression counts</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                              <Check className="h-3 w-3 text-primary" />
+                            </div>
+                            <span className="text-xs">Detailed demographic insights</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                              <Check className="h-3 w-3 text-primary" />
+                            </div>
+                            <span className="text-xs">Engagement time measurement</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                              <Check className="h-3 w-3 text-primary" />
+                            </div>
+                            <span className="text-xs">QR & AR conversion tracking</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <div className="h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-0.5">
+                              <Check className="h-3 w-3 text-primary" />
+                            </div>
+                            <span className="text-xs">AI-powered campaign optimization</span>
+                          </li>
                         </ul>
                       </div>
                     </div>
@@ -592,11 +744,19 @@ const Index = () => {
           </section>
           
           {/* CTA Section */}
-          <section className="py-20 px-6 bg-gradient-to-br from-background via-primary/10 to-background relative">
+          <section className="py-20 px-6 bg-gradient-to-br from-background via-primary/10 to-background relative overflow-hidden">
+            <div className="absolute inset-0">
+              <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/20 rounded-full blur-3xl"></div>
+              <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-secondary/20 rounded-full blur-3xl"></div>
+            </div>
+            
             <div className="container mx-auto relative z-10">
               <div className="text-center max-w-3xl mx-auto">
-                <Badge className="mb-4 bg-primary/20 text-primary">India's First AI-Powered Platform</Badge>
+                <Badge className="mb-4 bg-primary/20 text-primary">India's First AI-Powered Outdoor Ad Platform</Badge>
                 <h2 className="text-4xl font-bold mb-6">Transform Your Advertising Strategy</h2>
+                <p className="text-xl text-muted-foreground mb-8">
+                  Join businesses across India that are experiencing measurable results with our AI-enhanced outdoor advertising platform.
+                </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <Button size="lg">Start Free Trial</Button>
                   <Button size="lg" variant="outline" asChild>
@@ -608,7 +768,7 @@ const Index = () => {
           </section>
           
           {/* Footer */}
-          <footer className="bg-muted/20 py-12 px-6 border-t border-border/30">
+          <footer className="bg-muted/30 py-12 px-6 border-t border-border">
             <div className="container mx-auto">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
                 <div>
@@ -617,42 +777,47 @@ const Index = () => {
                     <li><Link to="/map-analytics" className="text-muted-foreground hover:text-primary transition-colors">AI Analytics</Link></li>
                     <li><Link to="/map-analytics" className="text-muted-foreground hover:text-primary transition-colors">Geospatial Mapping</Link></li>
                     <li><Link to="/ar-working-demo" className="text-muted-foreground hover:text-primary transition-colors">AR Technology</Link></li>
+                    <li><Link to="/performance" className="text-muted-foreground hover:text-primary transition-colors">Real-time Tracking</Link></li>
+                    <li><Link to="/forecasts" className="text-muted-foreground hover:text-primary transition-colors">Predictive Analytics</Link></li>
                   </ul>
                 </div>
-                
                 <div>
                   <h3 className="font-bold mb-4">Business</h3>
                   <ul className="space-y-2 text-sm">
                     <li><Link to="/business-solutions" className="text-muted-foreground hover:text-primary transition-colors">ROI Tracking</Link></li>
                     <li><Link to="/revenue" className="text-muted-foreground hover:text-primary transition-colors">Revenue Metrics</Link></li>
                     <li><Link to="/budget-campaign" className="text-muted-foreground hover:text-primary transition-colors">Campaign Planning</Link></li>
+                    <li><Link to="/business-solutions" className="text-muted-foreground hover:text-primary transition-colors">Brand Awareness</Link></li>
+                    <li><Link to="/business-solutions" className="text-muted-foreground hover:text-primary transition-colors">Success Stories</Link></li>
                   </ul>
                 </div>
-                
                 <div>
                   <h3 className="font-bold mb-4">Resources</h3>
                   <ul className="space-y-2 text-sm">
                     <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Case Studies</a></li>
                     <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Blog</a></li>
                     <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Documentation</a></li>
+                    <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">API Reference</a></li>
                   </ul>
                 </div>
-                
                 <div>
                   <h3 className="font-bold mb-4">Company</h3>
                   <ul className="space-y-2 text-sm">
                     <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">About Us</a></li>
                     <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Contact</a></li>
                     <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Careers</a></li>
+                    <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Privacy Policy</a></li>
+                    <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors">Terms of Service</a></li>
                   </ul>
                 </div>
               </div>
               
-              <div className="border-t border-border/30 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p className="text-sm text-muted-foreground">© 2025 AdTech Platform. All rights reserved.</p>
+              <div className="border-t border-border mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p className="text-sm text-muted-foreground">© 2025 AdTech Platform. India's First AI-Powered Outdoor Advertising Platform. All rights reserved.</p>
                 <div className="flex gap-4 mt-4 md:mt-0">
                   <a href="#" className="text-muted-foreground hover:text-primary">Twitter</a>
                   <a href="#" className="text-muted-foreground hover:text-primary">LinkedIn</a>
+                  <a href="#" className="text-muted-foreground hover:text-primary">Instagram</a>
                 </div>
               </div>
             </div>
