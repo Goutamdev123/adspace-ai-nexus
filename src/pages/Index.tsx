@@ -591,12 +591,12 @@ const Index = () => {
 </section>
 
           
-        {/* Business Benefits Section */}
+       {/* Business Benefits Section */}
 <section className="py-20 px-6 bg-background relative">
   <div className="container mx-auto">
     <div className="text-center mb-16">
-      <Badge className="mb-2 bg-secondary/20 text-secondary">Business Impact</Badge>
-      <h2 className="text-3xl font-bold mb-4">Transform Your Advertising Strategy</h2>
+      <Badge className="mb-2 bg-secondary/20 text-white">Business Impact</Badge>
+      <h2 className="text-3xl font-bold mb-4 text-white">Transform Your Advertising Strategy</h2>
     </div>
     
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
@@ -609,8 +609,8 @@ const Index = () => {
             <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
               {benefit.icon}
             </div>
-            <h3 className="text-xl font-bold mb-2">{benefit.title}</h3>
-            <p className="text-muted-foreground">{benefit.description}</p>
+            <h3 className="text-xl font-bold mb-2 text-white">{benefit.title}</h3>
+            <p className="text-white">{benefit.description}</p>
           </div>
         </div>
       ))}
@@ -620,7 +620,7 @@ const Index = () => {
     <div className="bg-card border border-border/30 rounded-xl overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-2">
         <div className="p-8">
-          <h3 className="text-2xl font-bold mb-4">From Local Businesses to Enterprise Brands</h3>
+          <h3 className="text-2xl font-bold mb-4 text-white">From Local Businesses to Enterprise Brands</h3>
           
           <div className="space-y-5">
             {[
@@ -645,8 +645,8 @@ const Index = () => {
                   {item.icon}
                 </div>
                 <div>
-                  <h4 className="font-bold">{item.title}</h4>
-                  <p className="text-sm text-muted-foreground">{item.desc}</p>
+                  <h4 className="font-bold text-white">{item.title}</h4>
+                  <p className="text-sm text-white">{item.desc}</p>
                 </div>
               </div>
             ))}
@@ -654,11 +654,11 @@ const Index = () => {
         </div>
         
         <div className="bg-muted/10 p-8">
-          <h3 className="text-xl font-bold mb-4">Traditional vs. AI-Powered</h3>
+          <h3 className="text-xl font-bold mb-4 text-white">Traditional vs. AI-Powered</h3>
           
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-muted/20 rounded-lg p-4 border border-border/30">
-              <h4 className="font-medium text-sm mb-3">Traditional Outdoor</h4>
+              <h4 className="font-medium text-sm mb-3 text-white">Traditional Outdoor</h4>
               <ul className="space-y-2">
                 {[
                   "Estimated impressions",
@@ -670,7 +670,7 @@ const Index = () => {
                     <div className="mt-0.5 h-5 w-5 rounded-full bg-destructive/10 flex items-center justify-center shrink-0">
                       <BadgeIcon className="h-3 w-3 text-destructive" />
                     </div>
-                    <span className="text-xs text-muted-foreground">{item}</span>
+                    <span className="text-xs text-white">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -689,7 +689,7 @@ const Index = () => {
                     <div className="mt-0.5 h-5 w-5 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                       <Check className="h-3 w-3 text-primary" />
                     </div>
-                    <span className="text-xs">{item}</span>
+                    <span className="text-xs text-white">{item}</span>
                   </li>
                 ))}
               </ul>
