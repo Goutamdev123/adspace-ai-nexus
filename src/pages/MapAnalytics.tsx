@@ -3,6 +3,7 @@ import DashboardHeader from "@/components/DashboardHeader";
 import DashboardSidebar from "@/components/DashboardSidebar";
 import GeospatialMap from "@/components/GeospatialMap";
 import TrafficHeatmap from "@/components/TrafficHeatmap";
+import IndiaTrafficMap from "@/components/IndiaTrafficMap"; // Added import
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Map, TrafficCone } from "lucide-react";
@@ -83,6 +84,18 @@ const MapAnalytics = () => {
                 </p>
               </div>
               <TrafficHeatmap />
+            </div>
+            
+            {/* India Map with live traffic data visualization */}
+            <div className="bg-card rounded-xl border border-border overflow-hidden">
+              <div className="p-4 bg-muted/50 border-b border-border">
+                <h3 className="text-2xl font-bold mb-2 text-center">Live Traffic Data Across India</h3>
+                <p className="text-sm text-muted-foreground text-center">
+                  Real-time monitoring of 5,000+ locations across India with 97.3% data accuracy.
+                  <br />Hover over cities to see detailed metrics.
+                </p>
+              </div>
+              <IndiaTrafficMap />
             </div>
             
             <div className="grid grid-cols-1 xl:grid-cols-4 gap-4">
