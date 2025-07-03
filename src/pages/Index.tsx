@@ -592,7 +592,7 @@ const Index = () => {
 
           
         {/* Business Benefits Section */}
-<section className="py-20 px-6 bg-background relative">  {/* Removed backdrop blur and opacity */}
+<section className="py-20 px-6 bg-background relative">
   <div className="container mx-auto">
     <div className="text-center mb-16">
       <Badge className="mb-2 bg-secondary/20 text-secondary">Business Impact</Badge>
@@ -603,7 +603,7 @@ const Index = () => {
       {businessBenefits.map((benefit, index) => (
         <div 
           key={index} 
-          className="bg-card border border-border/30 overflow-hidden rounded-xl transition-all hover:border-primary/50"  {/* Removed gradient and blur */}
+          className="bg-card border border-border/30 overflow-hidden rounded-xl transition-all hover:border-primary/50"
         >
           <div className="p-6">
             <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center mb-4">
